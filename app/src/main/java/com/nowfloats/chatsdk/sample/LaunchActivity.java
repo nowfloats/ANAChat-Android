@@ -22,10 +22,6 @@ public class LaunchActivity extends AppCompatActivity {
     }
 
     public void startMainScreen(View view) {
-        if (PreferencesManager.getsInstance(this).getUserName().isEmpty()) {
-            Toast.makeText(this, "User Initializing.. ", Toast.LENGTH_SHORT).show();
-            return;
-        }
         new NfChatBuilder(this)
                 .setThemeColor(R.color.second_primary)
                 .setToolBarDescription("Yoo intelligence")

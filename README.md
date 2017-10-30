@@ -14,7 +14,8 @@ Add below mandatory dependencies in your app level build.gradle.
 
     dependencies {
     ...
-    compile 'com.nowfloats:nfchatsdk:1.0'
+    compile 'com.nowfloats:nfchatsdk:1.0@aar'
+    compile 'com.android.support:design:26.1.0'
     compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.github.bumptech.glide:glide:4.1.1'
