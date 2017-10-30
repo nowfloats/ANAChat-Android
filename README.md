@@ -14,6 +14,7 @@ Gradle
 FCM configuration is required to use this SDK please check the documentation [here](https://firebase.google.com/docs/cloud-messaging/android/client) to configure.
 
 After FCM configuration modify below classes:
+In `FirebaseInstanceIdService`
 
     public class NfChatBotInstanceIDService extends FirebaseInstanceIdService {
 
@@ -44,9 +45,8 @@ Then add below mandatory dependencies in your app level build.gradle.
 
     dependencies {
     ...
-    compile 'com.nowfloats:nfchatsdk:0.2''
-    compile group: 'com.j256.ormlite', name: 'ormlite-android', version: '5.0'
-    compile group: 'com.j256.ormlite', name: 'ormlite-core', version: '5.0'
+    compile 'com.nowfloats:nfchatsdk:1.0'
+    compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.github.bumptech.glide:glide:4.1.1'
     ...
@@ -70,6 +70,7 @@ Then add below mandatory dependencies in your app level build.gradle.
                 .setThemeColor(R.color.primary)
                 .setToolBarDescription("Your Toolbar desc")
                 .setToolBarTittle("Your Tittle")
+                .setBussinessId("add_your_business_id")
                 .setToolBarLogo(R.drawable.ic_ria_logo)
                 .start();
 
