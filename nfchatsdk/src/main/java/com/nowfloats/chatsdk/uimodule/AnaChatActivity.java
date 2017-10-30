@@ -26,7 +26,6 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -122,11 +121,11 @@ public class AnaChatActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         if (getIntent().getExtras() != null) {
             int colorCode = getIntent().getExtras().
-                    getInt(Constants.UIParams.Theme_color, R.color.primary);
+                    getInt(Constants.UIParams.Theme_color, R.color.ana_primary);
             String value = "#" + Integer.toHexString(getResources().getColor(colorCode));
             PreferencesManager.getsInstance(this).setThemeColor(value);
         }
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_ana_chat);
         initViews();
         NfChatSDKConfig nfChatSDKConfig = NfCore
                 .config()
@@ -152,8 +151,10 @@ public class AnaChatActivity extends AppCompatActivity
     }
 
     private void initViews() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        RelativeLayout toolbar = findViewById(R.id.rl_toolbar);
+        if (getSupportActionBar() != null)
+            getSupportActionBar().hide();
+//        setSupportActionBar(toolbar);
         toolbar.setBackgroundColor(
                 Color.parseColor(PreferencesManager.getsInstance(this).getThemeColor()));
 

@@ -29,10 +29,6 @@
             </intent-filter>
         </activity>
 
-        <meta-data
-            android:name="chatsdk.key"
-            android:value="@string/chatsdk_key" />
-
         <service
             android:name=".NfChatBotMessagingService"
             android:exported="false">

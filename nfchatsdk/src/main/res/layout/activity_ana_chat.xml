@@ -4,68 +4,65 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_doodle">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <RelativeLayout
+        android:id="@+id/rl_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary">
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:background="@color/ana_primary"
+        android:gravity="center_vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical">
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:src="@drawable/ic_back_arrow" />
 
-            <ImageView
-                android:id="@+id/iv_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:src="@drawable/ic_back_arrow" />
+        <ImageView
+            android:id="@+id/iv_toolbar"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toRightOf="@id/iv_back" />
 
-            <ImageView
-                android:id="@+id/iv_toolbar"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_toRightOf="@id/iv_back" />
+        <TextView
+            android:id="@+id/tv_tittle_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/iv_toolbar"
+            android:layout_toRightOf="@id/iv_toolbar"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_tittle_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/iv_toolbar"
-                android:layout_toRightOf="@id/iv_toolbar"
-                android:text="@string/app_name"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tv_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_tittle_name"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@id/iv_toolbar"
+            android:layout_toRightOf="@id/iv_toolbar"
+            android:text="@string/desc_toolbar"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:textStyle="normal" />
+    </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_desc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_tittle_name"
-                android:layout_marginTop="2dp"
-                android:layout_toEndOf="@id/iv_toolbar"
-                android:layout_toRightOf="@id/iv_toolbar"
-                android:text="@string/desc_toolbar"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                android:textStyle="normal" />
-        </RelativeLayout>
-
-    </android.support.v7.widget.Toolbar>
 
     <com.nowfloats.chatsdk.uimodule.chatuikit.messages.MessagesList
         android:id="@+id/messagesList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/rl_input"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/rl_toolbar"
         android:overScrollMode="never" />
 
     <RelativeLayout

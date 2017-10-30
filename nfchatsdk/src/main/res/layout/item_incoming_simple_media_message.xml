@@ -24,7 +24,7 @@
         android:id="@id/bubble"
         android:layout_width="3dip"
         android:layout_height="238dp"
-        android:background="@color/primary" />
+        android:background="@color/ana_primary" />
 
     <View
         android:id="@id/imageOverlay"
@@ -88,5 +88,5 @@
         android:layout_alignParentStart="true"
         android:layout_below="@id/rl_stripe"
         android:src="@drawable/bg_left_trinagle"
-        android:tint="@color/primary" />
+        android:tint="@color/ana_primary" />
 </RelativeLayout>

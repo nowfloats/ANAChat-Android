@@ -11,6 +11,6 @@
     android:letterSpacing=".1"
     android:text="@string/label_more"
     android:textAllCaps="true"
-    android:textColor="@color/primary"
+    android:textColor="@color/ana_primary"
     android:textSize="14sp"
     android:textStyle="normal" />

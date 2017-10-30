@@ -34,12 +34,12 @@ ext {
 }
 dependencies {
     testCompile 'junit:junit:4.12'
-//    compile project(':nfchatsdk')
+    compile project(':nfchatsdk')
     compile 'com.android.support:design:26.1.0'
     compile 'com.google.firebase:firebase-messaging:11.4.2'
     compile 'com.android.support:multidex:1.0.1'
 //    compile 'com.nowfloats:nfchatsdk:1.0'
-    compile 'com.nowfloats:nfchatsdk:1.0@aar'
+//    compile 'com.nowfloats:nfchatsdk:1.0@aar'
     compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.github.bumptech.glide:glide:4.1.1'

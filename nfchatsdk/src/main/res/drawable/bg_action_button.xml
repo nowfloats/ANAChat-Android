@@ -9,7 +9,7 @@
             </item>
             <item android:id="@id/bubble" android:bottom="2dp" android:left="2dp">
                 <shape>
-                    <gradient android:angle="270" android:endColor="@color/primary" android:startColor="@color/primary" />
+                    <gradient android:angle="270" android:endColor="@color/ana_primary" android:startColor="@color/ana_primary" />
                     <corners android:radius="4dp" />
                     <padding android:bottom="10dp" android:left="10dp" android:right="10dp" android:top="10dp" />
                 </shape>

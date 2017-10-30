@@ -3,8 +3,8 @@
 <resources>
 
     <style name="RedTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/ana_primary</item>
+        <item name="colorPrimaryDark">@color/ana_primary_dark</item>
+        <item name="colorAccent">@color/ana_colorAccent</item>
     </style>
 </resources>

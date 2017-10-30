@@ -9,6 +9,6 @@
         android:layout_centerInParent="true"
         android:onClick="startMainScreen"
         android:text="@string/label_start"
-        android:textColor="@color/primary"
+        android:textColor="@color/black"
         android:textSize="18sp" />
 </RelativeLayout>

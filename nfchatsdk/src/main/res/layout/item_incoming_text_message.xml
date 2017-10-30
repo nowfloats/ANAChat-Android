@@ -53,7 +53,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@id/bubble"
         android:src="@drawable/bg_left_trinagle"
-        android:tint="@color/primary" />
+        android:tint="@color/ana_primary" />
 
 
 </RelativeLayout>

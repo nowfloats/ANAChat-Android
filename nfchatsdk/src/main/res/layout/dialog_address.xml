@@ -7,7 +7,7 @@
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/primary"
+        android:background="@color/ana_primary"
         android:gravity="center"
         android:text="Enter address"
         android:textAllCaps="true"
@@ -129,7 +129,7 @@
             android:layout_centerVertical="true"
             android:layout_marginTop="20dp"
             android:background="@drawable/bg_btn_rounded_corners"
-            android:backgroundTint="@color/primary"
+            android:backgroundTint="@color/ana_primary"
             android:gravity="center"
             android:text="@string/label_save"
             android:textColor="@color/white" />
