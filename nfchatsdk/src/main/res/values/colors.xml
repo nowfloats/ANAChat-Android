@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FFFFFF</color>
+    <color name="primary">#CE1B14</color>
+    <color name="second_primary">#673AB7</color>
+    <!--<color name="primary_dark">#B00001</color>-->
+    <color name="primary_dark">#512DA8</color>
+    <color name="colorAccent">#ff583f</color>
+    <color name="text_color_chat_input">#050706</color>
+    <color name="text_color_chat_time">#C5C5C5</color>
+    <color name="text_color_date_header">#7B7B7B</color>
+
+
+    <color name="black">#000000</color>
+    <color name="warm_grey">#7f7f7f</color>
+
+    <color name="gray_light">#e8e8e8</color>
+
+
+    <color name="red_300">#E57373</color>
+    <color name="red_400">#EF5350</color>
+    <color name="red_700">#D32F2F</color>
+    <color name="red_800">#C62828</color>
+
+    <color name="grey_100">#F5F5F5</color>
+    <color name="grey_300">#E0E0E0</color>
+    <color name="grey_400">#BDBDBD</color>
+
+
+</resources>

@@ -1,0 +1,29 @@
+<manifest package="com.nowfloats.chatsdk.library"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        >
+
+        <activity
+            android:name="com.nowfloats.chatsdk.uimodule.ui.MediaPreviewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.nowfloats.chatsdk.uimodule.ui.PictureViewerActivity"
+            android:screenOrientation="portrait"
+       />
+        <activity
+            android:name="com.nowfloats.chatsdk.uimodule.ui.VideoViewerActivity"
+            android:screenOrientation="landscape"
+             />
+        <activity
+            android:name="com.nowfloats.chatsdk.uimodule.AnaChatActivity"
+            android:screenOrientation="portrait" />
+    </application>
+
+</manifest>

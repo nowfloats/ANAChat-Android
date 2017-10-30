@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Library</string>
+
+
+
+    <string name="desc_toolbar">(Blume intelligence assistant)</string>
+    <string name="chatsdk_key">155344AsGCm17GVss5937f54b</string>
+
+
+    <string name="action_delete">Delete</string>
+    <string name="action_copy">Copy</string>
+    <string name="copied_message">Message copied!</string>
+    <string-array name="view_types_dialog">
+        <item name="image">Image (default)</item>
+        <item name="video">Video message</item>
+    </string-array>
+
+
+    <string name="action_button_date">SELECT DATE</string>
+    <string name="action_button_location">SEND LOCATION</string>
+    <string name="action_button_address">SEND ADDRESS</string>
+    <string name="action_button_video">SELECT VIDEO</string>
+    <string name="action_button_image">SELECT IMAGE</string>
+    <string name="action_button_audio">SELECT AUDIO</string>
+    <string name="action_button_file">SELECT FILE</string>
+    <string name="action_button_time">SELECT TIME</string>
+
+
+    <string name="hint_address_line">Address line </string>
+    <string name="hint_email">Type Email </string>
+    <string name="hint_state">State</string>
+    <string name="hint_pin">PIN</string>
+    <string name="hint_area">Area</string>
+    <string name="hint_city">City</string>
+    <string name="hint_country">Country</string>
+    <string name="label_save">SEND</string>
+    <string name="label_more">MORE INFO</string>
+    <string name="label_start">Get Started</string>
+</resources>

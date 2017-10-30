@@ -1,0 +1,13 @@
+<resources>
+
+    <!-- MESSAGE LIST ITEM -->
+    <item name="bubble" type="id" />
+    <item name="messageText" type="id" />
+    <item name="messageUserAvatar" type="id" />
+    <item name="messageTime" type="id" />
+    <item name="image" type="id" />
+    <item name="imageOverlay" type="id" />
+    <item name="iv_triangle" type="id" />
+    <item name="messageInput" type="id" />
+
+</resources>

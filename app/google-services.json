@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "340521903969",
+    "firebase_url": "https://sampleframeworkexample.firebaseio.com",
+    "project_id": "sampleframeworkexample",
+    "storage_bucket": "sampleframeworkexample.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340521903969:android:e8ad6953c7c213fb",
+        "android_client_info": {
+          "package_name": "com.nowfloats.chatsdk.sample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340521903969-t7je03hqgudbvjmfljesssj0rhl6rg1n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAn_bDR8xbX8LUIOL03egMSJV82poefMY4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

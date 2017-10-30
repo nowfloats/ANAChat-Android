@@ -1,0 +1,93 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="8dp"
+    android:gravity="end">
+
+    <com.nowfloats.chatsdk.uimodule.chatuikit.utils.RoundishImageView
+        android:id="@id/image"
+        android:layout_width="276dp"
+        android:layout_height="238dp"
+        android:layout_marginLeft="@dimen/message_outcoming_bubble_margin_left"
+        android:layout_marginStart="@dimen/message_outcoming_bubble_margin_left"
+        android:adjustViewBounds="true"
+        android:background="@drawable/bg_doodle"
+        android:scaleType="centerCrop"
+        app:cornerRadius="10dp"
+        app:roundedCorners="topLeft|bottomLeft" />
+
+    <View
+        android:layout_width="3dip"
+        android:layout_height="238dp"
+        android:layout_alignParentRight="true"
+        android:background="@color/black" />
+
+    <View
+        android:id="@id/imageOverlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/image"
+        android:layout_alignEnd="@id/image"
+        android:layout_alignLeft="@id/image"
+        android:layout_alignRight="@id/image"
+        android:layout_alignStart="@id/image"
+        android:layout_alignTop="@id/image" />
+
+    <RelativeLayout
+        android:id="@+id/rl_stripe"
+        android:layout_width="276dp"
+        android:layout_height="238dp"
+        android:layout_alignEnd="@id/image"
+        android:layout_alignRight="@id/image"
+        android:layout_marginLeft="@dimen/message_outcoming_bubble_margin_left"
+        android:layout_marginRight="3dp"
+        android:layout_marginStart="@dimen/message_outcoming_bubble_margin_left">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/bg_left_round_corner">
+
+            <TextView
+                android:id="@id/messageTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/message_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@id/iv_triangle"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/rl_stripe"
+        android:src="@drawable/bg_right_trinagle"
+        android:tint="@color/black" />
+
+</RelativeLayout>
