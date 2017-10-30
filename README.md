@@ -9,11 +9,22 @@ The Powerful **ANAchat**  android SDK allows you to integrate ANA to your app in
 Getting started
 ===============
 
-Gradle
-------
-FCM configuration is required to use this SDK please check the documentation [here](https://firebase.google.com/docs/cloud-messaging/android/client) to configure.
+
+Add below mandatory dependencies in your app level build.gradle.
+
+    dependencies {
+    ...
+    compile 'com.nowfloats:nfchatsdk:1.0'
+    compile 'com.j256.ormlite:ormlite-android:5.0'
+    compile 'com.google.code.gson:gson:2.8.1'
+    compile 'com.github.bumptech.glide:glide:4.1.1'
+    ...
+    }
+
+**FCM configuration** is required to use this SDK please check the documentation [here](https://firebase.google.com/docs/cloud-messaging/android/client) to configure.
 
 After FCM configuration modify below classes:
+
 In `FirebaseInstanceIdService`
 
     public class NfChatBotInstanceIDService extends FirebaseInstanceIdService {
@@ -41,16 +52,6 @@ In `FirebaseMessagingService`
     }
     }
 
-Then add below mandatory dependencies in your app level build.gradle.
-
-    dependencies {
-    ...
-    compile 'com.nowfloats:nfchatsdk:1.0'
-    compile 'com.j256.ormlite:ormlite-android:5.0'
-    compile 'com.google.code.gson:gson:2.8.1'
-    compile 'com.github.bumptech.glide:glide:4.1.1'
-    ...
-    }
 #### <i class="icon-file"></i> add permissions In manifest
 
 
