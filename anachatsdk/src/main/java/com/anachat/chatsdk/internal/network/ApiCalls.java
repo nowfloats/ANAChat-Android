@@ -29,6 +29,7 @@ public class ApiCalls {
     public static void updateToken(final Context context, final String token,
                                    final MessageResponse messageResponse) {
         PreferencesManager.getsInstance(context).setFcmToken(token);
+        PreferencesManager.getsInstance(context).setTokenSync(false);
         if (PreferencesManager.getsInstance(context).getBaseUrl().isEmpty()) return;
         if (!NFChatUtils.isNetworkConnected(context)) return;
         ApiExecutor apiExecutor = ApiExecutorFactory.getHandlerExecutor();

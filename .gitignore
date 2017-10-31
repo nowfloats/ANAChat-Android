@@ -17,6 +17,7 @@
 /anachatsdk/build/outputs
 /anachatsdk/build/generated
 /anachatsdk/build/docs
+/anachatsdk/build/libs
 /anachatsdk/anachatsdk.iml
 /anachatsdk/gradle.properties
 /build
@@ -24,3 +25,4 @@
 anachatsdk/build/
 /gradlew
 projectFilesBackup/.idea/
+anachatsdk/build/libs/

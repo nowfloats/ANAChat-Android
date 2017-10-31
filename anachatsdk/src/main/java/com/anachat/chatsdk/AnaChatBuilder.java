@@ -71,15 +71,19 @@ public class AnaChatBuilder {
 
         if (baseUrl.isEmpty())
             throw new IllegalArgumentException("BaseUrl can't be empty please setBaseUrl");
-        PreferencesManager.getsInstance(activity).setBusinessId(businessId);
-        PreferencesManager.getsInstance(activity).setBaseUrl(baseUrl);
-        if (!PreferencesManager.getsInstance(activity).getTokenSync() &&
-                !PreferencesManager.getsInstance(activity).getFcmToken().isEmpty()) {
-            ApiCalls.updateToken(activity, PreferencesManager.getsInstance(activity).getFcmToken()
-                    , null);
+
+        if (PreferencesManager.getsInstance(activity).getUserName().isEmpty()) {
+            if (!PreferencesManager.getsInstance(activity).getFcmToken().isEmpty()) {
+                ApiCalls.updateToken(activity.getApplicationContext(),
+                        PreferencesManager.getsInstance(activity).getFcmToken()
+                        , null);
+            }
             Log.d("User Not Initialized", "Please wait..");
             return;
         }
+        PreferencesManager.getsInstance(activity).setBusinessId(businessId);
+        PreferencesManager.getsInstance(activity).setBaseUrl(baseUrl);
+
         launchIntent.putExtras(bundle);
         activity.startActivity(launchIntent);
     }
