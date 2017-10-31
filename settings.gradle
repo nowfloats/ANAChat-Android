@@ -1,1 +1,1 @@
-include ':app', ':nfchatsdk'
+include ':app', ':anachatsdk'

@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/res/merged/androidTest/debug/drawable-xxxhdpi-v4/ic_back_arrow.png",
+        "source": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/bundles/debug/res/drawable-xxxhdpi-v4/ic_back_arrow.png"
+    },
+    {
+        "merged": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/res/merged/androidTest/debug/drawable-xxxhdpi-v4/ic_action_delete.png",
+        "source": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/bundles/debug/res/drawable-xxxhdpi-v4/ic_action_delete.png"
+    },
+    {
+        "merged": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/res/merged/androidTest/debug/drawable-xxxhdpi-v4/ic_action_copy.png",
+        "source": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/bundles/debug/res/drawable-xxxhdpi-v4/ic_action_copy.png"
+    },
+    {
+        "merged": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/res/merged/androidTest/debug/drawable-xxxhdpi-v4/ic_play.png",
+        "source": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/bundles/debug/res/drawable-xxxhdpi-v4/ic_play.png"
+    },
+    {
+        "merged": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/res/merged/androidTest/debug/drawable-xxxhdpi-v4/ic_send.png",
+        "source": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/bundles/debug/res/drawable-xxxhdpi-v4/ic_send.png"
+    }
+]

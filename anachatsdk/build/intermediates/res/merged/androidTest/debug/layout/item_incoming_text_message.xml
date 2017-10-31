@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="3dp"
+    android:layout_marginEnd="120dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="120dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="3dp">
+
+    <LinearLayout
+        android:id="@id/bubble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_chat_buuble_incoming"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp">
+
+        <TextView
+            android:id="@id/messageText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:gravity="start"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:textColor="@color/text_color_chat_input"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@id/messageTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:paddingEnd="8dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="8dp"
+            android:paddingStart="4dp"
+            android:textColor="@color/text_color_chat_time"
+            android:textSize="10sp" />
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@id/iv_triangle"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/bubble"
+        android:src="@drawable/bg_left_trinagle"
+        android:tint="@color/ana_primary" />
+
+
+</RelativeLayout>

@@ -1,4 +1,4 @@
-ANAChat Android Sdk!
+ANAChat Android
 ===================
 
 
@@ -14,7 +14,7 @@ Add below mandatory dependencies in your app level build.gradle.
 
     dependencies {
     ...
-    compile 'com.nowfloats:nfchatsdk:1.0@aar'
+    compile 'com.kitsune:anachatsdk:1.4@aar'
     compile 'com.android.support:design:26.1.0'
     compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'com.google.code.gson:gson:2.8.1'
@@ -24,7 +24,7 @@ Add below mandatory dependencies in your app level build.gradle.
 
 **FCM configuration** is required to use this SDK please check the documentation [here](https://firebase.google.com/docs/cloud-messaging/android/client) to configure.
 
-After FCM configuration modify below classes:
+After successful configuration of FCM, Modify below classes:
 
 In `FirebaseInstanceIdService`
 
@@ -34,7 +34,7 @@ In `FirebaseInstanceIdService`
     public void onTokenRefresh() {
         // Get updated InstanceID token.
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        NfCore.updateToken(this, refreshedToken);
+        NfCore.updateToken(this, refreshedToken,"your_base_url","your_business_id");
 	    }
     }
 
@@ -68,20 +68,22 @@ In `FirebaseMessagingService`
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
 #### <i class="icon-book"></i> Start BOT
-     new NfChatBuilder(activity)
+     new AnaChatBuilder(activity)
+			    .setBusinessId("your_businessId")
+                .setBaseUrl("your_base_url")
                 .setThemeColor(R.color.primary)
                 .setToolBarDescription("Your Toolbar desc")
                 .setToolBarTittle("Your Tittle")
                 .setBussinessId("add_your_business_id")
-                .setToolBarLogo(R.drawable.ic_ria_logo)
+                .setToolBarLogo(R.drawable.ic_your_logo)
                 .start();
 
-
+`Note`: Pass Valid businessId and BaseUrl in  builder.
 
 License
 =======
 
-    Copyright 2017 NowFloats Technologies pvt ltd.
+    Copyright 2017 ana.chat
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

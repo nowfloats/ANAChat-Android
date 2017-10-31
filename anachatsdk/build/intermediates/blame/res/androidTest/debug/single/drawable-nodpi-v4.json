@@ -1,0 +1,30 @@
+[
+    {
+        "merged": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/res/merged/androidTest/debug/drawable-nodpi-v4/send_arrow.png",
+        "source": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/bundles/debug/res/drawable-nodpi-v4/send_arrow.png"
+    },
+    {
+        "merged": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/res/merged/androidTest/debug/drawable-nodpi-v4/bg_left_trinagle.png",
+        "source": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/bundles/debug/res/drawable-nodpi-v4/bg_left_trinagle.png"
+    },
+    {
+        "merged": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/res/merged/androidTest/debug/drawable-nodpi-v4/bg_right_trinagle.png",
+        "source": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/bundles/debug/res/drawable-nodpi-v4/bg_right_trinagle.png"
+    },
+    {
+        "merged": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/res/merged/androidTest/debug/drawable-nodpi-v4/bg_doodle.png",
+        "source": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/bundles/debug/res/drawable-nodpi-v4/bg_doodle.png"
+    },
+    {
+        "merged": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/res/merged/androidTest/debug/drawable-nodpi-v4/bg_chat_buuble_outgoing.xml",
+        "source": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/bundles/debug/res/drawable-nodpi-v4/bg_chat_buuble_outgoing.xml"
+    },
+    {
+        "merged": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/res/merged/androidTest/debug/drawable-nodpi-v4/ic_placeholder.png",
+        "source": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/bundles/debug/res/drawable-nodpi-v4/ic_placeholder.png"
+    },
+    {
+        "merged": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/res/merged/androidTest/debug/drawable-nodpi-v4/ic_ria_logo.png",
+        "source": "/Users/lookup/Documents/Studio_Projects/NFchatSDKAndroid/anachatsdk/build/intermediates/bundles/debug/res/drawable-nodpi-v4/ic_ria_logo.png"
+    }
+]
