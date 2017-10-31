@@ -14,7 +14,7 @@ Add below mandatory dependencies in your app level build.gradle.
 
     dependencies {
     ...
-    compile 'com.kitsune:anachatsdk:1.4@aar'
+    compile 'com.kitsune:anachatsdk:1.5@aar'
     compile 'com.android.support:design:26.1.0'
     compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'com.google.code.gson:gson:2.8.1'
@@ -68,7 +68,7 @@ In `FirebaseMessagingService`
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
 #### <i class="icon-book"></i> Start BOT
-     new AnaChatBuilder(activity)
+				new AnaChatBuilder(activity)
 			    .setBusinessId("your_businessId")
                 .setBaseUrl("your_base_url")
                 .setThemeColor(R.color.primary)
