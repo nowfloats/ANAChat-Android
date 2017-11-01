@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.anachat.chatsdk.internal.model.Message;
-import com.nowfloats.chatsdk.library.R;
+import com.anachat.chatsdk.library.R;
 import com.anachat.chatsdk.uimodule.chatuikit.messages.MessageHolders;
 import com.anachat.chatsdk.uimodule.ui.adapter.ItemsAdapter;
 

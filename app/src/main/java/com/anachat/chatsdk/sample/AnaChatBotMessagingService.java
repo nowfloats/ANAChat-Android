@@ -16,7 +16,7 @@ import java.util.Map;
  * Created by lookup on 30/08/17.
  */
 
-public class NfChatBotMessagingService extends FirebaseMessagingService {
+public class AnaChatBotMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.anachat.chatsdk.internal.AnaCoreFactory;
-import com.anachat.chatsdk.internal.NfConfigBuilder;
+import com.anachat.chatsdk.internal.AnaConfigBuilder;
 import com.anachat.chatsdk.internal.database.MessageRepository;
 import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.model.Content;
@@ -20,10 +20,10 @@ import com.google.gson.Gson;
 public final class AnaCore {
 
     public static ConfigBuilder config() {
-        return new NfConfigBuilder();
+        return new AnaConfigBuilder();
     }
 
-    public static void install(NfChatSDKConfig config,
+    public static void install(AnaChatSDKConfig config,
                                MessageListener listener) {
         AnaCoreFactory.create(config, listener);
     }

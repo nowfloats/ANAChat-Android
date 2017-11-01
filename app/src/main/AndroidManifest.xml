@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.nowfloats.chatsdk.sample">
+    package="com.anachat.chatsdk.sample">
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -30,14 +30,14 @@
         </activity>
 
         <service
-            android:name="com.anachat.chatsdk.sample.NfChatBotMessagingService"
+            android:name="com.anachat.chatsdk.sample.AnaChatBotMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
         <service
-            android:name="com.anachat.chatsdk.sample.NfChatBotInstanceIDService"
+            android:name="com.anachat.chatsdk.sample.AnaChatBotInstanceIDService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />

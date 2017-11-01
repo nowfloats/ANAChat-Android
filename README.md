@@ -28,26 +28,26 @@ After successful configuration of FCM, Modify below classes:
 
 In `FirebaseInstanceIdService`
 
-    public class NfChatBotInstanceIDService extends FirebaseInstanceIdService {
+    public class AnaChatBotInstanceIDService extends FirebaseInstanceIdService {
 
     @Override
     public void onTokenRefresh() {
         // Get updated InstanceID token.
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        NfCore.updateToken(this, refreshedToken,"your_base_url","your_business_id");
+        AnaCore.updateToken(this, refreshedToken,"your_base_url","your_business_id");
 	    }
     }
 
 In `FirebaseMessagingService`
 
-    public class NfChatBotMessagingService extends FirebaseMessagingService {
+    public class AnaChatBotMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         Map<String, String> mapResult = remoteMessage.getData();
         if (mapResult.containsKey("payload")) {
-            NfCore.handlePush(this, mapResult.get("payload"));
+            AnaCore.handlePush(this, mapResult.get("payload"));
         }
 
     }
@@ -83,16 +83,4 @@ In `FirebaseMessagingService`
 License
 =======
 
-    Copyright 2017 ana.chat
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+   ANA Conversation Suite is available under the [GNU GPLv3 license](https://www.gnu.org/licenses/gpl-3.0.en.html).

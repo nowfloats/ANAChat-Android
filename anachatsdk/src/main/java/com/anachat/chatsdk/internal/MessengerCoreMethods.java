@@ -2,7 +2,7 @@ package com.anachat.chatsdk.internal;
 
 import android.content.Context;
 
-import com.anachat.chatsdk.NfChatSDKConfig;
+import com.anachat.chatsdk.AnaChatSDKConfig;
 import com.anachat.chatsdk.internal.database.MessageRepository;
 import com.anachat.chatsdk.internal.model.MessageResponse;
 import com.anachat.chatsdk.internal.utils.NFChatSDK;
@@ -23,16 +23,16 @@ import java.util.List;
 public class MessengerCoreMethods {
     private static final String TAG = "MessengerCoreMethods";
     private Context mContext;
-    private com.anachat.chatsdk.NfChatSDKConfig NfChatSDKConfig;
+    private AnaChatSDKConfig AnaChatSDKConfig;
     private MessageListener mListener;
     private ConnectionDetector cd;
 
-    public MessengerCoreMethods(NfChatSDKConfig NfChatSDKConfig, MessageListener
+    public MessengerCoreMethods(AnaChatSDKConfig AnaChatSDKConfig, MessageListener
             listener) throws IllegalArgumentException {
 
-        this.NfChatSDKConfig = NfChatSDKConfig;
+        this.AnaChatSDKConfig = AnaChatSDKConfig;
         this.mListener = listener;
-        this.mContext = this.NfChatSDKConfig.getContext();
+        this.mContext = this.AnaChatSDKConfig.getContext();
         cd = new ConnectionDetector(mContext);
         if (this.mListener == null) {
             throw new IllegalArgumentException("Messenger listener cannot be null.");

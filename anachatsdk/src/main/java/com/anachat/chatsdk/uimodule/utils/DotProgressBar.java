@@ -24,7 +24,7 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.Transformation;
 
 import com.anachat.chatsdk.internal.database.PreferencesManager;
-import com.nowfloats.chatsdk.library.R;
+import com.anachat.chatsdk.library.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

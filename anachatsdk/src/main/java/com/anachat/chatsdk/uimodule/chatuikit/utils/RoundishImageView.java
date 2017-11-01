@@ -8,7 +8,7 @@ import android.graphics.RectF;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
-import com.nowfloats.chatsdk.library.R;
+import com.anachat.chatsdk.library.R;
 
 
 public class RoundishImageView extends AppCompatImageView {

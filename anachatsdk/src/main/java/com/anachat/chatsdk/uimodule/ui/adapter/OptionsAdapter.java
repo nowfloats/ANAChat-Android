@@ -16,7 +16,7 @@ import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.internal.model.Option;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
-import com.nowfloats.chatsdk.library.R;
+import com.anachat.chatsdk.library.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;

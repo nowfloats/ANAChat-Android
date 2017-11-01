@@ -9,7 +9,7 @@ import com.anachat.chatsdk.internal.model.inputdata.Address;
 import com.anachat.chatsdk.internal.model.inputdata.Date;
 import com.anachat.chatsdk.internal.model.inputdata.Time;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
-import com.nowfloats.chatsdk.library.R;
+import com.anachat.chatsdk.library.R;
 import com.anachat.chatsdk.uimodule.chatuikit.messages.MessageHolders;
 
 

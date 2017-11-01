@@ -42,7 +42,7 @@ import android.widget.TimePicker;
 
 import com.anachat.chatsdk.AnaCore;
 import com.anachat.chatsdk.MessageListener;
-import com.anachat.chatsdk.NfChatSDKConfig;
+import com.anachat.chatsdk.AnaChatSDKConfig;
 import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.internal.model.MessageResponse;
@@ -75,7 +75,7 @@ import com.anachat.chatsdk.uimodule.viewholder.simple.IncomingSimpleMediaMessage
 import com.anachat.chatsdk.uimodule.viewholder.simple.IncomingSimpleMessageViewHolder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.nowfloats.chatsdk.library.R;
+import com.anachat.chatsdk.library.R;
 
 import java.io.File;
 import java.text.ParseException;
@@ -124,12 +124,12 @@ public class AnaChatActivity extends AppCompatActivity
         }
         setContentView(R.layout.activity_ana_chat);
         initViews();
-        NfChatSDKConfig nfChatSDKConfig = AnaCore
+        AnaChatSDKConfig anaChatSDKConfig = AnaCore
                 .config()
                 .context(this)
                 .build();
         AnaCore.install
-                (nfChatSDKConfig, this);
+                (anaChatSDKConfig, this);
         initViews();
         initImageLoader();
         initAdapter();

@@ -8,7 +8,7 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
  * Created by lookup on 30/08/17.
  */
 
-public class NfChatBotInstanceIDService extends FirebaseInstanceIdService {
+public class AnaChatBotInstanceIDService extends FirebaseInstanceIdService {
 
     @Override
     public void onTokenRefresh() {

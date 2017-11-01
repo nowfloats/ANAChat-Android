@@ -1,4 +1,4 @@
-package com.nowfloats.chatsdk.library;
+package com.anachat.chatsdk.sample;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

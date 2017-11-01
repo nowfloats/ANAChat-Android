@@ -3,10 +3,10 @@ package com.anachat.chatsdk.internal;
 
 import android.content.Context;
 
-import com.anachat.chatsdk.NfChatSDKConfig;
+import com.anachat.chatsdk.AnaChatSDKConfig;
 import com.anachat.chatsdk.ConfigBuilder;
 
-public class NfConfigBuilder implements ConfigBuilder {
+public class AnaConfigBuilder implements ConfigBuilder {
     private Context mContext;
 
     public ConfigBuilder context(Context newContext) {
@@ -19,7 +19,7 @@ public class NfConfigBuilder implements ConfigBuilder {
     }
 
 
-    public NfChatSDKConfig build() {
-        return new DefaultNfChatSDKConfig(this.mContext);
+    public AnaChatSDKConfig build() {
+        return new DefaultAnaChatSDKConfig(this.mContext);
     }
 }

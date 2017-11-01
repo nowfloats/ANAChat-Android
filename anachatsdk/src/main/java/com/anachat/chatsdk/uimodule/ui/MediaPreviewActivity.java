@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import com.anachat.chatsdk.internal.model.MessageResponse;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.nowfloats.chatsdk.library.R;
+import com.anachat.chatsdk.library.R;
 
 import java.io.File;
 

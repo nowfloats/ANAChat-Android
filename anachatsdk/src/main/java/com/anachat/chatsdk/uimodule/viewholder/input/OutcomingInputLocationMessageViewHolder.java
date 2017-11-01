@@ -6,7 +6,7 @@ import android.widget.TextView;
 import com.anachat.chatsdk.uimodule.chatuikit.utils.DateFormatter;
 import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
-import com.nowfloats.chatsdk.library.R;
+import com.anachat.chatsdk.library.R;
 import com.anachat.chatsdk.uimodule.chatuikit.messages.MessageHolders;
 
 

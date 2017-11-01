@@ -15,7 +15,7 @@ import com.anachat.chatsdk.internal.model.Item;
 import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.uimodule.chatuikit.commons.ImageLoader;
 import com.anachat.chatsdk.uimodule.chatuikit.utils.RoundishImageView;
-import com.nowfloats.chatsdk.library.R;
+import com.anachat.chatsdk.library.R;
 
 import java.util.ArrayList;
 import java.util.List;

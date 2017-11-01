@@ -2,12 +2,12 @@ package com.anachat.chatsdk.internal;
 
 import android.content.Context;
 
-import com.anachat.chatsdk.NfChatSDKConfig;
+import com.anachat.chatsdk.AnaChatSDKConfig;
 
-public class DefaultNfChatSDKConfig implements NfChatSDKConfig {
+public class DefaultAnaChatSDKConfig implements AnaChatSDKConfig {
     private Context mContext;
 
-    public DefaultNfChatSDKConfig(Context context) {
+    public DefaultAnaChatSDKConfig(Context context) {
         this.mContext = context;
     }
 

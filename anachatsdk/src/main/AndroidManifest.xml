@@ -1,4 +1,4 @@
-<manifest package="com.nowfloats.chatsdk.library"
+<manifest package="com.anachat.chatsdk.library"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

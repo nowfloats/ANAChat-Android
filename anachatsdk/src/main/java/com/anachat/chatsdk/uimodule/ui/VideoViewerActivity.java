@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 
-import com.nowfloats.chatsdk.library.R;
+import com.anachat.chatsdk.library.R;
 
 import static com.anachat.chatsdk.uimodule.ui.MediaPreviewActivity.FILE_PATH;
 

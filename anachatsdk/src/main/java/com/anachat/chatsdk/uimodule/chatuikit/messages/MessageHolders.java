@@ -23,7 +23,7 @@ import com.anachat.chatsdk.uimodule.chatuikit.utils.DateFormatter;
 import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.model.MessageContentType;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
-import com.nowfloats.chatsdk.library.R;
+import com.anachat.chatsdk.library.R;
 import com.anachat.chatsdk.uimodule.chatuikit.commons.ViewHolder;
 
 import java.lang.reflect.Constructor;

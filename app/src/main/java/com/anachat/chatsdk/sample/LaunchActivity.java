@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.anachat.chatsdk.AnaChatBuilder;
-import com.nowfloats.chatsdk.sample.R;
 
 /**
  * Created by lookup on 12/10/17.

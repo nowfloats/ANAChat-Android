@@ -5,7 +5,7 @@ import android.content.Context;
 public interface ConfigBuilder {
     ConfigBuilder context(Context paramContext);
 
-    NfChatSDKConfig build();
+    AnaChatSDKConfig build();
 }
 
 

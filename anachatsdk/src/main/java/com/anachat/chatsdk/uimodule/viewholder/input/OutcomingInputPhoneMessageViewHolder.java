@@ -7,7 +7,7 @@ import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
 import com.anachat.chatsdk.uimodule.chatuikit.messages.MessageHolders;
 import com.anachat.chatsdk.uimodule.chatuikit.utils.DateFormatter;
-import com.nowfloats.chatsdk.library.R;
+import com.anachat.chatsdk.library.R;
 
 public class OutcomingInputPhoneMessageViewHolder
         extends MessageHolders.OutcomingTextMessageViewHolder<Message> {

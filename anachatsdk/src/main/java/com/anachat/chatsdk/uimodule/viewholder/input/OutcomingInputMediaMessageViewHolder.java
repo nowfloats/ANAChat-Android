@@ -8,7 +8,7 @@ import com.anachat.chatsdk.uimodule.chatuikit.messages.MessageHolders;
 import com.anachat.chatsdk.uimodule.chatuikit.utils.DateFormatter;
 import com.anachat.chatsdk.internal.model.Media;
 import com.anachat.chatsdk.internal.model.Message;
-import com.nowfloats.chatsdk.library.R;
+import com.anachat.chatsdk.library.R;
 
 public class OutcomingInputMediaMessageViewHolder
         extends MessageHolders.OutcomingTextMessageViewHolder<Message> {

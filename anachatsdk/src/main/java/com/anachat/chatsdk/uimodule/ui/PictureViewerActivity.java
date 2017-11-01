@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.nowfloats.chatsdk.library.R;
+import com.anachat.chatsdk.library.R;
 import com.anachat.chatsdk.uimodule.utils.TouchImageView;
 
 import java.io.File;
