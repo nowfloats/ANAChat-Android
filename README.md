@@ -68,13 +68,12 @@ In `FirebaseMessagingService`
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
 #### <i class="icon-book"></i> Start BOT
-                 new AnaChatBuilder(activity)
+             new AnaChatBuilder(activity)
                 .setBusinessId("your_businessId")
                 .setBaseUrl("your_base_url")
                 .setThemeColor(R.color.primary)
                 .setToolBarDescription("Your Toolbar desc")
                 .setToolBarTittle("Your Tittle")
-                .setBussinessId("add_your_business_id")
                 .setToolBarLogo(R.drawable.ic_your_logo)
                 .start();
 
