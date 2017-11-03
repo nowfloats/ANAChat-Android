@@ -24,10 +24,12 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.anachat.chatsdk.uimodule.chatuikit.commons.ImageLoader;
-import com.anachat.chatsdk.uimodule.chatuikit.utils.DateFormatter;
 import com.anachat.chatsdk.internal.model.IMessage;
+import com.anachat.chatsdk.internal.model.Message;
+import com.anachat.chatsdk.internal.utils.constants.Constants;
+import com.anachat.chatsdk.uimodule.chatuikit.commons.ImageLoader;
 import com.anachat.chatsdk.uimodule.chatuikit.commons.ViewHolder;
+import com.anachat.chatsdk.uimodule.chatuikit.utils.DateFormatter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -143,7 +145,7 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
 //        for (Wrapper wrapper : items) {
 //            Log.e("beforeSortTime", "" + wrapper.timestamp);
 //        }
-      //  sortItems();
+//        sortItems();
         notifyDataSetChanged();
 //        for (Wrapper wrapper : items) {
 //            Log.e("afterSortTime", "" + wrapper.timestamp);
@@ -530,18 +532,15 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
         return false;
     }
 
-//    public boolean isNextSameForCarousel(String id, int position) {
-//        int nextPos = position - 1;
-//        if (nextPos < 0 || items.size() <= nextPos) return true;
-//        else if (items.get(nextPos).item instanceof IMessage) {
-//            Message next = (Message) items.get(nextPos).item;
-//            Message current = (Message) items.get(position).item;
-//            return (current.getMessageId().equals(next.getResponseTo()));
-////            return ((MESSAGE) items.get(nextPos).item).getMessageType() !=
-////                    ((MESSAGE) items.get(position).item).getMessageType();
-//        }
-//        return true;
-//    }
+    public void disableCarousels() {
+        for (Wrapper wrapper : items) {
+            if (wrapper.item instanceof Message &&
+                    ((IMessage) wrapper.item).getMessageType() == Constants.MessageType.CAROUSEL) {
+                ((Message) wrapper.item).getMessageCarousel().setEnabled(false);
+            }
+        }
+        notifyDataSetChanged();
+    }
 
 
     private void incrementSelectedItemsCount() {

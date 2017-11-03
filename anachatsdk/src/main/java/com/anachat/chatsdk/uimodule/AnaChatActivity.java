@@ -40,9 +40,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.anachat.chatsdk.AnaChatSDKConfig;
 import com.anachat.chatsdk.AnaCore;
 import com.anachat.chatsdk.MessageListener;
-import com.anachat.chatsdk.AnaChatSDKConfig;
 import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.internal.model.MessageResponse;
@@ -50,6 +50,7 @@ import com.anachat.chatsdk.internal.model.inputdata.Address;
 import com.anachat.chatsdk.internal.model.inputdata.Input;
 import com.anachat.chatsdk.internal.model.inputdata.Time;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
+import com.anachat.chatsdk.library.R;
 import com.anachat.chatsdk.uimodule.chatuikit.commons.ImageLoader;
 import com.anachat.chatsdk.uimodule.chatuikit.messages.MessageHolders;
 import com.anachat.chatsdk.uimodule.chatuikit.messages.MessagesList;
@@ -75,7 +76,6 @@ import com.anachat.chatsdk.uimodule.viewholder.simple.IncomingSimpleMediaMessage
 import com.anachat.chatsdk.uimodule.viewholder.simple.IncomingSimpleMessageViewHolder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.anachat.chatsdk.library.R;
 
 import java.io.File;
 import java.text.ParseException;
@@ -222,6 +222,7 @@ public class AnaChatActivity extends AppCompatActivity
                             .apply(new RequestOptions()
                                     .placeholder(R.drawable.ic_placeholder)
                                     .centerCrop()
+                                    .timeout(20000)
                                     .dontTransform())
                             .into(imageView);
                 } else {
@@ -253,6 +254,17 @@ public class AnaChatActivity extends AppCompatActivity
             @Override
             public Boolean isPreviousMessageHasSameAuthor(String id, int position) {
                 return messagesAdapter.isPreviousSameAuthor(id, position);
+            }
+
+            @Override
+            public void disableCarousels() {
+                messagesAdapter.disableCarousels();
+                AnaCore.disableCarousel(AnaChatActivity.this);
+            }
+
+            @Override
+            public void disableOptions() {
+                hideOptions();
             }
         };
     }
@@ -637,7 +649,8 @@ public class AnaChatActivity extends AppCompatActivity
 
     @Override
     public void onMessageInserted(Message message) {
-        if (message.getMessageType() != Constants.MessageType.INPUT) {
+        if (message.getSenderType() != Constants.SenderType.USER &&
+                message.getMessageType() != Constants.MessageType.INPUT) {
             messagesAdapter.addLoadingIndicator();
             Handler handler = new Handler();
             handler.postDelayed(() -> messagesAdapter.addToStart(message, true), 1000);
@@ -660,17 +673,8 @@ public class AnaChatActivity extends AppCompatActivity
             addGetStartedMessage();
     }
 
-    @Override
-    public void addLoadingIndicator() {
-        messagesAdapter.addLoadingIndicator();
-    }
-
-    @Override
-    public void removeLoadingIndicator() {
-        messagesAdapter.checkRemoveLoadingIfExist();
-    }
-
     private void addGetStartedMessage() {
+//        AnaCore.addWelcomeMessage(this);
         showActionButton("GET STARTED");
     }
 
@@ -962,11 +966,15 @@ public class AnaChatActivity extends AppCompatActivity
         }
     }
 
+    private void hideOptions() {
+        rvOptions.setVisibility(GONE);
+    }
+
     private void showOptionsView(Message message) {
         if (rvOptions.getVisibility() != VISIBLE) {
             rvOptions.setVisibility(VISIBLE);
         }
-        OptionsAdapter optionsAdapter = new OptionsAdapter(this,
+        OptionsAdapter optionsAdapter = new OptionsAdapter(imageLoader,
                 message);
         rvOptions.setAdapter(optionsAdapter);
         optionsAdapter.notifyDataSetChanged();

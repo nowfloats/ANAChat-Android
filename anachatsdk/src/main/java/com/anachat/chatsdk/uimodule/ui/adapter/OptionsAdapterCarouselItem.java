@@ -11,12 +11,13 @@ import android.widget.TextView;
 
 import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.model.Item;
-import com.anachat.chatsdk.internal.model.MessageResponse;
-import com.anachat.chatsdk.uimodule.utils.InputIntents;
 import com.anachat.chatsdk.internal.model.Message;
+import com.anachat.chatsdk.internal.model.MessageResponse;
 import com.anachat.chatsdk.internal.model.Option;
 import com.anachat.chatsdk.internal.model.inputdata.Input;
 import com.anachat.chatsdk.library.R;
+import com.anachat.chatsdk.uimodule.chatuikit.commons.ImageLoader;
+import com.anachat.chatsdk.uimodule.utils.InputIntents;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,6 +37,7 @@ public class OptionsAdapterCarouselItem extends RecyclerView.Adapter<OptionsAdap
     private Message message;
     private Item item;
     private Boolean enableButtons = true;
+    private ImageLoader imageLoader;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
@@ -47,11 +49,12 @@ public class OptionsAdapterCarouselItem extends RecyclerView.Adapter<OptionsAdap
     }
 
 
-    public OptionsAdapterCarouselItem(Context context, Message message, Item item, Boolean enableButtons) {
+    public OptionsAdapterCarouselItem(ImageLoader imageLoader, Message message, Item item, Boolean enableButtons) {
         this.optionList = new ArrayList<>(item.getOptionsForeignCollection());
-        this.context = context;
+        this.context = imageLoader.getContext();
         this.message = message;
         this.item = item;
+        this.imageLoader = imageLoader;
         this.enableButtons = enableButtons;
     }
 
@@ -88,6 +91,7 @@ public class OptionsAdapterCarouselItem extends RecyclerView.Adapter<OptionsAdap
                         e.printStackTrace();
                     }
                 }
+                imageLoader.disableOptions();
                 Input input = new Input();
                 input.setVal(value);
                 input.setOptionText(option.getTitle());

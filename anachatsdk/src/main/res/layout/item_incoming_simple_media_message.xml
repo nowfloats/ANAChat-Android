@@ -62,6 +62,7 @@
                 android:layout_centerVertical="true"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
+                android:textSize="10sp"
                 android:textColor="@color/white" />
 
             <TextView

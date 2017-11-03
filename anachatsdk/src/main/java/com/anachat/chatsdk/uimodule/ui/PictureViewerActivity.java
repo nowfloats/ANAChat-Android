@@ -44,7 +44,7 @@ public class PictureViewerActivity extends AppCompatActivity {
                 Glide.with(PictureViewerActivity.this)
                         .load(uri)
                         .apply(new RequestOptions()
-                                .placeholder(R.drawable.ic_play)
+                                .placeholder(R.drawable.ic_placeholder)
                                 .centerCrop()
                                 .dontTransform())
                         .into(imageView);
@@ -52,7 +52,7 @@ public class PictureViewerActivity extends AppCompatActivity {
                 Glide.with(PictureViewerActivity.this)
                         .load(filePath)
                         .apply(new RequestOptions()
-                                .placeholder(R.drawable.ic_play)
+                                .placeholder(R.drawable.ic_placeholder)
                                 .centerCrop()
                                 .dontTransform())
                         .into(imageView);

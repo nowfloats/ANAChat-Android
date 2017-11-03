@@ -69,25 +69,6 @@ public class ListenerManager {
         });
     }
 
-    public void notifyAddLoading() {
-        mHandler.post(new Runnable() {
-            public void run() {
-                for (MessageListener messageListener : mChatMessageListeners) {
-                    messageListener.addLoadingIndicator();
-                }
-            }
-        });
-    }
-
-    public void notifyRemoveLoading() {
-        mHandler.post(new Runnable() {
-            public void run() {
-                for (MessageListener messageListener : mChatMessageListeners) {
-                    messageListener.removeLoadingIndicator();
-                }
-            }
-        });
-    }
 
     public void notifyMessageDelete(final Message message) {
         mHandler.post(new Runnable() {

@@ -4,28 +4,28 @@ import android.content.Context;
 import android.util.Log;
 
 import com.anachat.chatsdk.internal.model.InputTypeAddress;
-import com.anachat.chatsdk.internal.model.InputTypePhone;
-import com.anachat.chatsdk.internal.model.InputTypeText;
-import com.anachat.chatsdk.internal.model.InputTypeTime;
-import com.anachat.chatsdk.internal.model.Item;
-import com.anachat.chatsdk.internal.model.MessageCarousel;
-import com.anachat.chatsdk.internal.model.MessageInput;
-import com.anachat.chatsdk.internal.model.MessageResponse;
-import com.anachat.chatsdk.internal.model.inputdata.InputTypeMedia;
-import com.google.gson.Gson;
-import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.UpdateBuilder;
 import com.anachat.chatsdk.internal.model.InputTypeDate;
 import com.anachat.chatsdk.internal.model.InputTypeEmail;
 import com.anachat.chatsdk.internal.model.InputTypeLocation;
 import com.anachat.chatsdk.internal.model.InputTypeNumeric;
+import com.anachat.chatsdk.internal.model.InputTypePhone;
+import com.anachat.chatsdk.internal.model.InputTypeText;
+import com.anachat.chatsdk.internal.model.InputTypeTime;
+import com.anachat.chatsdk.internal.model.Item;
 import com.anachat.chatsdk.internal.model.Message;
+import com.anachat.chatsdk.internal.model.MessageCarousel;
+import com.anachat.chatsdk.internal.model.MessageInput;
+import com.anachat.chatsdk.internal.model.MessageResponse;
 import com.anachat.chatsdk.internal.model.MessageSimple;
 import com.anachat.chatsdk.internal.model.Option;
+import com.anachat.chatsdk.internal.model.inputdata.InputTypeMedia;
 import com.anachat.chatsdk.internal.network.ApiCalls;
 import com.anachat.chatsdk.internal.utils.ListenerManager;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
+import com.google.gson.Gson;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.UpdateBuilder;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -301,12 +301,12 @@ public class MessageRepository {
         return updateBuilder.update();
     }
 
-    public int updateCarouselMessage(MessageCarousel message) throws SQLException {
+    public int updateCarouselMessage() throws SQLException {
         UpdateBuilder<MessageCarousel, Integer> updateBuilder
                 = mHelper.getMessageCarouselDao().updateBuilder();
-        updateBuilder.where().eq("id", message.getId());
+        updateBuilder.where().eq("is_enable", true);
         updateBuilder.updateColumnValue("is_enable",
-                message.getEnabled());
+                false);
         return updateBuilder.update();
     }
 

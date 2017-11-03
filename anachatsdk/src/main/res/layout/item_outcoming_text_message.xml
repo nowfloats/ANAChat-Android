@@ -16,7 +16,8 @@
         android:layout_alignParentRight="true"
         android:background="@drawable/bg_chat_buuble_outgoing"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingBottom="4dp"
+        android:paddingTop="16dp">
 
         <TextView
             android:id="@id/messageText"
@@ -24,6 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:gravity="start"
+            android:paddingLeft="34dp"
+            android:paddingRight="34dp"
             android:textColor="@color/text_color_chat_input"
             android:textSize="14sp" />
 
@@ -32,6 +35,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
+            android:paddingEnd="8dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="8dp"
+            android:paddingStart="4dp"
+            android:paddingTop="4dp"
             android:textColor="@color/text_color_chat_time"
             android:textSize="10sp" />
 

@@ -10,13 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.anachat.chatsdk.internal.model.MessageResponse;
-import com.anachat.chatsdk.uimodule.utils.InputIntents;
 import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.model.Message;
+import com.anachat.chatsdk.internal.model.MessageResponse;
 import com.anachat.chatsdk.internal.model.Option;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
 import com.anachat.chatsdk.library.R;
+import com.anachat.chatsdk.uimodule.chatuikit.commons.ImageLoader;
+import com.anachat.chatsdk.uimodule.utils.InputIntents;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,6 +29,7 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyViewHo
     private List<Option> optionList;
     private Context context;
     private Message message;
+    private ImageLoader imageLoader;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
@@ -39,10 +41,11 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyViewHo
     }
 
 
-    public OptionsAdapter(Context context, Message message) {
+    public OptionsAdapter(ImageLoader imageLoader, Message message) {
         this.optionList = message.getMessageInput().getOptionsAsList();
-        this.context = context;
+        this.context = imageLoader.getContext();
         this.message = message;
+        this.imageLoader = imageLoader;
     }
 
     @Override
@@ -83,6 +86,7 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyViewHo
                     message)
                     .build();
             messageResponse.getData().getContent().getInput().setOptionText(option.getTitle());
+            imageLoader.disableCarousels();
             messageResponse.send();
         });
     }

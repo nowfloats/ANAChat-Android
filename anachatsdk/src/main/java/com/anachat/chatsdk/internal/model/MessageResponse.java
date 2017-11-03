@@ -2,14 +2,14 @@ package com.anachat.chatsdk.internal.model;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.reflect.TypeToken;
 import com.anachat.chatsdk.internal.database.MessageRepository;
 import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.model.inputdata.Input;
 import com.anachat.chatsdk.internal.model.inputdata.Participant;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -126,7 +126,7 @@ public class MessageResponse extends BaseModel {
             message.getMessageCarousel().setEnabled(false);
             try {
                 MessageRepository.getInstance(mContext).
-                        updateCarouselMessage(message.getMessageCarousel());
+                        updateCarouselMessage();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

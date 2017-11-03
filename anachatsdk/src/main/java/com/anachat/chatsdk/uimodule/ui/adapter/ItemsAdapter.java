@@ -13,9 +13,9 @@ import android.widget.TextView;
 
 import com.anachat.chatsdk.internal.model.Item;
 import com.anachat.chatsdk.internal.model.Message;
+import com.anachat.chatsdk.library.R;
 import com.anachat.chatsdk.uimodule.chatuikit.commons.ImageLoader;
 import com.anachat.chatsdk.uimodule.chatuikit.utils.RoundishImageView;
-import com.anachat.chatsdk.library.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +63,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
         holder.tvDesc.setText(item.getDesc());
         holder.rvOptions.setLayoutManager(new LinearLayoutManager(
                 imageLoader.getContext(), LinearLayoutManager.VERTICAL, false));
-        holder.rvOptions.setAdapter(new OptionsAdapterCarouselItem(imageLoader.getContext(),
+        holder.rvOptions.setAdapter(new OptionsAdapterCarouselItem(imageLoader,
                 message, item, enabled));
         imageLoader.loadImage(holder.ivItem, item.getMedia().getUrl());
     }
