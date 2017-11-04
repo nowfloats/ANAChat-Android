@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="240dp"
-    android:layout_height="280dp"
+    android:layout_height="320dp"
     android:layout_marginLeft="4dp"
     android:layout_marginRight="4dp"
     android:background="@drawable/bg_carousel_item">
@@ -10,17 +10,19 @@
 
     <com.anachat.chatsdk.uimodule.chatuikit.utils.RoundishImageView
         android:id="@+id/iv_item"
-        android:layout_width="match_parent"
-        android:layout_height="112dp"
-        android:layout_margin="8dp"
-        android:scaleType="centerCrop"
+        android:layout_width="247dp"
+        android:layout_height="152dp"
+        android:layout_margin="16dp"
         app:cornerRadius="10dp"
         app:roundedCorners="all" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="234dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_below="@id/iv_item"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:orientation="vertical"
         android:weightSum="10">
 
@@ -34,7 +36,6 @@
                 android:id="@id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:textColor="@color/black"

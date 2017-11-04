@@ -13,4 +13,4 @@
     android:textAllCaps="true"
     android:textColor="@color/ana_primary"
     android:textSize="14sp"
-    android:textStyle="normal" />
+    android:textStyle="bold" />

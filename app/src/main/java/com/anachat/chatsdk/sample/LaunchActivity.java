@@ -28,7 +28,7 @@ public class LaunchActivity extends AppCompatActivity {
             // Get extra data included in the Intent
             String message = intent.getStringExtra("message");
             if (message.equals("now start")) {
-                waitTime = 6000L;
+                waitTime = 5000L;
                 startThread();
             }
         }
@@ -38,9 +38,11 @@ public class LaunchActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
-        startThread();
-        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
-                new IntentFilter("startBot"));
+        if (PreferencesManager.getsInstance(this).getUserName().isEmpty()) {
+            LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                    new IntentFilter("startBot"));
+        } else
+            startThread();
     }
 
     private void startThread() {
@@ -59,7 +61,7 @@ public class LaunchActivity extends AppCompatActivity {
                     .setBaseUrl(BASE_URL)
                     .setThemeColor(R.color.colorPrimary)
                     .setToolBarDescription("Talk to BOT - Available")
-                    .setToolBarTittle("Sample")
+                    .setToolBarTittle("Sample ANA")
                     .setToolBarLogo(R.drawable.blume_logo_white)
                     .start();
         if (!PreferencesManager.getsInstance(this).getUserName().isEmpty()) {

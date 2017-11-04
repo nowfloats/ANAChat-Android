@@ -4,7 +4,10 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bg_oval_textview"
     android:gravity="center"
-    android:padding="8dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
     android:layout_margin="8dp"
-    android:textColor="@color/black"
+    android:textColor="@color/white"
     android:textSize="14sp" />

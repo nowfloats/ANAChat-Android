@@ -643,7 +643,7 @@ public class AnaChatActivity extends AppCompatActivity
 
     @Override
     public void onMessageUpdated(Message message) {
-//        messagesAdapter.update(message);
+        messagesAdapter.update(message);
         checkLastMessage();
     }
 
@@ -674,8 +674,8 @@ public class AnaChatActivity extends AppCompatActivity
     }
 
     private void addGetStartedMessage() {
-//        AnaCore.addWelcomeMessage(this);
-        showActionButton("GET STARTED");
+        AnaCore.addWelcomeMessage(this);
+//        showActionButton("GET STARTED");
     }
 
     private void checkLastMessage() {
@@ -915,7 +915,7 @@ public class AnaChatActivity extends AppCompatActivity
                 }
                 hideOptionView();
                 hideActionButton();
-                updateHint(getResources().getString(R.string.hint_email));
+              //  updateHint(getResources().getString(R.string.hint_email));
                 updateInputTypeOfKeyboard(message.getMessageInput().getInputType());
                 show();
                 break;

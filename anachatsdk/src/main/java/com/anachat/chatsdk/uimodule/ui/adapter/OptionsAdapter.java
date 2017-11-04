@@ -59,6 +59,7 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyViewHo
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
         GradientDrawable drawable = (GradientDrawable) holder.itemView.getBackground();
+        drawable.setColor(Color.parseColor(PreferencesManager.getsInstance(context).getThemeColor()));
         drawable.setStroke(3,
                 Color.parseColor(PreferencesManager.getsInstance(context).getThemeColor()));
         holder.itemView.setBackground(drawable);

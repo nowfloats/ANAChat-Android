@@ -145,7 +145,7 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
 //        for (Wrapper wrapper : items) {
 //            Log.e("beforeSortTime", "" + wrapper.timestamp);
 //        }
-//        sortItems();
+        sortItems();
         notifyDataSetChanged();
 //        for (Wrapper wrapper : items) {
 //            Log.e("afterSortTime", "" + wrapper.timestamp);
