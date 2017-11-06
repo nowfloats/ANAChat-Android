@@ -63,8 +63,8 @@ public class LaunchActivity extends AppCompatActivity {
                     .setBaseUrl(BASE_URL)
                     .setThemeColor(R.color.colorPrimary)
                     .setToolBarDescription("Talk to BOT - Available")
-                    .setToolBarTittle("Blume")
-                    .setToolBarLogo(R.drawable.blume_logo_white)
+                    .setToolBarTittle("ANA")
+                    .setToolBarLogo(R.drawable.ic_placeholder)
                     .start();
 //        if (!PreferencesManager.getsInstance(this).getUserName().isEmpty()) {
 //            finish();
