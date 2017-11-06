@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.anachat.chatsdk.AnaChatBuilder;
 import com.anachat.chatsdk.internal.database.PreferencesManager;
@@ -19,8 +20,8 @@ import com.anachat.chatsdk.internal.database.PreferencesManager;
  */
 
 public class LaunchActivity extends AppCompatActivity {
-    public static final String BUSINESSID = "";
-    public static final String BASE_URL = "";
+    public static final String BUSINESSID = "358987017890524";
+    public static final String BASE_URL = "https://chat-alpha.withfloats.com";
     private Long waitTime = 2000L;
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -29,7 +30,7 @@ public class LaunchActivity extends AppCompatActivity {
             String message = intent.getStringExtra("message");
             if (message.equals("now start")) {
                 waitTime = 5000L;
-                startThread();
+//                startThread();
             }
         }
     };
@@ -41,32 +42,33 @@ public class LaunchActivity extends AppCompatActivity {
         if (PreferencesManager.getsInstance(this).getUserName().isEmpty()) {
             LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                     new IntentFilter("startBot"));
-        } else
-            startThread();
+        }
+//        else
+//            startThread();
     }
 
-    private void startThread() {
-        Handler handler
-                = new Handler();
-        handler.postDelayed(this::startMainScreen, waitTime);
-    }
+//    public void startThread(View view) {
+//        Handler handler
+//                = new Handler();
+//        handler.postDelayed(this::startMainScreen, waitTime);
+//    }
 
     /**
      * starting bot onclick of button
      */
-    public void startMainScreen() {
+    public void startMainScreen(View view) {
         if (!isFinishing())
             new AnaChatBuilder(this)
                     .setBusinessId(BUSINESSID)
                     .setBaseUrl(BASE_URL)
                     .setThemeColor(R.color.colorPrimary)
                     .setToolBarDescription("Talk to BOT - Available")
-                    .setToolBarTittle("Sample ANA")
+                    .setToolBarTittle("Blume")
                     .setToolBarLogo(R.drawable.blume_logo_white)
                     .start();
-        if (!PreferencesManager.getsInstance(this).getUserName().isEmpty()) {
-            finish();
-        }
+//        if (!PreferencesManager.getsInstance(this).getUserName().isEmpty()) {
+//            finish();
+//        }
     }
 
     @Override

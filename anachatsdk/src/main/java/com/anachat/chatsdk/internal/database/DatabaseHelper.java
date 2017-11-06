@@ -4,12 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.anachat.chatsdk.internal.model.Item;
-import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.support.ConnectionSource;
-import com.j256.ormlite.table.TableUtils;
 import com.anachat.chatsdk.internal.model.InputTypeAddress;
 import com.anachat.chatsdk.internal.model.InputTypeDate;
 import com.anachat.chatsdk.internal.model.InputTypeEmail;
@@ -18,6 +12,7 @@ import com.anachat.chatsdk.internal.model.InputTypeNumeric;
 import com.anachat.chatsdk.internal.model.InputTypePhone;
 import com.anachat.chatsdk.internal.model.InputTypeText;
 import com.anachat.chatsdk.internal.model.InputTypeTime;
+import com.anachat.chatsdk.internal.model.Item;
 import com.anachat.chatsdk.internal.model.Media;
 import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.internal.model.MessageCarousel;
@@ -29,6 +24,11 @@ import com.anachat.chatsdk.internal.model.inputdata.DefaultLocation;
 import com.anachat.chatsdk.internal.model.inputdata.InputTypeMedia;
 import com.anachat.chatsdk.internal.model.inputdata.TextInputAttr;
 import com.anachat.chatsdk.internal.model.inputdata.TimeRange;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
 
@@ -130,7 +130,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 //        }
 //        return teacherDao;
 //    }
-//
+
+    public void clearData(SQLiteDatabase sqliteDatabase, ConnectionSource connectionSource) {
+        onUpgrade(sqliteDatabase, connectionSource, DATABASE_VERSION, DATABASE_VERSION);
+    }
+
     public Dao<Message, Integer> getMessageDao() throws SQLException {
         if (messageDao == null) {
             messageDao = getDao(Message.class);

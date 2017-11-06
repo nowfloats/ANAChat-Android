@@ -13,6 +13,10 @@ import android.graphics.drawable.DrawableContainer;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.StateListDrawable;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,16 +43,20 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.anachat.chatsdk.AnaChatSDKConfig;
 import com.anachat.chatsdk.AnaCore;
 import com.anachat.chatsdk.MessageListener;
+import com.anachat.chatsdk.internal.database.MessageRepository;
 import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.internal.model.MessageResponse;
 import com.anachat.chatsdk.internal.model.inputdata.Address;
 import com.anachat.chatsdk.internal.model.inputdata.Input;
 import com.anachat.chatsdk.internal.model.inputdata.Time;
+import com.anachat.chatsdk.internal.utils.concurrent.ApiExecutor;
+import com.anachat.chatsdk.internal.utils.concurrent.ApiExecutorFactory;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
 import com.anachat.chatsdk.library.R;
 import com.anachat.chatsdk.uimodule.chatuikit.commons.ImageLoader;
@@ -80,6 +88,7 @@ import com.bumptech.glide.request.RequestOptions;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -112,6 +121,66 @@ public class AnaChatActivity extends AppCompatActivity
     private ImageView ivToolbarLogo;
     private TextView tvTittle;
     private TextView tvDesc;
+    private SensorManager mSensorManager;
+    private static final float SHAKE_THRESHOLD = 12f; // m/S**2
+    private static final int MIN_TIME_BETWEEN_SHAKES_MILLISECS = 4000;
+    private long mLastShakeTime;
+    private SensorManager mSensorMgr;
+    private final SensorEventListener mSensorListener = new SensorEventListener() {
+
+        public void onSensorChanged(SensorEvent event) {
+            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                long curTime = System.currentTimeMillis();
+                if ((curTime - mLastShakeTime) > MIN_TIME_BETWEEN_SHAKES_MILLISECS) {
+
+                    float x = event.values[0];
+                    float y = event.values[1];
+                    float z = event.values[2];
+
+                    double acceleration = Math.sqrt(Math.pow(x, 2) +
+                            Math.pow(y, 2) +
+                            Math.pow(z, 2)) - SensorManager.GRAVITY_EARTH;
+
+                    if (acceleration > SHAKE_THRESHOLD) {
+                        mLastShakeTime = curTime;
+                        try {
+                            if (MessageRepository.getInstance
+                                    (AnaChatActivity.this).getLastMessage() != null ||
+                                    MessageRepository.
+                                            getInstance(AnaChatActivity.this).getLastMessage().size() > 0) {
+                                ApiExecutor apiExecutor = ApiExecutorFactory.getHandlerExecutor();
+                                apiExecutor.runAsync(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        MessageRepository.getInstance(AnaChatActivity.this).clearTables();
+                                        messagesAdapter.clear();
+                                        ApiExecutor executor = ApiExecutorFactory.getHandlerExecutor();
+                                        executor.runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                hideBottomViews();
+                                                onConversationUpdate(new ArrayList<>());
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                            Toast toast = Toast.makeText(getApplicationContext(),
+                                    "Refreshing Messages..", Toast.LENGTH_SHORT);
+                            toast.show();
+                        } catch (Exception e) {
+
+                        }
+
+                    }
+                }
+            }
+
+        }
+
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,12 +193,7 @@ public class AnaChatActivity extends AppCompatActivity
         }
         setContentView(R.layout.activity_ana_chat);
         initViews();
-        AnaChatSDKConfig anaChatSDKConfig = AnaCore
-                .config()
-                .context(this)
-                .build();
-        AnaCore.install
-                (anaChatSDKConfig, this);
+        installAna();
         initViews();
         initImageLoader();
         initAdapter();
@@ -143,8 +207,42 @@ public class AnaChatActivity extends AppCompatActivity
             String desc = getIntent().getExtras().
                     getString(Constants.UIParams.ToolBar_Tittle_Desc, "ANA Intelligence");
             tvDesc.setText(desc);
-
         }
+        initSensors();
+    }
+
+    private void installAna() {
+        AnaChatSDKConfig anaChatSDKConfig = AnaCore
+                .config()
+                .context(this)
+                .build();
+        AnaCore.install
+                (anaChatSDKConfig, this);
+    }
+
+    private void initSensors() {
+        // Get a sensor manager to listen for shakes
+        mSensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
+
+        // Listen for shakes
+        Sensor accelerometer = mSensorMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        if (accelerometer != null) {
+            mSensorMgr.registerListener(mSensorListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mSensorManager != null)
+            mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        if (mSensorManager != null)
+            mSensorManager.unregisterListener(mSensorListener);
+        super.onPause();
     }
 
     private void initViews() {
@@ -674,8 +772,8 @@ public class AnaChatActivity extends AppCompatActivity
     }
 
     private void addGetStartedMessage() {
-        AnaCore.addWelcomeMessage(this);
-//        showActionButton("GET STARTED");
+//        AnaCore.addWelcomeMessage(this);
+        showActionButton("GET STARTED");
     }
 
     private void checkLastMessage() {
@@ -915,7 +1013,7 @@ public class AnaChatActivity extends AppCompatActivity
                 }
                 hideOptionView();
                 hideActionButton();
-              //  updateHint(getResources().getString(R.string.hint_email));
+                //  updateHint(getResources().getString(R.string.hint_email));
                 updateInputTypeOfKeyboard(message.getMessageInput().getInputType());
                 show();
                 break;

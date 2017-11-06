@@ -14,12 +14,12 @@ import java.util.List;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
-public class NowFloatsSSLSocketFactory extends SSLSocketFactory {
+public class AnaSSLSocketFactory extends SSLSocketFactory {
     private SSLSocketFactory sslSocketFactory;
     private List<String> enableProtocols;
     private List<String> disableProtocols;
 
-    public NowFloatsSSLSocketFactory(SSLSocketFactory sslSocketFactory, List<String> enableProtocols, List<String> disableProtocols) {
+    public AnaSSLSocketFactory(SSLSocketFactory sslSocketFactory, List<String> enableProtocols, List<String> disableProtocols) {
         this.sslSocketFactory = sslSocketFactory;
         this.enableProtocols = enableProtocols;
         this.disableProtocols = disableProtocols;

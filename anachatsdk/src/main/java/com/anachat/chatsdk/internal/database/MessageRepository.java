@@ -277,6 +277,10 @@ public class MessageRepository {
         return mHelper.getMessageDao().query(builder.prepare());  // returns list of 50 items
     }
 
+    public void clearTables() {
+        mHelper.clearData(mHelper.getWritableDatabase(), mHelper.getConnectionSource());
+    }
+
     public List<Message> getLastMessage() throws SQLException, IOException {
         QueryBuilder<Message, Integer> builder = mHelper.getMessageDao().queryBuilder();
         builder.limit(1L);

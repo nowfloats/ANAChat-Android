@@ -10,7 +10,6 @@ import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.model.Content;
 import com.anachat.chatsdk.internal.model.Data;
 import com.anachat.chatsdk.internal.model.Message;
-import com.anachat.chatsdk.internal.model.MessageCarousel;
 import com.anachat.chatsdk.internal.model.MessageResponse;
 import com.anachat.chatsdk.internal.model.inputdata.Input;
 import com.anachat.chatsdk.internal.network.ApiCalls;
@@ -69,6 +68,10 @@ public final class AnaCore {
             e.printStackTrace();
         }
     }
+
+//    public static void refreshUser(Context context) {
+//        context.deleteDatabase("anachat.db");
+//    }
 
     public static void addWelcomeMessage(Context context) {
         MessageResponse.MessageResponseBuilder responseBuilder

@@ -1,5 +1,6 @@
 package com.anachat.chatsdk.uimodule.utils;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.annotation.StringRes;
 import android.widget.Toast;
@@ -41,5 +42,9 @@ public class AppUtils {
     public static Boolean checkNumberString(String number) {
         return number.chars().allMatch(Character::isDigit);
     }
-
+    public static ProgressDialog createProgressDialog(Context context, String message) {
+        ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage(message);
+        return progressDialog;
+    }
 }

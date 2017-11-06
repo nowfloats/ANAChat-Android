@@ -37,7 +37,7 @@ import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSocketFactory;
 
 public class AndroidHTTPTransport implements HTTPTransport {
-    private static final String TAG = "Nf_HTTPTrnsport";
+    private static final String TAG = "Ana_HTTPTrnsport";
 
     public AndroidHTTPTransport() {
     }
@@ -196,7 +196,7 @@ public class AndroidHTTPTransport implements HTTPTransport {
             ArrayList disableProtocols = new ArrayList();
             disableProtocols.add("SSLv3");
             SSLSocketFactory sslSocketFactory = connection.getSSLSocketFactory();
-            connection.setSSLSocketFactory(new NowFloatsSSLSocketFactory(sslSocketFactory, enableProtocols, disableProtocols));
+            connection.setSSLSocketFactory(new AnaSSLSocketFactory(sslSocketFactory, enableProtocols, disableProtocols));
         }
 
     }
