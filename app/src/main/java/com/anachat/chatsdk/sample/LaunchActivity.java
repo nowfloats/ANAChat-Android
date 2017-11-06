@@ -20,8 +20,8 @@ import com.anachat.chatsdk.internal.database.PreferencesManager;
  */
 
 public class LaunchActivity extends AppCompatActivity {
-    public static final String BUSINESSID = "358987017890524";
-    public static final String BASE_URL = "https://chat-alpha.withfloats.com";
+    public static final String BUSINESSID = "";
+    public static final String BASE_URL = "";
     private Long waitTime = 2000L;
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
