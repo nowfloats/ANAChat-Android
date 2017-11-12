@@ -8,6 +8,7 @@ import com.anachat.chatsdk.MessageListener;
 import com.anachat.chatsdk.internal.model.Message;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static android.content.ContentValues.TAG;
@@ -55,12 +56,12 @@ public class ListenerManager {
         });
     }
 
-    public void notifyMessageUpdate(final Message message) {
+    public void notifyMessageUpdate(final Message message, long oldTime) {
         mHandler.post(new Runnable() {
             public void run() {
                 if (message != null) {
                     for (MessageListener messageListener : mChatMessageListeners) {
-                        messageListener.onMessageUpdated(message);
+                        messageListener.onMessageUpdated(message, oldTime);
                         Log.d(TAG, "notifyMessageUpdate with API!" + message.
                                 getMessageId());
                     }
@@ -69,6 +70,17 @@ public class ListenerManager {
         });
     }
 
+    public void notifyHistoryLoaded(final List<Message> message) {
+        mHandler.post(new Runnable() {
+            public void run() {
+                if (message != null) {
+                    for (MessageListener messageListener : mChatMessageListeners) {
+                        messageListener.onConversationUpdate(message);
+                    }
+                }
+            }
+        });
+    }
 
     public void notifyMessageDelete(final Message message) {
         mHandler.post(new Runnable() {

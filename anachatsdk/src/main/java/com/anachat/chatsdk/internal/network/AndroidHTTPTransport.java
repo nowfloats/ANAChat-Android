@@ -58,13 +58,15 @@ public class AndroidHTTPTransport implements HTTPTransport {
                 NetworkException networkException;
                 try {
                     var26 = true;
-                    if ("https://".equals(NetworkConstants.scheme)) {
-                        connection = (new URL(request.url)).openConnection();
+//                    if ("https://".equals(NetworkConstants.scheme)) {
+//                        connection = (new URL(request.url)).openConnection();
+//                        this.fixSSLSocketProtocols((HttpsURLConnection) connection);
+//                    } else {
+//                        connection = (new URL(request.url)).openConnection();
+//                    }
+                    connection = (new URL(request.url)).openConnection();
+                    if (request.url.startsWith("https"))
                         this.fixSSLSocketProtocols((HttpsURLConnection) connection);
-                    } else {
-                        connection = (new URL(request.url)).openConnection();
-                    }
-
                     ((HttpURLConnection) connection).setRequestMethod(request.method.name());
                     ((HttpURLConnection) connection).setConnectTimeout(request.timeout);
                     Iterator e = request.headers.iterator();
@@ -74,7 +76,7 @@ public class AndroidHTTPTransport implements HTTPTransport {
                         ((HttpURLConnection) connection).setRequestProperty(networkException4.key, networkException4.value);
                     }
 
-                    if (request instanceof POSTRequest) {
+                    if (request instanceof POSTRequest && request.method.name().equals("POST")) {
                         ((HttpURLConnection) connection).setDoOutput(true);
                         OutputStream e2 = ((HttpURLConnection) connection).getOutputStream();
                         BufferedWriter networkException5 = new BufferedWriter(new OutputStreamWriter(e2, "UTF-8"));
@@ -124,7 +126,7 @@ public class AndroidHTTPTransport implements HTTPTransport {
                         break label226;
                     }
 
-                    Log.d("Helpshift_HTTPTrnsport", "Api : " + request.url + " \t Status : " + e3 + "\t Thread : " + Thread.currentThread().getName());
+                    Log.d("Anachat_HTTPTrnsport", "Api : " + request.url + " \t Status : " + e3 + "\t Thread : " + Thread.currentThread().getName());
                     response1 = new Response(e3, (String) null, networkException6);
                     var26 = false;
                 } catch (UnknownHostException var30) {
@@ -188,6 +190,62 @@ public class AndroidHTTPTransport implements HTTPTransport {
             throw RootAPIException.wrap(var27, networkException2, "Network error");
         }
     }
+
+
+//    public Response makeNetworkRequest(Request request){
+//        try {
+//
+//            URL url = new URL(request.url); // here is your URL path
+//
+//            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//            conn.setReadTimeout(15000 /* milliseconds */);
+//            conn.setConnectTimeout(15000 /* milliseconds */);
+//            conn.setRequestMethod(request.method.name());
+//            conn.setDoInput(true);
+//            conn.setDoOutput(true);
+//            Iterator e = request.headers.iterator();
+//            while (e.hasNext()) {
+//                KeyValuePair networkException4 = (KeyValuePair) e.next();
+//                conn.setRequestProperty(networkException4.key, networkException4.value);
+//            }
+//            OutputStream os = conn.getOutputStream();
+//            BufferedWriter writer = new BufferedWriter(
+//                    new OutputStreamWriter(os, "UTF-8"));
+//            writer.write(getPostDataString(postDataParams));
+//
+//            writer.flush();
+//            writer.close();
+//            os.close();
+//
+//            int responseCode=conn.getResponseCode();
+//
+//            if (responseCode == HttpsURLConnection.HTTP_OK) {
+//
+//                BufferedReader in=new BufferedReader(new
+//                        InputStreamReader(
+//                        conn.getInputStream()));
+//
+//                StringBuffer sb = new StringBuffer("");
+//                String line="";
+//
+//                while((line = in.readLine()) != null) {
+//
+//                    sb.append(line);
+//                    break;
+//                }
+//
+//                in.close();
+//                return sb.toString();
+//
+//            }
+//            else {
+//                return new String("false : "+responseCode);
+//            }
+//        }
+//        catch(Exception e){
+//            return new String("Exception: " + e.getMessage());
+//        }
+//    }
 
     private void fixSSLSocketProtocols(HttpsURLConnection connection) {
         if (VERSION.SDK_INT >= 16 && VERSION.SDK_INT <= 19) {

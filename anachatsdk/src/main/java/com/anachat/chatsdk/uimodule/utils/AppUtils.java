@@ -2,11 +2,10 @@ package com.anachat.chatsdk.uimodule.utils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.annotation.StringRes;
+import android.text.TextUtils;
 import android.widget.Toast;
-
-import java.io.InputStream;
-import java.io.OutputStream;
 
 public class AppUtils {
 
@@ -40,11 +39,17 @@ public class AppUtils {
     }
 
     public static Boolean checkNumberString(String number) {
-        return number.chars().allMatch(Character::isDigit);
+        return TextUtils.isDigitsOnly(number);
     }
+
     public static ProgressDialog createProgressDialog(Context context, String message) {
         ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setMessage(message);
         return progressDialog;
+    }
+
+    public static int dpToPx(int dp) {
+        float density = Resources.getSystem().getDisplayMetrics().density;
+        return Math.round(dp * density);
     }
 }

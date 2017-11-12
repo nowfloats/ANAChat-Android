@@ -20,6 +20,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ import com.anachat.chatsdk.uimodule.chatuikit.utils.DateFormatter;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -158,6 +160,14 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
 
     private void sortItems() {
         Collections.sort(items, (w1, w2) -> Long.compare(w2.timestamp, w1.timestamp));
+//        Collections.sort(items, new Comparator<Wrapper>() {
+//            @Override
+//            public int compare(Wrapper w1, Wrapper w2) {
+//                if(w2.timestamp > w1.timestamp) return 1;
+//                if(w2.timestamp < w1.timestamp) return -1;
+//                return 0;
+//            }
+//        });
     }
 
     public void addLoadingIndicator() {
@@ -189,13 +199,14 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
 
         if (!items.isEmpty()) {
             int lastItemPosition = items.size() - 1;
-            Date lastItem = (Date) items.get(lastItemPosition).item;
-            if (DateFormatter.isSameDay(messages.get(0).getCreatedAt(), lastItem)) {
-                items.remove(lastItemPosition);
-                notifyItemRemoved(lastItemPosition);
+            if (items.get(lastItemPosition).item instanceof Date) {
+                Date lastItem = (Date) items.get(lastItemPosition).item;
+                if (DateFormatter.isSameDay(messages.get(0).getCreatedAt(), lastItem)) {
+                    items.remove(lastItemPosition);
+                    notifyItemRemoved(lastItemPosition);
+                }
             }
         }
-
         int oldSize = items.size();
         generateDateHeaders(messages);
         notifyItemRangeInserted(oldSize, items.size() - oldSize);
@@ -206,12 +217,12 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
      *
      * @param message updated message object.
      */
-    public void update(MESSAGE message) {
-        update(message.getMId(), message);
+    public void update(MESSAGE message, long time) {
+        update(String.valueOf(time), message);
     }
 
     /**
-     * Updates message by old identifier (use this method if id has changed). Otherwise use {@link #update(IMessage)}
+     * Updates message by old identifier (use this method if id has changed). Otherwise use}
      *
      * @param oldId      an identifier of message to update.
      * @param newMessage new message object.
@@ -532,11 +543,41 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
         return false;
     }
 
+    public boolean isCarouselEnabled(int position) {
+        int nextPos = position - 1;
+        if (nextPos < 0 || items.size() <= nextPos) return true;
+        else if (items.get(nextPos).item instanceof IMessage) {
+            Message next = (Message) items.get(nextPos).item;
+            if (next.getMessageType() == Constants.MessageType.INPUT &&
+                    next.getMessageInput().getInputType() == Constants.InputType.OPTIONS
+                    && next.getMessageInput().getInputForOptions() == null) {
+                int nextToNext = position - 2;
+                if (nextToNext < 0 || items.size() <= nextToNext) return true;
+                if (items.get(nextToNext).item instanceof IMessage) {
+                    Message second = (Message) items.get(nextToNext).item;
+                    return (second.getMessageType() == Constants.MessageType.CAROUSEL &&
+                            second.getMessageCarousel().getInput() == null);
+                }
+            }
+        }
+        return false;
+    }
+
     public void disableCarousels() {
         for (Wrapper wrapper : items) {
             if (wrapper.item instanceof Message &&
                     ((IMessage) wrapper.item).getMessageType() == Constants.MessageType.CAROUSEL) {
                 ((Message) wrapper.item).getMessageCarousel().setEnabled(false);
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+    public void updateTimeStamp(long previousTimeStamp, long newTime) {
+        for (Wrapper wrapper : items) {
+            if (wrapper.item instanceof Message &&
+                    ((Message) wrapper.item).getTimestamp() == previousTimeStamp) {
+                ((Message) wrapper.item).setTimestamp(newTime);
             }
         }
         notifyDataSetChanged();

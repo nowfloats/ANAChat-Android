@@ -86,8 +86,8 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyViewHo
             MessageResponse messageResponse = responseBuilder.inputTextString(value,
                     message)
                     .build();
-            messageResponse.getData().getContent().getInput().setOptionText(option.getTitle());
-            imageLoader.disableCarousels();
+            messageResponse.getData().getContent().getInput().setText(option.getTitle());
+//            imageLoader.disableCarousels();
             messageResponse.send();
         });
     }

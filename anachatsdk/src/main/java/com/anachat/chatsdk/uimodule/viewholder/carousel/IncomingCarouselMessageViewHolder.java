@@ -24,6 +24,11 @@ public class IncomingCarouselMessageViewHolder
     @Override
     public void onBind(Message message) {
         super.onBind(message);
+        if (imageLoader.isCarouselEnable(getAdapterPosition())) {
+            message.getMessageCarousel().setEnabled(true);
+        } else {
+            message.getMessageCarousel().setEnabled(false);
+        }
         rvCarousel.setLayoutManager(new LinearLayoutManager(imageLoader.getContext(),
                 LinearLayoutManager.HORIZONTAL, false));
 

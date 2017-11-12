@@ -33,8 +33,10 @@ public interface ImageLoader {
 
     Boolean isPreviousMessageHasSameAuthor(String id, int position);
 
-    void disableCarousels();
+//    void disableCarousels();
 
     void disableOptions();
+
+    Boolean isCarouselEnable(Integer position);
 
 }

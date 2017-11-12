@@ -18,7 +18,7 @@ public class Input extends BaseModel {
     private Time time;
     private Address address;
     private List<Media> media;
-    private String optionText;
+    private String text;
 
     public String getVal() {
         return val;
@@ -76,11 +76,11 @@ public class Input extends BaseModel {
         this.media = media;
     }
 
-    public String getOptionText() {
-        return optionText;
+    public String getText() {
+        return text;
     }
 
-    public void setOptionText(String optionText) {
-        this.optionText = optionText;
+    public void setText(String text) {
+        this.text = text;
     }
 }

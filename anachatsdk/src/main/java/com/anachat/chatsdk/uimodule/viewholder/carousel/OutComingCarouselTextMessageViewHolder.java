@@ -30,7 +30,7 @@ public class OutComingCarouselTextMessageViewHolder
         } else {
             triangle.setVisibility(View.VISIBLE);
         }
-        String text = message.getMessageCarousel().getInput().getOptionText();
+        String text = message.getMessageCarousel().getInput().getText();
         tvText.setText(text);
         tvTime.setText(DateFormatter.format(message.getCreatedAt(), DateFormatter.Template.TIME));
     }

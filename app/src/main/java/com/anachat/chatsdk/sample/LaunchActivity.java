@@ -5,11 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.anachat.chatsdk.AnaChatBuilder;
 import com.anachat.chatsdk.internal.database.PreferencesManager;
@@ -57,15 +57,18 @@ public class LaunchActivity extends AppCompatActivity {
      * starting bot onclick of button
      */
     public void startMainScreen(View view) {
-        if (!isFinishing())
-            new AnaChatBuilder(this)
-                    .setBusinessId(BUSINESSID)
-                    .setBaseUrl(BASE_URL)
-                    .setThemeColor(R.color.colorPrimary)
-                    .setToolBarDescription("Talk to BOT - Available")
-                    .setToolBarTittle("ANA")
-                    .setToolBarLogo(R.drawable.ic_placeholder)
-                    .start();
+        if (PreferencesManager.getsInstance(this).getUserName().isEmpty()) {
+            Toast.makeText(this, "User not initialized", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        new AnaChatBuilder(this)
+                .setBusinessId(BUSINESSID)
+                .setBaseUrl(BASE_URL)
+                .setThemeColor(R.color.colorPrimary)
+                .setToolBarDescription("Talk to BOT - Available")
+                .setToolBarTittle("ANA")
+                .setToolBarLogo(R.mipmap.ic_launcher)
+                .start();
 //        if (!PreferencesManager.getsInstance(this).getUserName().isEmpty()) {
 //            finish();
 //        }

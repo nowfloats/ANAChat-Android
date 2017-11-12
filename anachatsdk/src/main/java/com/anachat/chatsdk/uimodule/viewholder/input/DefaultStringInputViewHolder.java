@@ -60,14 +60,14 @@ public class DefaultStringInputViewHolder
                     break;
                 case Constants.InputType.OPTIONS:
                     if (message.getMessageInput().getMandatory() == Constants.FCMConstants.MANDATORY_TRUE)
-                        text = message.getMessageInput().getInputForOptions().getOptionText();
+                        text = message.getMessageInput().getInputForOptions().getText();
                     else
                         text = message.getMessageInput().getInputForOptions().getInput();
                     break;
             }
         }
         if (message.getMessageType() == Constants.MessageType.CAROUSEL) {
-            text = message.getMessageCarousel().getInput().getOptionText();
+            text = message.getMessageCarousel().getInput().getText();
         }
         tvText.setText(text);
         tvTime.setText(DateFormatter.format(message.getCreatedAt(), DateFormatter.Template.TIME));

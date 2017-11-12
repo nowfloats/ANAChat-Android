@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.anachat.chatsdk.internal.model.Item;
@@ -16,6 +17,7 @@ import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.library.R;
 import com.anachat.chatsdk.uimodule.chatuikit.commons.ImageLoader;
 import com.anachat.chatsdk.uimodule.chatuikit.utils.RoundishImageView;
+import com.anachat.chatsdk.uimodule.utils.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
         public TextView tvTittle, tvDesc;
         public RoundishImageView ivItem;
         public RecyclerView rvOptions;
+        public LinearLayout llText;
+        public LinearLayout llBottom;
 
         public MyViewHolder(View view) {
             super(view);
@@ -38,6 +42,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
             tvDesc = view.findViewById(R.id.tv_desc);
             rvOptions = view.findViewById(R.id.rv_options);
             ivItem = view.findViewById(R.id.iv_item);
+            llText = view.findViewById(R.id.ll_text);
+            llBottom = view.findViewById(R.id.linear_layout_bottom);
         }
     }
 
@@ -59,6 +65,10 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Item item = itemList.get(position);
+        if (item.getTitle().isEmpty() && item.getDesc().isEmpty()) {
+            holder.ivItem.getLayoutParams().height = AppUtils.dpToPx(247);
+            holder.llText.setVisibility(View.GONE);
+        }
         holder.tvTittle.setText(item.getTitle());
         holder.tvDesc.setText(item.getDesc());
         holder.rvOptions.setLayoutManager(new LinearLayoutManager(

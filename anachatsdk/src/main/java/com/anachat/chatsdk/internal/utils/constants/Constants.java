@@ -10,7 +10,7 @@ public class Constants {
     public static final String MESSAGE_RESPONSE = "message_response";
     public static String SEND_PATH = Environment
             .getExternalStorageDirectory() + "/Lookup/send/";
-
+    public static final long HISTORY_MESSAGES_LIMIT = 20;
     public class FCMConstants {
         public static final String RESPONSE = "response";
         public static final String DEVICE_ID = "deviceId";

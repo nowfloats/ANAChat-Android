@@ -94,7 +94,7 @@ public class OptionsAdapterCarouselItem extends RecyclerView.Adapter<OptionsAdap
                 imageLoader.disableOptions();
                 Input input = new Input();
                 input.setVal(value);
-                input.setOptionText(option.getTitle());
+                input.setText(option.getTitle());
                 MessageResponse.MessageResponseBuilder responseBuilder
                         = new MessageResponse.MessageResponseBuilder(context);
                 responseBuilder.

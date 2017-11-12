@@ -18,25 +18,25 @@ public class NFChatUtils {
     @SuppressLint("HardwareIds")
     public static String getUUID(Context context) {
         String deviceId = "";
-        if ((context.checkCallingOrSelfPermission("android.permission.READ_PHONE_STATE") == PackageManager.PERMISSION_GRANTED) && context
+        if ((context.checkCallingOrSelfPermission("android.permission.READ_PHONE_STATE")
+                == PackageManager.PERMISSION_GRANTED) && context
                 .getSystemService(Context.TELEPHONY_SERVICE) != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
                 if (((TelephonyManager) context
                         .getSystemService(Context.TELEPHONY_SERVICE))
                         .getImei() != null) {
                     deviceId = context.getSystemService(TelephonyManager.class).getImei();
+                    if (deviceId != null && !deviceId.isEmpty())
+                        return deviceId;
                 }
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (context.getSystemService(TelephonyManager.class).getDeviceId() != null) {
-                    deviceId = context.getSystemService(TelephonyManager.class).getDeviceId();
-                }
+            } else if (context.getSystemService(TelephonyManager.class).getDeviceId() != null) {
+                deviceId = context.getSystemService(TelephonyManager.class).getDeviceId();
+                if (deviceId != null && !deviceId.isEmpty())
+                    return deviceId;
             }
-        } else {
-            deviceId = Settings.Secure.getString(context.getContentResolver(),
-                    Settings.Secure.ANDROID_ID);
         }
-        return deviceId;
+        return Settings.Secure.getString(context.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
     }
 
     public static boolean isNetworkConnected(Context context) {

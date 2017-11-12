@@ -17,6 +17,7 @@ public class PreferencesManager {
     private static final String BUSINESS_ID = "com.ana.sdk.business_id";
     private static final String FCM_TOKEN = "com.ana.sdk.fcm_token";
     private static final String BASE_URL = "com.ana.sdk.base_url";
+    private static final String IS_HISTORY_SYNCED = "com.ana.sdk.history_sync";
 
     private static PreferencesManager sInstance;
     private final SharedPreferences mPref;
@@ -52,6 +53,12 @@ public class PreferencesManager {
                 .apply();
     }
 
+    public void setIsHistorySynced(Boolean value) {
+        mPref.edit()
+                .putBoolean(IS_HISTORY_SYNCED, value)
+                .apply();
+    }
+
     public Boolean getTokenSync() {
         return mPref.getBoolean(TOKEN_SYNC, false);
     }
@@ -64,6 +71,10 @@ public class PreferencesManager {
 
     public Boolean getFirstLaunch() {
         return mPref.getBoolean(FIRST_LAUNCH, true);
+    }
+
+    public Boolean getHistorySynced() {
+        return mPref.getBoolean(IS_HISTORY_SYNCED, false);
     }
 
 

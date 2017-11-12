@@ -10,4 +10,4 @@
     android:paddingBottom="16dp"
     android:layout_margin="8dp"
     android:textColor="@color/white"
-    android:textSize="14sp" />
+    android:textSize="12sp" />

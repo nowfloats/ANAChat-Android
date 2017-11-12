@@ -12,5 +12,5 @@
     android:text="@string/label_more"
     android:textAllCaps="true"
     android:textColor="@color/ana_primary"
-    android:textSize="14sp"
+    android:textSize="12sp"
     android:textStyle="bold" />

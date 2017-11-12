@@ -3,17 +3,19 @@ package com.anachat.chatsdk.internal;
 import android.content.Context;
 
 import com.anachat.chatsdk.AnaChatSDKConfig;
-import com.anachat.chatsdk.internal.database.MessageRepository;
-import com.anachat.chatsdk.internal.model.MessageResponse;
-import com.anachat.chatsdk.internal.utils.NFChatSDK;
-import com.anachat.chatsdk.internal.utils.concurrent.ApiExecutorFactory;
+import com.anachat.chatsdk.AnaCore;
 import com.anachat.chatsdk.MessageListener;
+import com.anachat.chatsdk.internal.database.MessageRepository;
+import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.model.Message;
+import com.anachat.chatsdk.internal.model.MessageResponse;
 import com.anachat.chatsdk.internal.network.ApiCalls;
 import com.anachat.chatsdk.internal.utils.ConnectionDetector;
 import com.anachat.chatsdk.internal.utils.ListenerManager;
+import com.anachat.chatsdk.internal.utils.NFChatSDK;
 import com.anachat.chatsdk.internal.utils.NFChatUtils;
 import com.anachat.chatsdk.internal.utils.concurrent.ApiExecutor;
+import com.anachat.chatsdk.internal.utils.concurrent.ApiExecutorFactory;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
 
 import java.io.IOException;
@@ -45,22 +47,20 @@ public class MessengerCoreMethods {
 
     private void getAllMessages() {
         ApiExecutor apiExecutor = ApiExecutorFactory.getHandlerExecutor();
-        apiExecutor.runAsync(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final List<Message> messages
-                            = MessageRepository.getInstance(mContext).getMessages();
-                    ApiExecutor executor = ApiExecutorFactory.getHandlerExecutor();
-                    executor.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mListener.onConversationUpdate(messages);
-                        }
-                    });
-                } catch (SQLException | IOException e) {
-                    e.printStackTrace();
+        apiExecutor.runAsync(() -> {
+            try {
+                final List<Message> messages
+                        = MessageRepository.getInstance(mContext).getMessages();
+                if (messages.size() < Constants.HISTORY_MESSAGES_LIMIT &&
+                        !PreferencesManager.getsInstance(mContext).getHistorySynced() &&
+                        NFChatUtils.isNetworkConnected(mContext)) {
+                    AnaCore.loadInitialHistory(mContext);
+                    return;
                 }
+                ApiExecutor executor = ApiExecutorFactory.getHandlerExecutor();
+                executor.runOnUiThread(() -> mListener.onConversationUpdate(messages));
+            } catch (SQLException | IOException e) {
+                e.printStackTrace();
             }
         });
     }

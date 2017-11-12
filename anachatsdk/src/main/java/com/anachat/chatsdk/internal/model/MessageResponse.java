@@ -11,10 +11,11 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 
 public class MessageResponse extends BaseModel {
@@ -26,7 +27,16 @@ public class MessageResponse extends BaseModel {
     private transient Context context;
     private transient boolean onlyUpdate = false;
     private transient boolean fileUpload = false;
+    private transient boolean notifyMessage = true;
     private transient long timestampToUpdate;
+
+    public boolean isNotifyMessage() {
+        return notifyMessage;
+    }
+
+    public void setNotifyMessage(boolean notifyMessage) {
+        this.notifyMessage = notifyMessage;
+    }
 
     private MessageResponse(MessageResponseBuilder messageResponseBuilder) {
         this.message = messageResponseBuilder.message;
@@ -124,12 +134,12 @@ public class MessageResponse extends BaseModel {
 
         public MessageResponseBuilder inputCarousel(Input value, Message message) {
             message.getMessageCarousel().setEnabled(false);
-            try {
-                MessageRepository.getInstance(mContext).
-                        updateCarouselMessage();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                MessageRepository.getInstance(mContext).
+//                        updateCarouselMessage();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
             this.message.setResponseTo(message.getMessageId());
             this.message.setSessionId(message.getSessionId());
             data.setType(Constants.MessageType.CAROUSEL);
@@ -299,7 +309,8 @@ public class MessageResponse extends BaseModel {
             message.setFrom(new Participant(PreferencesManager.getsInstance(mContext).getUserName(), 1));
             message.setTo(new Participant(PreferencesManager.getsInstance(mContext).getBusinessId(), 1));
             message.setSenderType(Constants.SenderType.USER);
-            message.setTimestamp(System.currentTimeMillis());
+//            message.setTimestamp(System.currentTimeMillis());
+            message.setTimestamp(Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis());
             return message;
         }
     }

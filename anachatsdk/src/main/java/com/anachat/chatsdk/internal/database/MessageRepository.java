@@ -92,6 +92,7 @@ public class MessageRepository {
 
     public void setCarousalContent(MessageResponse messageResponse) {
         MessageCarousel messageCarousel = new MessageCarousel();
+//        if (!messageResponse.isNotifyMessage()) messageCarousel.setEnabled(false);
         try {
             if (!isMessageExist(messageResponse.getMessage().getTimestamp())) {
                 if (messageResponse.getData().getContent().getInput() != null)
@@ -256,7 +257,8 @@ public class MessageRepository {
     private void writeMessage(MessageResponse messageResponse) throws SQLException {
         if (messageResponse.isOnlyUpdate()) {
             updateMessage(messageResponse.getMessage(), messageResponse.getTimestampToUpdate());
-            ListenerManager.getInstance().notifyMessageUpdate(messageResponse.getMessage());
+            ListenerManager.getInstance().notifyMessageUpdate(messageResponse.getMessage(),
+                    messageResponse.getTimestampToUpdate());
             return;
         }
         Message resultMessage = null;
@@ -267,14 +269,34 @@ public class MessageRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        ListenerManager.getInstance().notifyNewMessage(resultMessage);
+        if (messageResponse.isNotifyMessage())
+            ListenerManager.getInstance().notifyNewMessage(resultMessage);
     }
 
     public List<Message> getMessages() throws SQLException, IOException {
         QueryBuilder<Message, Integer> builder = mHelper.getMessageDao().queryBuilder();
         builder.orderBy("timestamp", false);  // true for ascending, false for descending
-        builder.limit(50L);
-        return mHelper.getMessageDao().query(builder.prepare());  // returns list of 50 items
+        builder.limit(Constants.HISTORY_MESSAGES_LIMIT);
+        return mHelper.getMessageDao().query(builder.prepare());  // returns list of 20 items
+    }
+
+    public List<Message> loadHistoryMessages(int totalItems) throws SQLException, IOException {
+        QueryBuilder<Message, Integer> builder = mHelper.getMessageDao().queryBuilder();
+        builder.orderBy("timestamp", false);  // true for ascending, false for descending
+        builder.limit(Constants.HISTORY_MESSAGES_LIMIT);
+        builder.offset((long) totalItems);
+        return mHelper.getMessageDao().query(builder.prepare());
+    }
+
+    public void saveHistoryMessages(List<MessageResponse> messageResponses, Integer messageCount) throws IOException, SQLException {
+        for (MessageResponse messageResponse : messageResponses) {
+            int messageType = messageResponse.getData().getType();
+            messageResponse.getMessage().setMessageType(messageType);
+            messageResponse.getMessage().setSyncWithServer(true);
+            messageResponse.setNotifyMessage(false);
+            handleMessageResponse(messageResponse);
+        }
+        ListenerManager.getInstance().notifyHistoryLoaded(loadHistoryMessages(messageCount));
     }
 
     public void clearTables() {
@@ -285,7 +307,14 @@ public class MessageRepository {
         QueryBuilder<Message, Integer> builder = mHelper.getMessageDao().queryBuilder();
         builder.limit(1L);
         builder.orderBy("timestamp", false);  // true for ascending, false for descending
-        return mHelper.getMessageDao().query(builder.prepare());  // returns list of 50 items
+        return mHelper.getMessageDao().query(builder.prepare());
+    }
+
+    public List<Message> getFirstMessage() throws SQLException, IOException {
+        QueryBuilder<Message, Integer> builder = mHelper.getMessageDao().queryBuilder();
+        builder.limit(1L);
+        builder.orderBy("timestamp", true);  // true for ascending, false for descending
+        return mHelper.getMessageDao().query(builder.prepare());
     }
 
     public List<Message> getUnSentMessages() throws SQLException, IOException {
@@ -305,13 +334,13 @@ public class MessageRepository {
         return updateBuilder.update();
     }
 
-    public int updateCarouselMessage() throws SQLException {
-        UpdateBuilder<MessageCarousel, Integer> updateBuilder
-                = mHelper.getMessageCarouselDao().updateBuilder();
-        updateBuilder.where().eq("is_enable", true);
-        updateBuilder.updateColumnValue("is_enable",
-                false);
-        return updateBuilder.update();
-    }
+//    public int updateCarouselMessage() throws SQLException {
+//        UpdateBuilder<MessageCarousel, Integer> updateBuilder
+//                = mHelper.getMessageCarouselDao().updateBuilder();
+//        updateBuilder.where().eq("is_enable", true);
+//        updateBuilder.updateColumnValue("is_enable",
+//                false);
+//        return updateBuilder.update();
+//    }
 
 }

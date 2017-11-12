@@ -33,8 +33,16 @@ public final class DateFormatter {
 
     public static String format(Date date, String format) {
         if (date == null) return "";
+        if (isSameDay(date, new Date())) return "TODAY";
+        if (isSameDay(date, yesterday())) return "YESTERDAY";
         return new SimpleDateFormat(format, Locale.getDefault())
                 .format(date);
+    }
+
+    public static Date yesterday() {
+        final Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        return cal.getTime();
     }
 
     public static boolean isSameDay(Date date1, Date date2) {
@@ -47,7 +55,6 @@ public final class DateFormatter {
         cal2.setTime(date2);
         return isSameDay(cal1, cal2);
     }
-
     public static boolean isSameDay(Calendar cal1, Calendar cal2) {
         if (cal1 == null || cal2 == null) {
             throw new IllegalArgumentException("Dates must not be null");

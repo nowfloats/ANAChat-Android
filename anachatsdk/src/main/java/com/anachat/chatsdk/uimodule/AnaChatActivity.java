@@ -33,6 +33,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -88,7 +89,6 @@ import com.bumptech.glide.request.RequestOptions;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -121,8 +121,7 @@ public class AnaChatActivity extends AppCompatActivity
     private ImageView ivToolbarLogo;
     private TextView tvTittle;
     private TextView tvDesc;
-    private SensorManager mSensorManager;
-    private static final float SHAKE_THRESHOLD = 12f; // m/S**2
+    private static final float SHAKE_THRESHOLD = 65; // m/S**2
     private static final int MIN_TIME_BETWEEN_SHAKES_MILLISECS = 4000;
     private long mLastShakeTime;
     private SensorManager mSensorMgr;
@@ -140,7 +139,6 @@ public class AnaChatActivity extends AppCompatActivity
                     double acceleration = Math.sqrt(Math.pow(x, 2) +
                             Math.pow(y, 2) +
                             Math.pow(z, 2)) - SensorManager.GRAVITY_EARTH;
-
                     if (acceleration > SHAKE_THRESHOLD) {
                         mLastShakeTime = curTime;
                         try {
@@ -149,24 +147,21 @@ public class AnaChatActivity extends AppCompatActivity
                                     MessageRepository.
                                             getInstance(AnaChatActivity.this).getLastMessage().size() > 0) {
                                 ApiExecutor apiExecutor = ApiExecutorFactory.getHandlerExecutor();
-                                apiExecutor.runAsync(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        MessageRepository.getInstance(AnaChatActivity.this).clearTables();
+                                apiExecutor.runAsync(() -> {
+                                    MessageRepository.getInstance(AnaChatActivity.this).clearTables();
+                                    messagesAdapter.clear();
+                                    ApiExecutor executor = ApiExecutorFactory.getHandlerExecutor();
+                                    executor.runOnUiThread(() -> {
+                                        hideBottomViews();
                                         messagesAdapter.clear();
-                                        ApiExecutor executor = ApiExecutorFactory.getHandlerExecutor();
-                                        executor.runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                hideBottomViews();
-                                                onConversationUpdate(new ArrayList<>());
-                                            }
-                                        });
-                                    }
+                                        messagesAdapter.notifyDataSetChanged();
+                                        AnaCore.loadInitialHistory(AnaChatActivity.this);
+//                                                onConversationUpdate(new ArrayList<>());
+                                    });
                                 });
                             }
                             Toast toast = Toast.makeText(getApplicationContext(),
-                                    "Refreshing Messages..", Toast.LENGTH_SHORT);
+                                    "Refreshing Session..", Toast.LENGTH_SHORT);
                             toast.show();
                         } catch (Exception e) {
 
@@ -208,7 +203,6 @@ public class AnaChatActivity extends AppCompatActivity
                     getString(Constants.UIParams.ToolBar_Tittle_Desc, "ANA Intelligence");
             tvDesc.setText(desc);
         }
-        initSensors();
     }
 
     private void installAna() {
@@ -234,14 +228,13 @@ public class AnaChatActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if (mSensorManager != null)
-            mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+        initSensors();
     }
 
     @Override
     protected void onPause() {
-        if (mSensorManager != null)
-            mSensorManager.unregisterListener(mSensorListener);
+        if (mSensorMgr != null)
+            mSensorMgr.unregisterListener(mSensorListener);
         super.onPause();
     }
 
@@ -354,15 +347,20 @@ public class AnaChatActivity extends AppCompatActivity
                 return messagesAdapter.isPreviousSameAuthor(id, position);
             }
 
-            @Override
-            public void disableCarousels() {
-                messagesAdapter.disableCarousels();
-                AnaCore.disableCarousel(AnaChatActivity.this);
-            }
+//            @Override
+//            public void disableCarousels() {
+//                messagesAdapter.disableCarousels();
+//                AnaCore.disableCarousel(AnaChatActivity.this);
+//            }
 
             @Override
             public void disableOptions() {
                 hideOptions();
+            }
+
+            @Override
+            public Boolean isCarouselEnable(Integer position) {
+                return messagesAdapter.isCarouselEnabled(position);
             }
         };
     }
@@ -716,7 +714,8 @@ public class AnaChatActivity extends AppCompatActivity
 
     @Override
     public void onLoadMore(int page, int totalItemsCount) {
-        //TODO get history here
+            AnaCore.loadMoreMessages(this, totalItemsCount, page,
+                    AnaCore.getOldestTimeStamp(this));
     }
 
     @Override
@@ -728,7 +727,8 @@ public class AnaChatActivity extends AppCompatActivity
 
     private MessagesListAdapter.Formatter<Message> getMessageStringFormatter() {
         return message -> {
-            String createdAt = new SimpleDateFormat("MMM d, EEE 'at' h:mm a", Locale.getDefault())
+            String createdAt = new SimpleDateFormat("MMM d, EEE 'at' h:mm a",
+                    Locale.getDefault())
                     .format(new Date(message.getTimestamp()));
             //TODO UPDATE HERE FOR SELECTIONS
             String text = null;
@@ -740,8 +740,9 @@ public class AnaChatActivity extends AppCompatActivity
     }
 
     @Override
-    public void onMessageUpdated(Message message) {
-        messagesAdapter.update(message);
+    public void onMessageUpdated(Message message, long oldTimestamp) {
+//        messagesAdapter.update(message, oldTimestamp);
+        messagesAdapter.updateTimeStamp(oldTimestamp, message.getTimestamp());
         checkLastMessage();
     }
 
@@ -765,9 +766,11 @@ public class AnaChatActivity extends AppCompatActivity
 
     @Override
     public void onConversationUpdate(List<Message> messages) {
-        messagesAdapter.addToEnd(messages, false);
+        if (messages != null && messages.size() > 0) {
+            messagesAdapter.addToEnd(messages, false);
+        }
         checkLastMessage();
-        if (messages.size() == 0)
+        if (messages != null && messages.size() == 0 && messagesAdapter.getItemCount() == 0)
             addGetStartedMessage();
     }
 
