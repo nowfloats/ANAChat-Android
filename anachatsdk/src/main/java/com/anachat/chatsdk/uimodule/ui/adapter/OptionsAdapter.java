@@ -22,6 +22,7 @@ import com.anachat.chatsdk.uimodule.utils.InputIntents;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyViewHolder> {
@@ -41,11 +42,22 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyViewHo
     }
 
 
-    public OptionsAdapter(ImageLoader imageLoader, Message message) {
-        this.optionList = message.getMessageInput().getOptionsAsList();
+    public OptionsAdapter(ImageLoader imageLoader) {
         this.context = imageLoader.getContext();
-        this.message = message;
         this.imageLoader = imageLoader;
+        optionList =new ArrayList<>();
+    }
+
+    public void setData(Message message) {
+        clear();
+        this.message = message;
+        this.optionList = message.getMessageInput().getOptionsAsList();
+        notifyDataSetChanged();
+    }
+
+    private void clear() {
+        optionList.clear();
+        notifyDataSetChanged();
     }
 
     @Override

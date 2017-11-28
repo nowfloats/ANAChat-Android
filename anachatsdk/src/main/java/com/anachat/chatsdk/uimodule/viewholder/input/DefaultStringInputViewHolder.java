@@ -3,7 +3,6 @@ package com.anachat.chatsdk.uimodule.viewholder.input;
 import android.view.View;
 import android.widget.TextView;
 
-import com.anachat.chatsdk.uimodule.chatuikit.utils.DateFormatter;
 import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.internal.model.inputdata.Address;
 import com.anachat.chatsdk.internal.model.inputdata.Date;
@@ -11,6 +10,7 @@ import com.anachat.chatsdk.internal.model.inputdata.Time;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
 import com.anachat.chatsdk.library.R;
 import com.anachat.chatsdk.uimodule.chatuikit.messages.MessageHolders;
+import com.anachat.chatsdk.uimodule.chatuikit.utils.DateFormatter;
 
 
 public class DefaultStringInputViewHolder
@@ -61,6 +61,12 @@ public class DefaultStringInputViewHolder
                 case Constants.InputType.OPTIONS:
                     if (message.getMessageInput().getMandatory() == Constants.FCMConstants.MANDATORY_TRUE)
                         text = message.getMessageInput().getInputForOptions().getText();
+                    else
+                        text = message.getMessageInput().getInputForOptions().getInput();
+                    break;
+                case Constants.InputType.LIST:
+                    if (message.getMessageInput().getMandatory() == Constants.FCMConstants.MANDATORY_TRUE)
+                        text = message.getMessageInput().getInputTypeList().getInput().getVal();
                     else
                         text = message.getMessageInput().getInputForOptions().getInput();
                     break;

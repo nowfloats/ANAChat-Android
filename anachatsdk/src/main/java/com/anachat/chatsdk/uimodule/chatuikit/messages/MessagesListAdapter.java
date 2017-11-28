@@ -27,6 +27,8 @@ import android.view.ViewGroup;
 
 import com.anachat.chatsdk.internal.model.IMessage;
 import com.anachat.chatsdk.internal.model.Message;
+import com.anachat.chatsdk.internal.utils.concurrent.ApiExecutor;
+import com.anachat.chatsdk.internal.utils.concurrent.ApiExecutorFactory;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
 import com.anachat.chatsdk.uimodule.chatuikit.commons.ImageLoader;
 import com.anachat.chatsdk.uimodule.chatuikit.commons.ViewHolder;
@@ -34,7 +36,6 @@ import com.anachat.chatsdk.uimodule.chatuikit.utils.DateFormatter;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -147,19 +148,27 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
 //        for (Wrapper wrapper : items) {
 //            Log.e("beforeSortTime", "" + wrapper.timestamp);
 //        }
+        notifyItemRangeInserted(0, isNewMessageToday ? 2 : 1);
         sortItems();
-        notifyDataSetChanged();
 //        for (Wrapper wrapper : items) {
 //            Log.e("afterSortTime", "" + wrapper.timestamp);
 //        }
-//        notifyItemRangeInserted(0, isNewMessageToday ? 2 : 1);
         if (layoutManager != null && scroll) {
             layoutManager.scrollToPosition(0);
         }
     }
 
     private void sortItems() {
-        Collections.sort(items, (w1, w2) -> Long.compare(w2.timestamp, w1.timestamp));
+        ApiExecutor apiExecutor= ApiExecutorFactory.getHandlerExecutor();
+        apiExecutor.runUiWithDelay(new Runnable() {
+            @Override
+            public void run() {
+                Collections.sort(items, (w1, w2) -> Long.compare(w2.timestamp, w1.timestamp));
+                notifyDataSetChanged();
+            }
+        });
+//        Collections.sort(items, (w1, w2) -> Long.compare(w2.timestamp, w1.timestamp));
+//        notifyDataSetChanged();
 //        Collections.sort(items, new Comparator<Wrapper>() {
 //            @Override
 //            public int compare(Wrapper w1, Wrapper w2) {

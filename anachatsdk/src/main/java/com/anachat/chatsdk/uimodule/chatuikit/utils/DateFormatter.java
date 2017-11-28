@@ -33,8 +33,10 @@ public final class DateFormatter {
 
     public static String format(Date date, String format) {
         if (date == null) return "";
-        if (isSameDay(date, new Date())) return "TODAY";
-        if (isSameDay(date, yesterday())) return "YESTERDAY";
+        if (!format.equals(Template.TIME.get())){
+            if (isSameDay(date, new Date())) return "TODAY";
+            if (isSameDay(date, yesterday())) return "YESTERDAY";
+        }
         return new SimpleDateFormat(format, Locale.getDefault())
                 .format(date);
     }

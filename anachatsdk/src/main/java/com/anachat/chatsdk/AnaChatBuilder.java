@@ -59,6 +59,11 @@ public class AnaChatBuilder {
         return this;
     }
 
+    public AnaChatBuilder registerLocationSelectListener(LocationPickListener locationPickListener) {
+        AnaCore.addLocationPickListener(locationPickListener);
+        return this;
+    }
+
     public AnaChatBuilder setBaseUrl(String url) {
         this.baseUrl = url;
         return this;

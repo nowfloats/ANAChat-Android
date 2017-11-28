@@ -14,7 +14,7 @@ Add below mandatory dependencies in your app level build.gradle.
 
     dependencies {
     ...
-    compile 'com.kitsune:anachatsdk:1.6@aar'
+    compile 'com.kitsune:anachatsdk:1.7@aar'
     compile 'com.android.support:design:26.1.0'
     compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'com.google.code.gson:gson:2.8.1'
@@ -74,10 +74,46 @@ In `FirebaseMessagingService`
                 .setThemeColor(R.color.primary)
                 .setToolBarDescription("Your Toolbar desc")
                 .setToolBarTittle("Your Tittle")
+                .registerLocationSelectListener(this) //optional
                 .setToolBarLogo(R.drawable.ic_your_logo)
                 .start();
 
 `Note`: Pass Valid businessId and BaseUrl in  builder.
+
+OPTIONAL :-
+To enable **Location** support in SDK follow below steps:
+
+1. Register or Login [here](https://developers.google.com/places/android-api/signup) to get places api key.
+2. add google places key in manifest file under application tag.
+	` <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="your_key" />`
+3. add`compile'com.google.android.gms:play-services-places:11.6.0'`in app level gradle file.
+4. implement **LocationPickListener** in your fragment/activity.
+2. add **registerLocationSelectListener(this)** in  AnaChatBuilder.
+4. Override methods and like below code :-
+
+     @Override
+    public Intent **pickLocation**(Activity activity) {
+        try {
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+            Intent placePickerIntent = builder.build(activity);
+            placePickerIntent.putExtra("primary_color",
+                    Color.parseColor(PreferencesManager.getsInstance(activity).getThemeColor()));
+            placePickerIntent.putExtra("primary_color_dark",
+                    ContextCompat.getColor(activity, com.anachat.chatsdk.library.R.color.gray_light));
+            return placePickerIntent;
+        }catch(GooglePlayServicesRepairableException| GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    @Override
+    public void **sendLocation**(Intent data) {
+        Place place = PlacePicker.getPlace(this, data);
+        LatLng latLng = place.getLatLng();
+        AnaCore.sendLocation(latLng.latitude, latLng.longitude, this);
+    }
 
 License
 =======

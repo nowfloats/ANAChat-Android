@@ -21,6 +21,14 @@ public class DefaultLocation extends BaseModel {
     @DatabaseField(columnName = "lng")
     private BigDecimal lng;
 
+    public DefaultLocation() {
+    }
+
+    public DefaultLocation(BigDecimal lat, BigDecimal lng) {
+        this.lat = lat;
+        this.lng = lng;
+    }
+
     public int getId() {
         return id;
     }

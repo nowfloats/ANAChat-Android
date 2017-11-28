@@ -11,6 +11,7 @@ import com.anachat.chatsdk.internal.model.Content;
 import com.anachat.chatsdk.internal.model.Data;
 import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.internal.model.MessageResponse;
+import com.anachat.chatsdk.internal.model.inputdata.DefaultLocation;
 import com.anachat.chatsdk.internal.model.inputdata.Input;
 import com.anachat.chatsdk.internal.network.ApiCalls;
 import com.anachat.chatsdk.internal.utils.ListenerManager;
@@ -21,6 +22,7 @@ import com.anachat.chatsdk.internal.utils.constants.Constants;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -107,6 +109,10 @@ public final class AnaCore {
         ApiCalls.fetchHistoryMessages(context, 0, 0, 0);
     }
 
+    public static void addLocationPickListener(LocationPickListener locationPickListener) {
+        ListenerManager.getInstance().addMessageChangeListener(locationPickListener);
+    }
+
     public static void addWelcomeMessage(Context context) {
         MessageResponse.MessageResponseBuilder responseBuilder
                 = new MessageResponse.MessageResponseBuilder(context);
@@ -130,5 +136,17 @@ public final class AnaCore {
     }
 
 
+    public static void sendLocation(Double lat, Double lng, Context context) {
+        Message message
+                = getLastMessage(context);
+        Input input = new Input();
+        input.setLocation(new DefaultLocation(BigDecimal.valueOf(lat),
+                BigDecimal.valueOf(lng)));
+        MessageResponse.MessageResponseBuilder responseBuilder
+                = new MessageResponse.MessageResponseBuilder(context);
+        responseBuilder.
+                inputLocation(message, input)
+                .build().send();
+    }
 }
 

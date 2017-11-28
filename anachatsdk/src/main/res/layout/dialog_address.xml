@@ -20,8 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:paddingTop="8dp"
-        android:layout_below="@id/tv_title">
+        android:layout_below="@id/tv_title"
+        android:paddingTop="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -129,7 +129,6 @@
             android:layout_centerVertical="true"
             android:layout_marginTop="20dp"
             android:background="@drawable/bg_btn_rounded_corners"
-            android:backgroundTint="@color/ana_primary"
             android:gravity="center"
             android:text="@string/label_save"
             android:textColor="@color/white" />

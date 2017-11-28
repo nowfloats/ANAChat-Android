@@ -13,10 +13,6 @@ import android.graphics.drawable.DrawableContainer;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.StateListDrawable;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,12 +24,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -49,15 +45,13 @@ import android.widget.Toast;
 import com.anachat.chatsdk.AnaChatSDKConfig;
 import com.anachat.chatsdk.AnaCore;
 import com.anachat.chatsdk.MessageListener;
-import com.anachat.chatsdk.internal.database.MessageRepository;
 import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.internal.model.MessageResponse;
 import com.anachat.chatsdk.internal.model.inputdata.Address;
 import com.anachat.chatsdk.internal.model.inputdata.Input;
 import com.anachat.chatsdk.internal.model.inputdata.Time;
-import com.anachat.chatsdk.internal.utils.concurrent.ApiExecutor;
-import com.anachat.chatsdk.internal.utils.concurrent.ApiExecutorFactory;
+import com.anachat.chatsdk.internal.utils.ListenerManager;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
 import com.anachat.chatsdk.library.R;
 import com.anachat.chatsdk.uimodule.chatuikit.commons.ImageLoader;
@@ -68,6 +62,7 @@ import com.anachat.chatsdk.uimodule.chatuikit.utils.RangeTimePickerDialog;
 import com.anachat.chatsdk.uimodule.ui.MediaPreviewActivity;
 import com.anachat.chatsdk.uimodule.ui.PictureViewerActivity;
 import com.anachat.chatsdk.uimodule.ui.VideoViewerActivity;
+import com.anachat.chatsdk.uimodule.ui.adapter.InputListOptionsAdapter;
 import com.anachat.chatsdk.uimodule.ui.adapter.OptionsAdapter;
 import com.anachat.chatsdk.uimodule.utils.AppUtils;
 import com.anachat.chatsdk.uimodule.utils.InputIntents;
@@ -121,61 +116,63 @@ public class AnaChatActivity extends AppCompatActivity
     private ImageView ivToolbarLogo;
     private TextView tvTittle;
     private TextView tvDesc;
-    private static final float SHAKE_THRESHOLD = 65; // m/S**2
-    private static final int MIN_TIME_BETWEEN_SHAKES_MILLISECS = 4000;
-    private long mLastShakeTime;
-    private SensorManager mSensorMgr;
-    private final SensorEventListener mSensorListener = new SensorEventListener() {
-
-        public void onSensorChanged(SensorEvent event) {
-            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-                long curTime = System.currentTimeMillis();
-                if ((curTime - mLastShakeTime) > MIN_TIME_BETWEEN_SHAKES_MILLISECS) {
-
-                    float x = event.values[0];
-                    float y = event.values[1];
-                    float z = event.values[2];
-
-                    double acceleration = Math.sqrt(Math.pow(x, 2) +
-                            Math.pow(y, 2) +
-                            Math.pow(z, 2)) - SensorManager.GRAVITY_EARTH;
-                    if (acceleration > SHAKE_THRESHOLD) {
-                        mLastShakeTime = curTime;
-                        try {
-                            if (MessageRepository.getInstance
-                                    (AnaChatActivity.this).getLastMessage() != null ||
-                                    MessageRepository.
-                                            getInstance(AnaChatActivity.this).getLastMessage().size() > 0) {
-                                ApiExecutor apiExecutor = ApiExecutorFactory.getHandlerExecutor();
-                                apiExecutor.runAsync(() -> {
-                                    MessageRepository.getInstance(AnaChatActivity.this).clearTables();
-                                    messagesAdapter.clear();
-                                    ApiExecutor executor = ApiExecutorFactory.getHandlerExecutor();
-                                    executor.runOnUiThread(() -> {
-                                        hideBottomViews();
-                                        messagesAdapter.clear();
-                                        messagesAdapter.notifyDataSetChanged();
-                                        AnaCore.loadInitialHistory(AnaChatActivity.this);
-//                                                onConversationUpdate(new ArrayList<>());
-                                    });
-                                });
-                            }
-                            Toast toast = Toast.makeText(getApplicationContext(),
-                                    "Refreshing Session..", Toast.LENGTH_SHORT);
-                            toast.show();
-                        } catch (Exception e) {
-
-                        }
-
-                    }
-                }
-            }
-
-        }
-
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        }
-    };
+    private OptionsAdapter optionsAdapter;
+    private static final int LOCATION_PERMISSION_REQUEST = 10;
+//    private static final float SHAKE_THRESHOLD = 65; // m/S**2
+//    private static final int MIN_TIME_BETWEEN_SHAKES_MILLISECS = 4000;
+//    private long mLastShakeTime;
+//    private SensorManager mSensorMgr;
+//    private final SensorEventListener mSensorListener = new SensorEventListener() {
+//
+//        public void onSensorChanged(SensorEvent event) {
+//            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+//                long curTime = System.currentTimeMillis();
+//                if ((curTime - mLastShakeTime) > MIN_TIME_BETWEEN_SHAKES_MILLISECS) {
+//
+//                    float x = event.values[0];
+//                    float y = event.values[1];
+//                    float z = event.values[2];
+//
+//                    double acceleration = Math.sqrt(Math.pow(x, 2) +
+//                            Math.pow(y, 2) +
+//                            Math.pow(z, 2)) - SensorManager.GRAVITY_EARTH;
+//                    if (acceleration > SHAKE_THRESHOLD) {
+//                        mLastShakeTime = curTime;
+//                        try {
+//                            if (MessageRepository.getInstance
+//                                    (AnaChatActivity.this).getLastMessage() != null ||
+//                                    MessageRepository.
+//                                            getInstance(AnaChatActivity.this).getLastMessage().size() > 0) {
+//                                ApiExecutor apiExecutor = ApiExecutorFactory.getHandlerExecutor();
+//                                apiExecutor.runAsync(() -> {
+//                                    MessageRepository.getInstance(AnaChatActivity.this).clearTables();
+//                                    messagesAdapter.clear();
+//                                    ApiExecutor executor = ApiExecutorFactory.getHandlerExecutor();
+//                                    executor.runOnUiThread(() -> {
+//                                        hideBottomViews();
+//                                        messagesAdapter.clear();
+//                                        messagesAdapter.notifyDataSetChanged();
+//                                        AnaCore.loadInitialHistory(AnaChatActivity.this);
+////                                                onConversationUpdate(new ArrayList<>());
+//                                    });
+//                                });
+//                            }
+//                            Toast toast = Toast.makeText(getApplicationContext(),
+//                                    "Refreshing Session..", Toast.LENGTH_SHORT);
+//                            toast.show();
+//                        } catch (Exception e) {
+//
+//                        }
+//
+//                    }
+//                }
+//            }
+//
+//        }
+//
+//        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+//        }
+//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,27 +211,27 @@ public class AnaChatActivity extends AppCompatActivity
                 (anaChatSDKConfig, this);
     }
 
-    private void initSensors() {
-        // Get a sensor manager to listen for shakes
-        mSensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
-
-        // Listen for shakes
-        Sensor accelerometer = mSensorMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        if (accelerometer != null) {
-            mSensorMgr.registerListener(mSensorListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-        }
-    }
+//    private void initSensors() {
+//        // Get a sensor manager to listen for shakes
+//        mSensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
+//
+//        // Listen for shakes
+//        Sensor accelerometer = mSensorMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+//        if (accelerometer != null) {
+//            mSensorMgr.registerListener(mSensorListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+//        }
+//    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        initSensors();
+//        initSensors();
     }
 
     @Override
     protected void onPause() {
-        if (mSensorMgr != null)
-            mSensorMgr.unregisterListener(mSensorListener);
+//        if (mSensorMgr != null)
+//            mSensorMgr.unregisterListener(mSensorListener);
         super.onPause();
     }
 
@@ -247,6 +244,9 @@ public class AnaChatActivity extends AppCompatActivity
                 Color.parseColor(PreferencesManager.getsInstance(this).getThemeColor()));
 
         messagesList = findViewById(R.id.messagesList);
+//        SlideInLeftAnimator animator = new SlideInLeftAnimator();
+//        animator.setInterpolator(new OvershootInterpolator());
+        messagesList.setItemAnimator(new DefaultItemAnimator());
         btnAction = findViewById(R.id.btn_action);
         btnAction.setOnClickListener(this);
         rvOptions = findViewById(R.id.rv_options);
@@ -512,6 +512,10 @@ public class AnaChatActivity extends AppCompatActivity
                 return message.getMessageCarousel() != null
                         && message.getMessageCarousel().getItems() != null
                         && message.getMessageCarousel().getInput() == null;
+            case Constants.MessagesTypeForUI.LIST:
+                return message.getMessageInput() != null
+                        && message.getMessageInput().getInputTypeList() != null
+                        && message.getMessageInput().getInputTypeList().getInput() != null;
         }
         return false;
     }
@@ -551,6 +555,13 @@ public class AnaChatActivity extends AppCompatActivity
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void askPermission(int code) {
+        if (code == LOCATION_PERMISSION_REQUEST) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION},
+                    code);
+            return;
+        }
         ActivityCompat.requestPermissions(this,
                 new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         android.Manifest.permission.READ_EXTERNAL_STORAGE},
@@ -570,6 +581,9 @@ public class AnaChatActivity extends AppCompatActivity
                 break;
             case Constants.MediaType.FILE:
                 if (grantResults.length > 0) launchMediaIntent(Constants.MediaType.FILE);
+                break;
+            case LOCATION_PERMISSION_REQUEST:
+                if (grantResults.length > 0) locationPlacesIntent();
                 break;
         }
     }
@@ -608,7 +622,7 @@ public class AnaChatActivity extends AppCompatActivity
                         BlankMessageViewHolder.class,
                         R.layout.item_blank_message,
                         OutcomingInputLocationMessageViewHolder.class,
-                        R.layout.item_outcoming_text_message,
+                        R.layout.item_outcoming_input_media_message,
                         this)
                 .registerContentType((byte) Constants.MessagesTypeForUI.MEDIA,
                         BlankMessageViewHolder.class,
@@ -629,6 +643,12 @@ public class AnaChatActivity extends AppCompatActivity
                         R.layout.item_outcoming_text_message,
                         this)
                 .registerContentType((byte) Constants.MessagesTypeForUI.OPTIONS,
+                        BlankMessageViewHolder.class,
+                        R.layout.item_blank_message,
+                        DefaultStringInputViewHolder.class,
+                        R.layout.item_outcoming_text_message,
+                        this)
+                .registerContentType((byte) Constants.MessagesTypeForUI.LIST,
                         BlankMessageViewHolder.class,
                         R.layout.item_blank_message,
                         DefaultStringInputViewHolder.class,
@@ -714,8 +734,8 @@ public class AnaChatActivity extends AppCompatActivity
 
     @Override
     public void onLoadMore(int page, int totalItemsCount) {
-            AnaCore.loadMoreMessages(this, totalItemsCount, page,
-                    AnaCore.getOldestTimeStamp(this));
+        AnaCore.loadMoreMessages(this, totalItemsCount, page,
+                AnaCore.getOldestTimeStamp(this));
     }
 
     @Override
@@ -783,10 +803,13 @@ public class AnaChatActivity extends AppCompatActivity
         Message lastMessage = getLastMessage();
         if (lastMessage != null && lastMessage.getMessageType() == Constants.MessageType.INPUT)
             updateBottomUIForInputType(lastMessage);
-        //TODO hide if other
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == Constants.InputType.LOCATION) {
+            ListenerManager.getInstance().notifySendLocation(data);
+            return;
+        }
         if (resultCode == RESULT_OK) {
             Uri uri = data.getData();
             String filePath = PathUtil.getPath(this, uri);
@@ -808,6 +831,19 @@ public class AnaChatActivity extends AppCompatActivity
                     message.getSessionId()));
         }
     }
+
+//    private void sendLocation(LatLng latLng) {
+//        Message message
+//                = getLastMessage();
+//        Input input = new Input();
+//        input.setLocation(new DefaultLocation(BigDecimal.valueOf(latLng.latitude),
+//                BigDecimal.valueOf(latLng.longitude)));
+//        MessageResponse.MessageResponseBuilder responseBuilder
+//                = new MessageResponse.MessageResponseBuilder(AnaChatActivity.this);
+//        responseBuilder.
+//                inputLocation(message, input)
+//                .build().send();
+//    }
 
     @Override
     public void onClick(View view) {
@@ -837,7 +873,11 @@ public class AnaChatActivity extends AppCompatActivity
                 AnaCore.addWelcomeMessage(AnaChatActivity.this);
                 break;
             case "SEND LOCATION":
-                InputIntents.pickLocation(this, this);
+                locationPlacesIntent();
+//                InputIntents.pickLocation(this, this);
+                break;
+            case "SELECT FROM LIST":
+                showListDialog();
                 break;
         }
     }
@@ -845,21 +885,34 @@ public class AnaChatActivity extends AppCompatActivity
     private void showDateDialog() {
         Message message
                 = getLastMessage();
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this, AnaChatActivity.this, Integer.valueOf(message.getMessageInput()
-                .getInputTypeDate().getDateRange().getMin().getYear()),
-                Integer.valueOf(message.getMessageInput().getInputTypeDate().getDateRange().getMin().getMonth()),
-                Integer.valueOf(message.getMessageInput().getInputTypeDate().getDateRange().getMin().getMday()));
-        String string_date = message.getMessageInput().getInputTypeDate()
-                .getDateRange().getMin().getMday() + "-" + message.getMessageInput()
-                .getInputTypeDate().getDateRange().getMin().getMonth() + "-" +
-                message.getMessageInput().getInputTypeDate().getDateRange().getMin().getYear();
-        String ending_date = message.getMessageInput().getInputTypeDate()
-                .getDateRange().getMax().getMday() + "-" + message.getMessageInput()
-                .getInputTypeDate().getDateRange().getMax().getMonth() + "-" +
-                message.getMessageInput().getInputTypeDate().getDateRange().getMax().getYear();
-        if (message.getMessageInput().getMandatory() == Constants.FCMConstants.MANDATORY_TRUE)
-            setDateRangeOnPicker(string_date, ending_date, datePickerDialog);
+        Integer minVal = 0;
+        DatePickerDialog datePickerDialog;
+        if (message.getMessageInput()
+                .getInputTypeDate().getDateRange() != null) {
+            datePickerDialog = new DatePickerDialog(
+                    this, AnaChatActivity.this, Integer.valueOf(message.getMessageInput()
+                    .getInputTypeDate().getDateRange().getMin().getYear()),
+                    Integer.valueOf(message.getMessageInput().getInputTypeDate().getDateRange().getMin().getMonth()),
+                    Integer.valueOf(message.getMessageInput().getInputTypeDate().getDateRange().getMin().getMday()));
+            String string_date = message.getMessageInput().getInputTypeDate()
+                    .getDateRange().getMin().getMday() + "-" + message.getMessageInput()
+                    .getInputTypeDate().getDateRange().getMin().getMonth() + "-" +
+                    message.getMessageInput().getInputTypeDate().getDateRange().getMin().getYear();
+            String ending_date = message.getMessageInput().getInputTypeDate()
+                    .getDateRange().getMax().getMday() + "-" + message.getMessageInput()
+                    .getInputTypeDate().getDateRange().getMax().getMonth() + "-" +
+                    message.getMessageInput().getInputTypeDate().getDateRange().getMax().getYear();
+            if (message.getMessageInput().getMandatory() == Constants.FCMConstants.MANDATORY_TRUE)
+                setDateRangeOnPicker(string_date, ending_date, datePickerDialog);
+        } else {
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+            datePickerDialog = new DatePickerDialog(this,
+                    AnaChatActivity.this, year, month, day);
+        }
+
         datePickerDialog.show();
     }
 
@@ -883,7 +936,8 @@ public class AnaChatActivity extends AppCompatActivity
         int minute = mCurrentTime.get(Calendar.MINUTE);
         RangeTimePickerDialog rangeTimePickerDialog =
                 new RangeTimePickerDialog(this, this, hour, minute, true);
-        if (message.getMessageInput().getMandatory() == Constants.FCMConstants.MANDATORY_TRUE) {
+        if (message.getMessageInput().getInputTypeTime().getTimeRange() != null &&
+                message.getMessageInput().getMandatory() == Constants.FCMConstants.MANDATORY_TRUE) {
             rangeTimePickerDialog.setMin(Integer.valueOf(message.
                     getMessageInput().getInputTypeTime().getTimeRange()
                     .getMin().getHour()), Integer.valueOf(message.
@@ -1036,6 +1090,13 @@ public class AnaChatActivity extends AppCompatActivity
                 showOptionsView(message);
                 break;
             case Constants.InputType.LIST:
+                if (message.getMessageInput().getInputTypeList().getInput() != null) {
+                    hideBottomViews();
+                    return;
+                }
+                hide();
+                hideOptionView();
+                showActionButton(getResources().getString(R.string.action_button_list));
                 break;
         }
 
@@ -1075,10 +1136,11 @@ public class AnaChatActivity extends AppCompatActivity
         if (rvOptions.getVisibility() != VISIBLE) {
             rvOptions.setVisibility(VISIBLE);
         }
-        OptionsAdapter optionsAdapter = new OptionsAdapter(imageLoader,
-                message);
-        rvOptions.setAdapter(optionsAdapter);
-        optionsAdapter.notifyDataSetChanged();
+        if (optionsAdapter == null) {
+            optionsAdapter = new OptionsAdapter(imageLoader);
+            rvOptions.setAdapter(optionsAdapter);
+        }
+        optionsAdapter.setData(message);
     }
 
     private void showAddressDialog() {
@@ -1092,7 +1154,13 @@ public class AnaChatActivity extends AppCompatActivity
         final TextInputLayout tiState = addressDialogView.findViewById(R.id.input_layout_state);
         final TextInputLayout tiCountry = addressDialogView.findViewById(R.id.input_layout_country);
         final TextInputLayout tiPinCode = addressDialogView.findViewById(R.id.input_layout_pin);
+        final TextView tvTittle = addressDialogView.findViewById(R.id.tv_title);
         final TextView tvSend = addressDialogView.findViewById(R.id.tv_send);
+        tvTittle.setBackgroundColor(
+                Color.parseColor(PreferencesManager.getsInstance(this).getThemeColor()));
+        GradientDrawable drawable = (GradientDrawable) tvSend.getBackground();
+        drawable.setColor(Color.parseColor(PreferencesManager.getsInstance(this).getThemeColor()));
+        tvSend.setBackground(drawable);
         tvSend.setOnClickListener(view -> {
             Message message
                     = getLastMessage();
@@ -1104,7 +1172,8 @@ public class AnaChatActivity extends AppCompatActivity
                     tiCountry.getEditText().getText().toString().trim(),
                     tiPinCode.getEditText().getText().toString().trim());
             Boolean isInputValid = true;
-            if (message.getMessageInput().getMandatory() == Constants.FCMConstants.MANDATORY_TRUE) {
+            if (message.getMessageInput().getInputTypeAddress().getRequiredFields() != null &&
+                    message.getMessageInput().getMandatory() == Constants.FCMConstants.MANDATORY_TRUE) {
                 for (String field :
                         message.getMessageInput().getInputTypeAddress().getRequiredFields()) {
                     switch (field) {
@@ -1158,6 +1227,38 @@ public class AnaChatActivity extends AppCompatActivity
         addressDialog.show();
     }
 
+    private void showListDialog() {
+        Message message
+                = getLastMessage();
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View listDialogView = factory.inflate(R.layout.dialog_list_input, null);
+        final AlertDialog listDialog = new AlertDialog.Builder(this).create();
+        listDialog.setView(listDialogView);
+        final RecyclerView rvList = listDialogView.findViewById(R.id.input_list);
+        final TextView tvSend = listDialogView.findViewById(R.id.tv_send);
+        final TextView tvTittle = listDialogView.findViewById(R.id.tv_title);
+        tvTittle.setBackgroundColor(
+                Color.parseColor(PreferencesManager.getsInstance(this).getThemeColor()));
+        GradientDrawable drawable = (GradientDrawable) tvSend.getBackground();
+        drawable.setColor(Color.parseColor(PreferencesManager.getsInstance(this).getThemeColor()));
+        rvList.setLayoutManager(new
+                LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        InputListOptionsAdapter inputListOptionsAdapter =
+                new InputListOptionsAdapter(this, message);
+        rvList.setAdapter(inputListOptionsAdapter);
+        tvSend.setOnClickListener(view -> {
+            if (inputListOptionsAdapter.getValues().isEmpty()) {
+                Toast.makeText(this, "Please make Select from List",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+            listDialog.dismiss();
+            sendTextInputMessage(inputListOptionsAdapter.getValues(), message);
+
+        });
+        listDialog.show();
+    }
+
     private void sendAddress(Message message, Address address) {
         Input input = new Input();
         input.setAddress(address);
@@ -1194,13 +1295,6 @@ public class AnaChatActivity extends AppCompatActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static Intent startIntent(Context context) {
-        Intent intent
-                = new Intent(context, AnaChatActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        return intent;
     }
 
     private Message getLastMessage() {
@@ -1243,5 +1337,20 @@ public class AnaChatActivity extends AppCompatActivity
     public void show() {
         if (input.getVisibility() != VISIBLE)
             input.setVisibility(VISIBLE);
+    }
+
+    private void locationPlacesIntent() {
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_DENIED ||
+                ActivityCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                        PackageManager.PERMISSION_DENIED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                askPermission(LOCATION_PERMISSION_REQUEST);
+            }
+            return;
+        }
+        ListenerManager.getInstance().notifyPickLocation(AnaChatActivity.this);
     }
 }

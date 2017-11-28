@@ -1,0 +1,89 @@
+package com.anachat.chatsdk.uimodule.ui.adapter;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.anachat.chatsdk.internal.database.PreferencesManager;
+import com.anachat.chatsdk.internal.model.Message;
+import com.anachat.chatsdk.internal.model.Option;
+import com.anachat.chatsdk.library.R;
+
+import java.util.List;
+
+/**
+ * Created by lookup on 14/11/17.
+ */
+
+
+public class InputListOptionsAdapter extends RecyclerView.Adapter<InputListOptionsAdapter.MyViewHolder> {
+
+    private List<Option> optionList;
+    private Context context;
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        public TextView title;
+        public ImageView ivMark;
+
+        public MyViewHolder(View view) {
+            super(view);
+            title = view.findViewById(R.id.tv_title);
+            ivMark = view.findViewById(R.id.iv_check_mark);
+        }
+    }
+
+
+    public InputListOptionsAdapter(Context context, Message message) {
+        this.optionList = message.getMessageInput().getInputTypeList().getValuesAsList();
+        this.context = context;
+    }
+
+    @Override
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_input_list, parent, false);
+        return new MyViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(MyViewHolder holder, int position) {
+        final Option option = optionList.get(position);
+        holder.title.setText(option.getText());
+        holder.itemView.setOnClickListener(view -> {
+            if (!option.getSelected())
+                option.setSelected(true);
+            else option.setSelected(false);
+            notifyDataSetChanged();
+        });
+        if (option.getSelected()) {
+            holder.ivMark.setColorFilter(Color.parseColor
+                    (PreferencesManager.getsInstance(context).getThemeColor()));
+        } else {
+            holder.ivMark.setColorFilter(ContextCompat.getColor(context,
+                    R.color.grey_400));
+        }
+    }
+
+    public String getValues() {
+        StringBuilder result = new StringBuilder();
+        for (Option option
+                : optionList) {
+            if (option.getSelected()) {
+                result.append(option.getValue());
+                result.append(",");
+            }
+        }
+        return result.length() > 0 ? result.substring(0, result.length() - 1) : "";
+    }
+
+    @Override
+    public int getItemCount() {
+        return optionList.size();
+    }
+}

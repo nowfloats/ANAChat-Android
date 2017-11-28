@@ -18,6 +18,7 @@ import com.anachat.chatsdk.internal.model.MessageInput;
 import com.anachat.chatsdk.internal.model.MessageResponse;
 import com.anachat.chatsdk.internal.model.MessageSimple;
 import com.anachat.chatsdk.internal.model.Option;
+import com.anachat.chatsdk.internal.model.inputdata.InputTypeList;
 import com.anachat.chatsdk.internal.model.inputdata.InputTypeMedia;
 import com.anachat.chatsdk.internal.network.ApiCalls;
 import com.anachat.chatsdk.internal.utils.ListenerManager;
@@ -145,96 +146,116 @@ public class MessageRepository {
     }
 
     public void setInputMessage(MessageResponse messageResponse) {
-        MessageInput messageInput = new MessageInput();
-        messageInput.setInputType(messageResponse.getData().getContent().getInputType());
-        messageInput.setMandatory(messageResponse.getData().getContent().getMandatory());
+
         try {
-            switch (messageInput.getInputType()) {
-                case Constants.InputType.LOCATION:
-                    InputTypeLocation inputTypeLocation
-                            = new InputTypeLocation();
-                    inputTypeLocation.setInput(messageResponse.getData().getContent().getInput());
-                    inputTypeLocation.setDefaultLocation((messageResponse.getData().
-                            getContent().getDefaultLocation()));
-                    messageInput.setInputTypeLocation(inputTypeLocation);
-                    break;
-                case Constants.InputType.DATE:
-                    InputTypeDate inputTypeDate
-                            = new InputTypeDate();
-                    inputTypeDate.setInput(messageResponse.getData().getContent().getInput());
-                    inputTypeDate.setDateRange((messageResponse.getData().
-                            getContent().getDateRange()));
-                    messageInput.setInputTypeDate(inputTypeDate);
-                    break;
-                case Constants.InputType.NUMERIC:
-                    InputTypeNumeric inputTypeNumeric
-                            = new InputTypeNumeric();
-                    inputTypeNumeric.setInput(messageResponse.getData().getContent().getInput());
-                    messageInput.setInputTypeNumeric(inputTypeNumeric);
-                    break;
-                case Constants.InputType.PHONE:
-                    InputTypePhone inputTypePhone
-                            = new InputTypePhone();
-                    inputTypePhone.setInput(messageResponse.getData().getContent().getInput());
-                    messageInput.setInputTypePhone(inputTypePhone);
-                    break;
-                case Constants.InputType.ADDRESS:
-                    InputTypeAddress inputTypeAddress
-                            = new InputTypeAddress();
-                    inputTypeAddress.setInput(messageResponse.getData().getContent().getInput());
-                    inputTypeAddress.setRequiredFields(messageResponse.getData().getContent().
-                            getRequiredFields().toArray(new String
-                            [messageResponse.getData().getContent().getRequiredFields().size()]));
-                    messageInput.setInputTypeAddress(inputTypeAddress);
-                    break;
-                case Constants.InputType.MEDIA:
-                    InputTypeMedia inputTypeMedia
-                            = new InputTypeMedia();
-                    inputTypeMedia.setInput(messageResponse.getData().getContent().getInput());
-                    inputTypeMedia.setMediaType(messageResponse.getData().getContent().getMediaType());
-                    messageInput.setInputTypeMedia(inputTypeMedia);
-                    messageResponse.setFileUpload(true);
-                    break;
-                case Constants.InputType.TEXT:
-                    InputTypeText inputTypeText = new InputTypeText();
-                    inputTypeText.setInput(messageResponse.getData().getContent().getInput());
-                    inputTypeText.setText(messageResponse.getData().getContent().getText());
-                    inputTypeText.setTextInputAttr(messageResponse.getData().
-                            getContent().getTextInputAttr());
-                    messageInput.setInputTypeText(inputTypeText);
-                    break;
-                case Constants.InputType.TIME:
-                    InputTypeTime inputTypeTime
-                            = new InputTypeTime();
-                    inputTypeTime.setInput(messageResponse.getData().getContent().getInput());
-                    inputTypeTime.setTimeRange((messageResponse.getData().
-                            getContent().getTimeRange()));
-                    messageInput.setInputTypeTime(inputTypeTime);
-                    break;
-                case Constants.InputType.EMAIL:
-                    InputTypeEmail inputTypeEmail
-                            = new InputTypeEmail();
-                    inputTypeEmail.setInput(messageResponse.getData().getContent().getInput());
-                    messageInput.setInputTypeEmail(inputTypeEmail);
-                    break;
-                case Constants.InputType.OPTIONS:
-                    if (!messageResponse.isOnlyUpdate()) {
-                        messageInput.setInputForOptions(messageResponse.
-                                getData().getContent().getInput());
-                        messageInput.setOptionsForeignCollection(messageResponse.getData()
-                                .getContent().getOptions());
-                        messageResponse.getMessage().setMessageInput(messageInput);
-                        if (!isMessageExist(messageResponse.getMessage().getTimestamp()))
+            if (!isMessageExist(messageResponse.getMessage().getTimestamp())) {
+                MessageInput messageInput = new MessageInput();
+                messageInput.setInputType(messageResponse.getData().getContent().getInputType());
+                messageInput.setMandatory(messageResponse.getData().getContent().getMandatory());
+
+                switch (messageInput.getInputType()) {
+                    case Constants.InputType.LOCATION:
+                        InputTypeLocation inputTypeLocation
+                                = new InputTypeLocation();
+                        inputTypeLocation.setInput(messageResponse.getData().getContent().getInput());
+                        inputTypeLocation.setDefaultLocation((messageResponse.getData().
+                                getContent().getDefaultLocation()));
+                        messageInput.setInputTypeLocation(inputTypeLocation);
+                        break;
+                    case Constants.InputType.DATE:
+                        InputTypeDate inputTypeDate
+                                = new InputTypeDate();
+                        inputTypeDate.setInput(messageResponse.getData().getContent().getInput());
+                        inputTypeDate.setDateRange((messageResponse.getData().
+                                getContent().getDateRange()));
+                        messageInput.setInputTypeDate(inputTypeDate);
+                        break;
+                    case Constants.InputType.NUMERIC:
+                        InputTypeNumeric inputTypeNumeric
+                                = new InputTypeNumeric();
+                        inputTypeNumeric.setInput(messageResponse.getData().getContent().getInput());
+                        messageInput.setInputTypeNumeric(inputTypeNumeric);
+                        break;
+                    case Constants.InputType.PHONE:
+                        InputTypePhone inputTypePhone
+                                = new InputTypePhone();
+                        inputTypePhone.setInput(messageResponse.getData().getContent().getInput());
+                        messageInput.setInputTypePhone(inputTypePhone);
+                        break;
+                    case Constants.InputType.ADDRESS:
+                        InputTypeAddress inputTypeAddress
+                                = new InputTypeAddress();
+                        inputTypeAddress.setInput(messageResponse.getData().getContent().getInput());
+                        if (messageResponse.getData().getContent().getRequiredFields() != null)
+                            inputTypeAddress.setRequiredFields(messageResponse.getData().getContent().
+                                    getRequiredFields().toArray(new String
+                                    [messageResponse.getData().getContent().getRequiredFields().size()]));
+                        messageInput.setInputTypeAddress(inputTypeAddress);
+                        break;
+                    case Constants.InputType.MEDIA:
+                        InputTypeMedia inputTypeMedia
+                                = new InputTypeMedia();
+                        inputTypeMedia.setInput(messageResponse.getData().getContent().getInput());
+                        inputTypeMedia.setMediaType(messageResponse.getData().getContent().getMediaType());
+                        messageInput.setInputTypeMedia(inputTypeMedia);
+                        messageResponse.setFileUpload(true);
+                        break;
+                    case Constants.InputType.TEXT:
+                        InputTypeText inputTypeText = new InputTypeText();
+                        inputTypeText.setInput(messageResponse.getData().getContent().getInput());
+                        inputTypeText.setText(messageResponse.getData().getContent().getText());
+                        inputTypeText.setTextInputAttr(messageResponse.getData().
+                                getContent().getTextInputAttr());
+                        messageInput.setInputTypeText(inputTypeText);
+                        break;
+                    case Constants.InputType.TIME:
+                        InputTypeTime inputTypeTime
+                                = new InputTypeTime();
+                        inputTypeTime.setInput(messageResponse.getData().getContent().getInput());
+                        inputTypeTime.setTimeRange((messageResponse.getData().
+                                getContent().getTimeRange()));
+                        messageInput.setInputTypeTime(inputTypeTime);
+                        break;
+                    case Constants.InputType.EMAIL:
+                        InputTypeEmail inputTypeEmail
+                                = new InputTypeEmail();
+                        inputTypeEmail.setInput(messageResponse.getData().getContent().getInput());
+                        messageInput.setInputTypeEmail(inputTypeEmail);
+                        break;
+                    case Constants.InputType.OPTIONS:
+                        if (!messageResponse.isOnlyUpdate()) {
+                            messageInput.setInputForOptions(messageResponse.
+                                    getData().getContent().getInput());
+                            messageInput.setOptionsForeignCollection(messageResponse.getData()
+                                    .getContent().getOptions());
+                            messageResponse.getMessage().setMessageInput(messageInput);
+//                            if (!isMessageExist(messageResponse.getMessage().getTimestamp()))
                             for (Option option : messageInput.getOptionsForeignCollection()) {
                                 option.setMessageInput(messageInput);
                                 mHelper.getOptionsDao().create(option);
                             }
-                    }
-                    break;
-                case Constants.InputType.LIST:
-                    return;
+                        }
+                        break;
+                    case Constants.InputType.LIST:
+                        if (!messageResponse.isOnlyUpdate()) {
+                            InputTypeList inputTypeList = new InputTypeList();
+                            inputTypeList.setInput(messageResponse.
+                                    getData().getContent().getInput());
+                            inputTypeList.setValuesForeignCollection(messageResponse.getData()
+                                    .getContent().getValues());
+                            messageInput.setInputTypeList(inputTypeList);
+                            messageResponse.getMessage().setMessageInput(messageInput);
+//                            if (!isMessageExist(messageResponse.getMessage().getTimestamp()))
+                            for (Option option : messageInput.getInputTypeList()
+                                    .getValuesForeignCollection()) {
+                                option.setInputTypeList(inputTypeList);
+                                mHelper.getOptionsDao().create(option);
+                            }
+                        }
+                        break;
+                }
+                messageResponse.getMessage().setMessageInput(messageInput);
             }
-            messageResponse.getMessage().setMessageInput(messageInput);
             writeMessage(messageResponse);
         } catch (SQLException e) {
             e.printStackTrace();

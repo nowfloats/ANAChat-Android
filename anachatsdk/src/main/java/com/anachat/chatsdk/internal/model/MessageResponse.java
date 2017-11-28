@@ -69,6 +69,8 @@ public class MessageResponse extends BaseModel {
                     return inputNumeric(value, message);
                 case Constants.InputType.OPTIONS:
                     return inputOption(value, message);
+                case Constants.InputType.LIST:
+                    return inputListOption(value, message);
             }
             return this;
         }
@@ -131,15 +133,21 @@ public class MessageResponse extends BaseModel {
             return this;
         }
 
+        public MessageResponseBuilder inputListOption(String value, Message message) {
+            this.message.setResponseTo(message.getMessageId());
+            this.message.setSessionId(message.getSessionId());
+            data.setType(Constants.MessageType.INPUT);
+            this.message.setMessageType(Constants.MessageType.INPUT);
+            data.getContent().setInputType(Constants.InputType.LIST);
+            data.getContent().setMandatory(message.getMessageInput().getMandatory());
+            data.getContent().setValues(message.getMessageInput().getInputTypeList().getValuesAsList());
+            data.getContent().setInput(buildInput(value, message.getMessageInput().getMandatory()));
+            return this;
+        }
+
 
         public MessageResponseBuilder inputCarousel(Input value, Message message) {
             message.getMessageCarousel().setEnabled(false);
-//            try {
-//                MessageRepository.getInstance(mContext).
-//                        updateCarouselMessage();
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
             this.message.setResponseTo(message.getMessageId());
             this.message.setSessionId(message.getSessionId());
             data.setType(Constants.MessageType.CAROUSEL);
@@ -202,8 +210,22 @@ public class MessageResponse extends BaseModel {
             this.message.setMessageType(Constants.MessageType.INPUT);
             data.getContent().setInputType(Constants.InputType.ADDRESS);
             data.getContent().setMandatory(message.getMessageInput().getMandatory());
-            data.getContent().setRequiredFields(Arrays.asList(
-                    message.getMessageInput().getInputTypeAddress().getRequiredFields()));
+            if (message.getMessageInput().getInputTypeAddress().getRequiredFields() != null)
+                data.getContent().setRequiredFields(Arrays.asList(
+                        message.getMessageInput().getInputTypeAddress().getRequiredFields()));
+            data.getContent().setInput(input);
+            return this;
+        }
+
+        public MessageResponseBuilder inputLocation(Message message, Input input) {
+            this.message.setResponseTo(message.getMessageId());
+            this.message.setSessionId(message.getSessionId());
+            data.setType(Constants.MessageType.INPUT);
+            this.message.setMessageType(Constants.MessageType.INPUT);
+            data.getContent().setInputType(Constants.InputType.LOCATION);
+            data.getContent().setMandatory(message.getMessageInput().getMandatory());
+            data.getContent().setDefaultLocation(message.getMessageInput().
+                    getInputTypeLocation().getDefaultLocation());
             data.getContent().setInput(input);
             return this;
         }

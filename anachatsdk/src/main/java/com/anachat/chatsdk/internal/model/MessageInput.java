@@ -1,16 +1,16 @@
 package com.anachat.chatsdk.internal.model;
 
+import com.anachat.chatsdk.internal.model.inputdata.Input;
+import com.anachat.chatsdk.internal.model.inputdata.InputTypeList;
 import com.anachat.chatsdk.internal.model.inputdata.InputTypeMedia;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
-import com.anachat.chatsdk.internal.model.inputdata.Input;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 
 
 /**
@@ -65,7 +65,18 @@ public class MessageInput extends BaseModel {
             foreignAutoCreate = true, foreignAutoRefresh = true)
     private InputTypeMedia inputTypeMedia;
 
-//    @ForeignCollectionField()
+    @DatabaseField(columnName = "input_list", foreign = true,
+            foreignAutoCreate = true, foreignAutoRefresh = true)
+    private InputTypeList inputTypeList;
+
+    public InputTypeList getInputTypeList() {
+        return inputTypeList;
+    }
+
+    public void setInputTypeList(InputTypeList inputTypeList) {
+        this.inputTypeList = inputTypeList;
+    }
+    //    @ForeignCollectionField()
 //    private ForeignCollection<Message> message;
 
     @ForeignCollectionField(eager = true)

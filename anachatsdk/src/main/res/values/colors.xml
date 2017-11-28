@@ -6,7 +6,8 @@
     <!--<color name="primary_dark">#B00001</color>-->
     <color name="ana_primary_dark">#512DA8</color>
     <color name="ana_colorAccent">#ff583f</color>
-    <color name="text_color_chat_input">#050706</color>
+    <!--<color name="text_color_chat_input">#050706</color>-->
+    <color name="text_color_chat_input">#3c3c3c</color>
     <color name="text_color_chat_time">#C5C5C5</color>
     <color name="text_color_date_header">#7B7B7B</color>
 

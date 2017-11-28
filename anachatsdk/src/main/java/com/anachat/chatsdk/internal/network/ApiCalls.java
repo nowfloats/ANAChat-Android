@@ -10,7 +10,6 @@ import com.anachat.chatsdk.internal.utils.ListenerManager;
 import com.anachat.chatsdk.internal.utils.NFChatUtils;
 import com.anachat.chatsdk.internal.utils.concurrent.ApiExecutor;
 import com.anachat.chatsdk.internal.utils.concurrent.ApiExecutorFactory;
-import com.anachat.chatsdk.internal.utils.constants.Constants;
 import com.anachat.chatsdk.internal.utils.constants.NetworkConstants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -37,7 +36,7 @@ public class ApiCalls {
         if (!NFChatUtils.isNetworkConnected(context)) return;
         ApiExecutor apiExecutor = ApiExecutorFactory.getHandlerExecutor();
         apiExecutor.runAsync(() -> {
-            FcmToken fcmToken = new FcmToken(NFChatUtils.getUUID(context),
+            FcmToken fcmToken = new FcmToken(NFChatUtils.getUUID(context)+System.currentTimeMillis(),
                     token,
                     "ANDROID",
                     PreferencesManager.getsInstance(context).getBusinessId());
@@ -109,22 +108,20 @@ public class ApiCalls {
 
     public static void uploadFile(final Context context, final MessageResponse messageResponse) {
         ApiExecutor apiExecutor = ApiExecutorFactory.getHandlerExecutor();
-        apiExecutor.runAsync(new Runnable() {
-            @Override
-            public void run() {
-                String file = messageResponse.getData().getContent().getInput().
-                        getMedia().get(0).getPreviewUrl();
-                File screenshotFile = new File(file);
-                Map<String, String> body = new HashMap<>();
-                body.put("file", file);
-                HTTPTransport httpTransport = new AndroidHTTPTransport();
-                Request request = new UploadRequest(Method.POST,
-                        PreferencesManager.getsInstance(context).getBaseUrl() + "/files",
-                        body, getMimeType(screenshotFile.getPath()), getFileHeaders(),
-                        NetworkConstants.UPLOAD_CONNECT_TIMEOUT);
-//                Request request = new POSTRequest(Method.POST,
-//                        "https://chat-alpha.withfloats.com/fcm/devices", body, getHeaders(), 5000);
-                Response response = httpTransport.makeRequest(request);
+        apiExecutor.runAsync(() -> {
+            String file = messageResponse.getData().getContent().getInput().
+                    getMedia().get(0).getPreviewUrl();
+            File screenshotFile = new File(file);
+            Map<String, String> body = new HashMap<>();
+            body.put("file", file);
+            HTTPTransport httpTransport = new AndroidHTTPTransport();
+            Request request = new UploadRequest(Method.POST,
+                    PreferencesManager.getsInstance(context).getBaseUrl() + "/files",
+                    body, getMimeType(screenshotFile.getPath()), getFileHeaders(),
+                    NetworkConstants.UPLOAD_CONNECT_TIMEOUT);
+            Response response = httpTransport.makeRequest(request);
+            if (response.status >= 200 && response.status < 300) {
+//                    messageResponse.
             }
         });
 

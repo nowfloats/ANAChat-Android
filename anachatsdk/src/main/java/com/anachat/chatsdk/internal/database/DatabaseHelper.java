@@ -21,6 +21,7 @@ import com.anachat.chatsdk.internal.model.MessageSimple;
 import com.anachat.chatsdk.internal.model.Option;
 import com.anachat.chatsdk.internal.model.inputdata.DateRange;
 import com.anachat.chatsdk.internal.model.inputdata.DefaultLocation;
+import com.anachat.chatsdk.internal.model.inputdata.InputTypeList;
 import com.anachat.chatsdk.internal.model.inputdata.InputTypeMedia;
 import com.anachat.chatsdk.internal.model.inputdata.TextInputAttr;
 import com.anachat.chatsdk.internal.model.inputdata.TimeRange;
@@ -80,6 +81,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, TimeRange.class);
             TableUtils.createTable(connectionSource, InputTypeAddress.class);
             TableUtils.createTable(connectionSource, InputTypeMedia.class);
+            TableUtils.createTable(connectionSource, InputTypeList.class);
         } catch (SQLException e) {
             Log.e(DatabaseHelper.class.getName(), "Unable to create datbases", e);
         }
@@ -113,6 +115,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, TimeRange.class, true);
             TableUtils.dropTable(connectionSource, InputTypeAddress.class, true);
             TableUtils.dropTable(connectionSource, InputTypeMedia.class, true);
+            TableUtils.dropTable(connectionSource, InputTypeList.class, true);
             onCreate(sqliteDatabase, connectionSource);
 
         } catch (SQLException e) {

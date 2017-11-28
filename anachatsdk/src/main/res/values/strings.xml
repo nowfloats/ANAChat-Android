@@ -2,7 +2,6 @@
     <string name="app_name">Library</string>
 
 
-
     <string name="desc_toolbar">(Blume intelligence assistant)</string>
     <string name="chatsdk_key">155344AsGCm17GVss5937f54b</string>
 
@@ -24,6 +23,7 @@
     <string name="action_button_audio">SELECT AUDIO</string>
     <string name="action_button_file">SELECT FILE</string>
     <string name="action_button_time">SELECT TIME</string>
+    <string name="action_button_list">SELECT FROM LIST</string>
 
 
     <string name="hint_address_line">Address line </string>
@@ -36,4 +36,5 @@
     <string name="label_save">SEND</string>
     <string name="label_more">MORE INFO</string>
     <string name="label_start">Get Started</string>
+    <string name="location">LOCATION</string>
 </resources>
