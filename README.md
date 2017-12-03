@@ -91,32 +91,33 @@ To enable **Location** support in SDK follow below steps:
 3. add`compile'com.google.android.gms:play-services-places:11.6.0'`in app level gradle file.
 4. implement **LocationPickListener** in your fragment/activity.
 2. add **registerLocationSelectListener(this)** in  AnaChatBuilder.
-4. Override methods and like below code :-
+4. Paste below code in overided methods:-
 
-     `@Override
-    public Intent pickLocation(Activity activity) {
-        try {
-            PlacePicker.IntentBuilder
-            builder = new PlacePicker.IntentBuilder();
-            Intent placePickerIntent = builder.build(activity);
-            placePickerIntent.putExtra("primary_color",
-getsInstance(activity).getThemeColor()));
-            placePickerIntent.putExtra("primary_color_dark",
-                    ContextCompat.getColor(activity, com.anachat.chatsdk.library.R.color.gray_light));
-            return placePickerIntent;
-        } catch
-        (GooglePlayServicesRepairableException| GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }`
 
-    `@Override
+
+    @Override
     public void sendLocation(Intent data) {
         Place place = PlacePicker.getPlace(this, data);
         LatLng latLng = place.getLatLng();
-latLng.longitude, this);
-    }`
+        AnaCore.sendLocation(latLng.latitude, latLng.longitude, this);
+    }
+    @Override
+    public Intent pickLocation(Activity activity) {
+        try {
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+            Intent placePickerIntent = builder.build(activity);
+            placePickerIntent.putExtra("primary_color",
+                    	         					Color.parseColor(PreferencesManager.getsInstance(activity).getThemeColor()));
+            placePickerIntent.putExtra("primary_color_dark",
+                    ContextCompat.getColor(activity, R.color.gray_light));
+            return placePickerIntent;
+        } catch (GooglePlayServicesRepairableException |
+                GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 License
 =======
