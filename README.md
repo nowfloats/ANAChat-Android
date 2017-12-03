@@ -91,7 +91,7 @@ To enable **Location** support in SDK follow below steps:
 3. add`compile'com.google.android.gms:play-services-places:11.6.0'`in app level gradle file.
 4. implement **LocationPickListener** in your fragment/activity.
 2. add **registerLocationSelectListener(this)** in  AnaChatBuilder.
-4. Override methods and like below code :-
+4. Override methods and Paste below code :-
 
    ```ruby
    @Override
