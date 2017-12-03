@@ -32,6 +32,7 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -67,6 +68,7 @@ import com.anachat.chatsdk.uimodule.ui.adapter.OptionsAdapter;
 import com.anachat.chatsdk.uimodule.utils.AppUtils;
 import com.anachat.chatsdk.uimodule.utils.InputIntents;
 import com.anachat.chatsdk.uimodule.utils.PathUtil;
+import com.anachat.chatsdk.uimodule.utils.SlideInLeftAnimator;
 import com.anachat.chatsdk.uimodule.viewholder.BlankMessageViewHolder;
 import com.anachat.chatsdk.uimodule.viewholder.carousel.IncomingCarouselMessageViewHolder;
 import com.anachat.chatsdk.uimodule.viewholder.carousel.OutComingCarouselTextMessageViewHolder;
@@ -244,9 +246,9 @@ public class AnaChatActivity extends AppCompatActivity
                 Color.parseColor(PreferencesManager.getsInstance(this).getThemeColor()));
 
         messagesList = findViewById(R.id.messagesList);
-//        SlideInLeftAnimator animator = new SlideInLeftAnimator();
-//        animator.setInterpolator(new OvershootInterpolator());
-        messagesList.setItemAnimator(new DefaultItemAnimator());
+        SlideInLeftAnimator animator = new SlideInLeftAnimator();
+        animator.setInterpolator(new OvershootInterpolator());
+        messagesList.setItemAnimator(animator);
         btnAction = findViewById(R.id.btn_action);
         btnAction.setOnClickListener(this);
         rvOptions = findViewById(R.id.rv_options);

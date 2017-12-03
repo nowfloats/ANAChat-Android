@@ -102,7 +102,7 @@ public class LaunchActivity extends AppCompatActivity implements LocationPickLis
             placePickerIntent.putExtra("primary_color_dark",
                     ContextCompat.getColor(activity, com.anachat.chatsdk.library.R.color.gray_light));
             return placePickerIntent;
-        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+        } catch (GooglePlayServicesRepairableException| GooglePlayServicesNotAvailableException e) {
             e.printStackTrace();
         }
         return null;
