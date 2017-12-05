@@ -23,7 +23,7 @@ public class PushConsumer implements Runnable {
 
     public static PushConsumer getInstance(Context context) {
         if (instance == null) { // first time lock
-            synchronized (ListenerManager.class) {
+            synchronized (PushConsumer.class) {
                 if (instance == null) {  // second time lock
                     instance = new PushConsumer(context);
                 }
