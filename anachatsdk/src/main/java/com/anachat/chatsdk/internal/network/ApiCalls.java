@@ -10,6 +10,7 @@ import com.anachat.chatsdk.internal.utils.ListenerManager;
 import com.anachat.chatsdk.internal.utils.NFChatUtils;
 import com.anachat.chatsdk.internal.utils.concurrent.ApiExecutor;
 import com.anachat.chatsdk.internal.utils.concurrent.ApiExecutorFactory;
+import com.anachat.chatsdk.internal.utils.constants.Constants;
 import com.anachat.chatsdk.internal.utils.constants.NetworkConstants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -132,14 +133,14 @@ public class ApiCalls {
                                             long timestamp) {
         if (PreferencesManager.getsInstance(context).getBaseUrl().isEmpty()) return;
         if (!NFChatUtils.isNetworkConnected(context)) return;
-        if (PreferencesManager.getsInstance(context).getHistorySynced()) return;
+        if (PreferencesManager.getsInstance(context).getHistorySynced() && page != 0) return;
 
         ApiExecutor apiExecutor = ApiExecutorFactory.getHandlerExecutor();
         apiExecutor.runAsync(() -> {
             String urlparms = "?userId=" + PreferencesManager.
                     getsInstance(context).getUserName() + "&businessId=" +
                     PreferencesManager.getsInstance(context).getBusinessId() +
-                    "&size=" + 20;
+                    "&size=" + Constants.HISTORY_MESSAGES_LIMIT;
             if (timestamp == 0) {
                 urlparms = urlparms + "&page=" + page;
             } else {

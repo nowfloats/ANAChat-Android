@@ -24,6 +24,11 @@
     <string name="action_button_file">SELECT FILE</string>
     <string name="action_button_time">SELECT TIME</string>
     <string name="action_button_list">SELECT FROM LIST</string>
+    <string name="no_internet_line_1">Unable to connect</string>
+    <string name="no_internet_line_2">Uh oh, seems like you"'"ve lost your internet connection</string>
+    <string name="no_internet_line_3">Check settings</string>
+    <string name="no_internet_line_available">Trying to connect</string>
+    <string name="internet_line_available">Available</string>
 
 
     <string name="hint_address_line">Address line </string>

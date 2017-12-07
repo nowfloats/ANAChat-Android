@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.anachat.chatsdk.internal.database.MessageRepository;
 import com.anachat.chatsdk.internal.model.MessageResponse;
-import com.anachat.chatsdk.internal.utils.ListenerManager;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -46,6 +45,12 @@ public class PushConsumer implements Runnable {
         }
     }
 
+    public void clearQueue() {
+        if (thread != null) {
+            thread = null;
+        }
+    }
+
     private void executeQueue() {
         while (queue.size() > 0) {
             try {
@@ -57,7 +62,8 @@ public class PushConsumer implements Runnable {
                     MessageRepository.getInstance(context);
             MessageResponse messageResponse = queue.peek();
             queue.remove(messageResponse);
-            messageRepository.handleMessageResponse(messageResponse);
+            if (messageResponse != null)
+                messageRepository.handleMessageResponse(messageResponse);
         }
         thread = null;
     }

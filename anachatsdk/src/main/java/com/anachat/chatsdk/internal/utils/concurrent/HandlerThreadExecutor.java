@@ -39,7 +39,7 @@ public class HandlerThreadExecutor implements ApiExecutor {
     }
 
     public void runUiWithDelay(Runnable var1) {
-        this.uiHandler.postDelayed(var1, 2000);
+        this.uiHandler.postDelayed(var1, 1000);
     }
 
     public void runOnUiThread(final Runnable r) {

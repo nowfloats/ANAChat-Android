@@ -8,34 +8,27 @@
     android:layout_marginTop="8dp"
     android:gravity="end">
 
+    <View
+        android:id="@+id/iv_stripe"
+        android:layout_width="3dip"
+        android:layout_height="238dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="@color/black" />
+
     <com.anachat.chatsdk.uimodule.chatuikit.utils.RoundishImageView
         android:id="@id/image"
         android:layout_width="276dp"
         android:layout_height="238dp"
         android:layout_marginLeft="@dimen/message_outcoming_bubble_margin_left"
         android:layout_marginStart="@dimen/message_outcoming_bubble_margin_left"
+        android:layout_toLeftOf="@id/iv_stripe"
+        android:layout_toStartOf="@id/iv_stripe"
         android:adjustViewBounds="true"
-        android:background="@drawable/bg_doodle"
         android:scaleType="centerCrop"
         app:cornerRadius="10dp"
         app:roundedCorners="topLeft|bottomLeft" />
 
-    <View
-        android:layout_width="3dip"
-        android:layout_height="238dp"
-        android:layout_alignParentRight="true"
-        android:background="@color/black" />
-
-    <View
-        android:id="@id/imageOverlay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/image"
-        android:layout_alignEnd="@id/image"
-        android:layout_alignLeft="@id/image"
-        android:layout_alignRight="@id/image"
-        android:layout_alignStart="@id/image"
-        android:layout_alignTop="@id/image" />
 
     <RelativeLayout
         android:id="@+id/rl_stripe"
@@ -44,8 +37,9 @@
         android:layout_alignEnd="@id/image"
         android:layout_alignRight="@id/image"
         android:layout_marginLeft="@dimen/message_outcoming_bubble_margin_left"
-        android:layout_marginRight="3dp"
-        android:layout_marginStart="@dimen/message_outcoming_bubble_margin_left">
+        android:layout_marginStart="@dimen/message_outcoming_bubble_margin_left"
+        android:layout_toLeftOf="@id/iv_stripe"
+        android:layout_toStartOf="@id/iv_stripe">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -53,17 +47,29 @@
             android:layout_alignParentBottom="true"
             android:background="@drawable/bg_left_round_corner">
 
+            <ImageView
+                android:id="@+id/iv_sent_status"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
+                android:tint="@color/white" />
+
             <TextView
                 android:id="@id/messageTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/iv_sent_status"
+                android:layout_toStartOf="@id/iv_sent_status"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:textSize="10sp"
-                android:textColor="@color/white" />
+                android:text="sjdfjkbfkjsf"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
 
             <TextView
                 android:id="@+id/message_type"

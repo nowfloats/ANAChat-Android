@@ -111,7 +111,7 @@ public class PreferencesManager {
     }
 
     public String getBusinessId() {
-        return mPref.getString(BUSINESS_ID, "business");
+        return mPref.getString(BUSINESS_ID, "");
     }
 
     public void setBaseUrl(String value) {

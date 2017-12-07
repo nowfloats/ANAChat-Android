@@ -17,14 +17,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.anachat.chatsdk.internal.model.IMessage;
-import com.anachat.chatsdk.uimodule.chatuikit.commons.ImageLoader;
-import com.anachat.chatsdk.uimodule.chatuikit.utils.DateFormatter;
 import com.anachat.chatsdk.internal.database.PreferencesManager;
+import com.anachat.chatsdk.internal.model.IMessage;
 import com.anachat.chatsdk.internal.model.MessageContentType;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
 import com.anachat.chatsdk.library.R;
+import com.anachat.chatsdk.uimodule.chatuikit.commons.ImageLoader;
 import com.anachat.chatsdk.uimodule.chatuikit.commons.ViewHolder;
+import com.anachat.chatsdk.uimodule.chatuikit.utils.DateFormatter;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -382,7 +382,7 @@ public class MessageHolders {
             super(itemView);
             bubble = itemView.findViewById(R.id.bubble);
             text = itemView.findViewById(R.id.messageText);
-            triangle = (ImageView) itemView.findViewById(R.id.iv_triangle);
+            triangle = itemView.findViewById(R.id.iv_triangle);
         }
 
         @Override

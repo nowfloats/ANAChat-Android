@@ -68,10 +68,6 @@ public class LaunchActivity extends AppCompatActivity implements LocationPickLis
      * starting bot onclick of button
      */
     public void startMainScreen(View view) {
-        if (PreferencesManager.getsInstance(this).getUserName().isEmpty()) {
-            Toast.makeText(this, "User not initialized", Toast.LENGTH_SHORT).show();
-            return;
-        }
         new AnaChatBuilder(this)
                 .setBusinessId(BUSINESSID)
                 .setBaseUrl(BASE_URL)
@@ -81,6 +77,11 @@ public class LaunchActivity extends AppCompatActivity implements LocationPickLis
                 .setToolBarLogo(R.drawable.ic_ana)
                 .registerLocationSelectListener(this)
                 .start();
+
+        if (PreferencesManager.getsInstance(this).getUserName().isEmpty()) {
+            Toast.makeText(this, "User not initialized", Toast.LENGTH_SHORT).show();
+            return;
+        }
 //        if (!PreferencesManager.getsInstance(this).getUserName().isEmpty()) {
 //            finish();
 //        }

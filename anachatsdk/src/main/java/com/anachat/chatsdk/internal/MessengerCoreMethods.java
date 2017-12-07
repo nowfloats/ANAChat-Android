@@ -6,7 +6,6 @@ import com.anachat.chatsdk.AnaChatSDKConfig;
 import com.anachat.chatsdk.AnaCore;
 import com.anachat.chatsdk.MessageListener;
 import com.anachat.chatsdk.internal.database.MessageRepository;
-import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.internal.model.MessageResponse;
 import com.anachat.chatsdk.internal.network.ApiCalls;
@@ -42,21 +41,25 @@ public class MessengerCoreMethods {
         NFChatSDK.instance().initialize(mContext);
         ListenerManager.getInstance().addMessageChangeListener(mListener);
         getAllMessages();
-        syncMessages();
+//        syncMessages();
     }
 
     private void getAllMessages() {
         ApiExecutor apiExecutor = ApiExecutorFactory.getHandlerExecutor();
         apiExecutor.runAsync(() -> {
             try {
-                final List<Message> messages
-                        = MessageRepository.getInstance(mContext).getMessages();
-                if (messages.size() < Constants.HISTORY_MESSAGES_LIMIT &&
-                        !PreferencesManager.getsInstance(mContext).getHistorySynced() &&
-                        NFChatUtils.isNetworkConnected(mContext)) {
+                if (NFChatUtils.isNetworkConnected(mContext)) {
                     AnaCore.loadInitialHistory(mContext);
                     return;
                 }
+                final List<Message> messages
+                        = MessageRepository.getInstance(mContext).getMessages();
+//                if (messages.size() < Constants.HISTORY_MESSAGES_LIMIT &&
+//                        !PreferencesManager.getsInstance(mContext).getHistorySynced() &&
+//                        NFChatUtils.isNetworkConnected(mContext)) {
+//                    AnaCore.loadInitialHistory(mContext);
+//                    return;
+//                }
                 ApiExecutor executor = ApiExecutorFactory.getHandlerExecutor();
                 executor.runOnUiThread(() -> mListener.onConversationUpdate(messages));
             } catch (SQLException | IOException e) {
@@ -65,7 +68,7 @@ public class MessengerCoreMethods {
         });
     }
 
-    private void handleMessagePush(Message message) {
+    private static void handleMessagePush(Message message, Context mContext) {
         MessageResponse messageResponse = null;
         if (message.getMessageType() == Constants.MessageType.INPUT) {
             messageResponse
@@ -79,21 +82,18 @@ public class MessengerCoreMethods {
             ApiCalls.sendMessage(mContext.getApplicationContext(), messageResponse);
     }
 
-    public void syncMessages() {
-        if (!NFChatUtils.isNetworkConnected(mContext)) return;
+    public static void syncMessages(Context context) {
+        if (!NFChatUtils.isNetworkConnected(context)) return;
         ApiExecutor apiExecutor = ApiExecutorFactory.getHandlerExecutor();
-        apiExecutor.runSync(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final List<Message> messages
-                            = MessageRepository.getInstance(mContext).getUnSentMessages();
-                    for (final Message message : messages) {
-                        handleMessagePush(message);
-                    }
-                } catch (SQLException | IOException e) {
-                    e.printStackTrace();
+        apiExecutor.runAsync(() -> {
+            try {
+                final List<Message> messages
+                        = MessageRepository.getInstance(context).getUnSentMessages();
+                for (Message message : messages) {
+                    handleMessagePush(message, context);
                 }
+            } catch (SQLException | IOException e) {
+                e.printStackTrace();
             }
         });
     }

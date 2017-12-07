@@ -76,7 +76,11 @@ public class AnaChatBuilder {
 
         if (baseUrl.isEmpty())
             throw new IllegalArgumentException("BaseUrl can't be empty please setBaseUrl");
-
+        if (!PreferencesManager.getsInstance(activity).
+                getBusinessId().equalsIgnoreCase(businessId)) {
+            PreferencesManager.getsInstance(activity).setFirstLaunch(true);
+            PreferencesManager.getsInstance(activity).setIsHistorySynced(false);
+        }
         if (PreferencesManager.getsInstance(activity).getUserName().isEmpty()) {
             if (!PreferencesManager.getsInstance(activity).getFcmToken().isEmpty()) {
                 ApiCalls.updateToken(activity.getApplicationContext(),

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/iv_no_net"
+        android:layout_width="30dp"
+        android:layout_height="25dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"
+        android:src="@drawable/ic_no_internet_connection" />
+
+    <TextView
+        android:id="@+id/tv_line_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_no_net"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="@string/no_internet_line_1"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_line_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_line_1"
+        android:layout_centerHorizontal="true"
+        android:text="@string/no_internet_line_2"
+        android:textColor="#828282"
+        android:textSize="12sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/tv_line_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_line_2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_oval_textview"
+        android:padding="8dp"
+        android:text="@string/no_internet_line_3"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:textStyle="normal" />
+</RelativeLayout>

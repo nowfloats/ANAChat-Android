@@ -1,6 +1,8 @@
 package com.anachat.chatsdk.uimodule.viewholder.input;
 
+import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.anachat.chatsdk.uimodule.chatuikit.utils.DateFormatter;
@@ -15,16 +17,26 @@ public class OutcomingInputEmailMessageViewHolder
 
     private TextView tvDuration;
     private TextView tvTime;
-
+    private ImageView ivSentStatus;
     public OutcomingInputEmailMessageViewHolder(View itemView) {
         super(itemView);
         tvDuration = itemView.findViewById(R.id.messageText);
         tvTime = itemView.findViewById(R.id.messageTime);
+        ivSentStatus = itemView.findViewById(R.id.iv_sent_status);
     }
 
     @Override
     public void onBind(Message message) {
         super.onBind(message);
+        ivSentStatus.setColorFilter(ContextCompat.getColor
+                (imageLoader.getContext(), R.color.text_color_chat_time));
+        if (message.getSyncWithServer()) {
+            ivSentStatus.setImageDrawable
+                    (ContextCompat.getDrawable(imageLoader.getContext(), R.drawable.ic_tick));
+        } else {
+            ivSentStatus.setImageDrawable
+                    (ContextCompat.getDrawable(imageLoader.getContext(), R.drawable.ic_wait));
+        }
         if (message.getMessageInput().getMandatory()==Constants.FCMConstants.MANDATORY_TRUE) {
             tvDuration.setText(message.getMessageInput().getInputTypeEmail().getInput().getVal());
         } else {

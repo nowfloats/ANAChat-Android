@@ -23,7 +23,6 @@ public class MessageResponse extends BaseModel {
     private Message message;
     @SerializedName("data")
     private Data data;
-    private List<MessageResponse> chats;
     private transient Context context;
     private transient boolean onlyUpdate = false;
     private transient boolean fileUpload = false;
@@ -257,12 +256,13 @@ public class MessageResponse extends BaseModel {
                     inputAddress(message, message.getMessageInput().getInputTypeAddress().getInput());
                     break;
                 case Constants.InputType.DATE:
-                    inputAddress(message, message.getMessageInput().getInputTypeDate().getInput());
+                    inputDate(message, message.getMessageInput().getInputTypeDate().getInput());
                     break;
                 case Constants.InputType.TIME:
-                    inputAddress(message, message.getMessageInput().getInputTypeTime().getInput());
+                    inputTime(message, message.getMessageInput().getInputTypeTime().getInput());
                     break;
                 case Constants.InputType.LOCATION:
+                    inputLocation(message, message.getMessageInput().getInputTypeLocation().getInput());
                     break;
                 case Constants.InputType.MEDIA:
                     Media input = message.getMessageInput().getInputTypeMedia().getInput().
@@ -272,15 +272,22 @@ public class MessageResponse extends BaseModel {
                             message.getMessageInput().getMandatory(), message.getSessionId());
                     break;
                 case Constants.InputType.LIST:
+                    inputListOption(message.getMessageInput().
+                            getInputTypeList().getInput().getVal(), message);
                     break;
                 case Constants.InputType.OPTIONS:
                     inputTextString(getValueFromInput(message.getMessageInput().getMandatory(),
                             message.getMessageInput().getInputForOptions()), message);
+                    if (message.getMessageInput().getMandatory()
+                            == Constants.FCMConstants.MANDATORY_TRUE) {
+                        data.getContent().getInput().setText
+                                (message.getMessageInput().getInputForOptions().getText());
+                    }
                     break;
-
             }
 
             this.message = message;
+            this.message.setResponseTo(message.getResponseTo());
             return this;
         }
 
@@ -288,6 +295,7 @@ public class MessageResponse extends BaseModel {
             this.data.setType(message.getMessageType());
             inputCarousel(message.getMessageCarousel().getInput(), message);
             this.message = message;
+            this.message.setResponseTo(message.getResponseTo());
             return this;
         }
 
@@ -328,8 +336,10 @@ public class MessageResponse extends BaseModel {
 
         private Message buildMessage() {
             Message message = new Message();
-            message.setFrom(new Participant(PreferencesManager.getsInstance(mContext).getUserName(), 1));
-            message.setTo(new Participant(PreferencesManager.getsInstance(mContext).getBusinessId(), 1));
+            message.setFrom(new Participant(
+                    PreferencesManager.getsInstance(mContext).getUserName(), 1));
+            message.setTo(new Participant(
+                    PreferencesManager.getsInstance(mContext).getBusinessId(), 1));
             message.setSenderType(Constants.SenderType.USER);
 //            message.setTimestamp(System.currentTimeMillis());
             message.setTimestamp(Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis());
@@ -355,14 +365,6 @@ public class MessageResponse extends BaseModel {
 
     public void setData(Data data) {
         this.data = data;
-    }
-
-    public List<MessageResponse> getChats() {
-        return chats;
-    }
-
-    public void setChats(List<MessageResponse> chats) {
-        this.chats = chats;
     }
 
     public Context getContext() {

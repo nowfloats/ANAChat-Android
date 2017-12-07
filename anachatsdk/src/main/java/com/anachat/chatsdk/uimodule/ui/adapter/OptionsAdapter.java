@@ -99,7 +99,6 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyViewHo
                     message)
                     .build();
             messageResponse.getData().getContent().getInput().setText(option.getTitle());
-//            imageLoader.disableCarousels();
             messageResponse.send();
         });
     }

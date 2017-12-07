@@ -20,7 +20,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -159,24 +158,11 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
     }
 
     private void sortItems() {
-        ApiExecutor apiExecutor= ApiExecutorFactory.getHandlerExecutor();
-        apiExecutor.runUiWithDelay(new Runnable() {
-            @Override
-            public void run() {
-                Collections.sort(items, (w1, w2) -> Long.compare(w2.timestamp, w1.timestamp));
-                notifyDataSetChanged();
-            }
+        ApiExecutor apiExecutor = ApiExecutorFactory.getHandlerExecutor();
+        apiExecutor.runUiWithDelay(() -> {
+            Collections.sort(items, (w1, w2) -> Long.compare(w2.timestamp, w1.timestamp));
+            notifyDataSetChanged();
         });
-//        Collections.sort(items, (w1, w2) -> Long.compare(w2.timestamp, w1.timestamp));
-//        notifyDataSetChanged();
-//        Collections.sort(items, new Comparator<Wrapper>() {
-//            @Override
-//            public int compare(Wrapper w1, Wrapper w2) {
-//                if(w2.timestamp > w1.timestamp) return 1;
-//                if(w2.timestamp < w1.timestamp) return -1;
-//                return 0;
-//            }
-//        });
     }
 
     public void addLoadingIndicator() {
@@ -587,9 +573,11 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
             if (wrapper.item instanceof Message &&
                     ((Message) wrapper.item).getTimestamp() == previousTimeStamp) {
                 ((Message) wrapper.item).setTimestamp(newTime);
+                ((Message) wrapper.item).setSyncWithServer(true);
+                notifyDataSetChanged();
+                return;
             }
         }
-        notifyDataSetChanged();
     }
 
 

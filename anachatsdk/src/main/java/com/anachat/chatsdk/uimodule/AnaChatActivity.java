@@ -4,9 +4,11 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.DrawableContainer;
@@ -19,12 +21,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -46,6 +48,7 @@ import android.widget.Toast;
 import com.anachat.chatsdk.AnaChatSDKConfig;
 import com.anachat.chatsdk.AnaCore;
 import com.anachat.chatsdk.MessageListener;
+import com.anachat.chatsdk.internal.MessengerCoreMethods;
 import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.internal.model.MessageResponse;
@@ -53,6 +56,7 @@ import com.anachat.chatsdk.internal.model.inputdata.Address;
 import com.anachat.chatsdk.internal.model.inputdata.Input;
 import com.anachat.chatsdk.internal.model.inputdata.Time;
 import com.anachat.chatsdk.internal.utils.ListenerManager;
+import com.anachat.chatsdk.internal.utils.NFChatUtils;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
 import com.anachat.chatsdk.library.R;
 import com.anachat.chatsdk.uimodule.chatuikit.commons.ImageLoader;
@@ -119,7 +123,9 @@ public class AnaChatActivity extends AppCompatActivity
     private TextView tvTittle;
     private TextView tvDesc;
     private OptionsAdapter optionsAdapter;
+    private Boolean isFirstHistoryLoaded = false;
     private static final int LOCATION_PERMISSION_REQUEST = 10;
+    private BottomSheetDialog mBottomSheetDialog = null;
 //    private static final float SHAKE_THRESHOLD = 65; // m/S**2
 //    private static final int MIN_TIME_BETWEEN_SHAKES_MILLISECS = 4000;
 //    private long mLastShakeTime;
@@ -148,11 +154,11 @@ public class AnaChatActivity extends AppCompatActivity
 //                                ApiExecutor apiExecutor = ApiExecutorFactory.getHandlerExecutor();
 //                                apiExecutor.runAsync(() -> {
 //                                    MessageRepository.getInstance(AnaChatActivity.this).clearTables();
-//                                    messagesAdapter.clear();
+//                                    messagesAdapter.clearQueue();
 //                                    ApiExecutor executor = ApiExecutorFactory.getHandlerExecutor();
 //                                    executor.runOnUiThread(() -> {
 //                                        hideBottomViews();
-//                                        messagesAdapter.clear();
+//                                        messagesAdapter.clearQueue();
 //                                        messagesAdapter.notifyDataSetChanged();
 //                                        AnaCore.loadInitialHistory(AnaChatActivity.this);
 ////                                                onConversationUpdate(new ArrayList<>());
@@ -176,6 +182,35 @@ public class AnaChatActivity extends AppCompatActivity
 //        }
 //    };
 
+    private void showNoInternet() {
+        if (mBottomSheetDialog != null && mBottomSheetDialog.isShowing()) return;
+        mBottomSheetDialog = new BottomSheetDialog(this);
+        View sheetView = getLayoutInflater().inflate(R.layout.dialog_no_internet, null);
+        mBottomSheetDialog.setContentView(sheetView);
+        mBottomSheetDialog.setCancelable(false);
+
+        TextView tvCheckNetSettings = sheetView.findViewById(R.id.tv_line_3);
+        ImageView ivSignal = sheetView.findViewById(R.id.iv_no_net);
+        ivSignal.setColorFilter(Color.parseColor
+                (PreferencesManager.getsInstance(imageLoader.getContext()).getThemeColor()));
+        GradientDrawable drawable = (GradientDrawable) tvCheckNetSettings.getBackground();
+        drawable.setColor(Color.parseColor(PreferencesManager.getsInstance(this).getThemeColor()));
+        drawable.setStroke(3,
+                Color.parseColor(PreferencesManager.getsInstance(this).getThemeColor()));
+        tvCheckNetSettings.setBackground(drawable);
+        tvCheckNetSettings.setOnClickListener(view -> {
+            try {
+                Intent intent = new Intent("android.settings.WIFI_SETTINGS");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        mBottomSheetDialog.show();
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -198,9 +233,8 @@ public class AnaChatActivity extends AppCompatActivity
             String tittle = getIntent().getExtras().
                     getString(Constants.UIParams.ToolBar_Tittle, "ANAChat");
             tvTittle.setText(tittle);
-            String desc = getIntent().getExtras().
-                    getString(Constants.UIParams.ToolBar_Tittle_Desc, "ANA Intelligence");
-            tvDesc.setText(desc);
+//            String desc = getIntent().getExtras().
+//                    getString(Constants.UIParams.ToolBar_Tittle_Desc, "ANA Intelligence");
         }
     }
 
@@ -227,6 +261,9 @@ public class AnaChatActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        registerReceiver(networkStateReceiver,
+                new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+
 //        initSensors();
     }
 
@@ -237,11 +274,17 @@ public class AnaChatActivity extends AppCompatActivity
         super.onPause();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(networkStateReceiver);
+
+    }
+
     private void initViews() {
         RelativeLayout toolbar = findViewById(R.id.rl_toolbar);
         if (getSupportActionBar() != null)
             getSupportActionBar().hide();
-//        setSupportActionBar(toolbar);
         toolbar.setBackgroundColor(
                 Color.parseColor(PreferencesManager.getsInstance(this).getThemeColor()));
 
@@ -727,6 +770,8 @@ public class AnaChatActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+//        PushConsumer.getInstance(this).clearQueue();
+        ListenerManager.getInstance().removeChatMessageListener(this);
 //        if (selectionCount == 0) {
 //            super.onBackPressed();
 //        } else {
@@ -770,6 +815,7 @@ public class AnaChatActivity extends AppCompatActivity
 
     @Override
     public void onMessageInserted(Message message) {
+        if (!isFirstHistoryLoaded) return;
         if (message.getSenderType() != Constants.SenderType.USER &&
                 message.getMessageType() != Constants.MessageType.INPUT) {
             messagesAdapter.addLoadingIndicator();
@@ -794,6 +840,8 @@ public class AnaChatActivity extends AppCompatActivity
         checkLastMessage();
         if (messages != null && messages.size() == 0 && messagesAdapter.getItemCount() == 0)
             addGetStartedMessage();
+
+        isFirstHistoryLoaded = true;
     }
 
     private void addGetStartedMessage() {
@@ -1355,4 +1403,17 @@ public class AnaChatActivity extends AppCompatActivity
         }
         ListenerManager.getInstance().notifyPickLocation(AnaChatActivity.this);
     }
+
+    private BroadcastReceiver networkStateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (!NFChatUtils.isNetworkConnected(context)) {
+                tvDesc.setText(getString(R.string.no_internet_line_available));
+            } else {
+                tvDesc.setText(getString(R.string.internet_line_available));
+                MessengerCoreMethods.syncMessages(AnaChatActivity.this);
+            }
+
+        }
+    };
 }

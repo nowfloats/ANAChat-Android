@@ -51,7 +51,7 @@
         android:id="@id/iv_triangle"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:layout_marginTop="-3dp"
+        android:layout_marginTop="-2.3dip"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@id/bubble"

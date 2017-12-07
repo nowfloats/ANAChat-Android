@@ -66,7 +66,8 @@ public class MessageRepository {
     }
 
     public void handleMessageResponse(MessageResponse messageResponse) {
-        Log.d(TAG, "handleMessageResponse with API!" + messageResponse.getMessage().getMessageType());
+        Log.d(TAG, "handleMessageResponse with API!" +
+                messageResponse.getMessage().getMessageType());
         switch (messageResponse.getMessage().getMessageType()) {
             case Constants.MessageType.CAROUSEL:
                 setCarousalContent(messageResponse);
@@ -289,6 +290,7 @@ public class MessageRepository {
             if (!resultMessage.getSyncWithServer()) ApiCalls.sendMessage(context, messageResponse);
         } catch (SQLException e) {
             e.printStackTrace();
+            return;
         }
         if (messageResponse.isNotifyMessage())
             ListenerManager.getInstance().notifyNewMessage(resultMessage);
