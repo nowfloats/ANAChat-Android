@@ -48,7 +48,6 @@ import android.widget.Toast;
 import com.anachat.chatsdk.AnaChatSDKConfig;
 import com.anachat.chatsdk.AnaCore;
 import com.anachat.chatsdk.MessageListener;
-import com.anachat.chatsdk.internal.MessengerCoreMethods;
 import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.internal.model.MessageResponse;
@@ -639,6 +638,7 @@ public class AnaChatActivity extends AppCompatActivity
                 , registerMessagesTypes(), imageLoader);
         messagesAdapter.enableSelectionMode(this);
         messagesAdapter.setLoadMoreListener(this);
+        messagesAdapter.setHasStableIds(true);
         messagesList.setAdapter(messagesAdapter);
     }
 
@@ -1411,7 +1411,7 @@ public class AnaChatActivity extends AppCompatActivity
                 tvDesc.setText(getString(R.string.no_internet_line_available));
             } else {
                 tvDesc.setText(getString(R.string.internet_line_available));
-                MessengerCoreMethods.syncMessages(AnaChatActivity.this);
+                // MessengerCoreMethods.syncMessages(AnaChatActivity.this);
             }
 
         }

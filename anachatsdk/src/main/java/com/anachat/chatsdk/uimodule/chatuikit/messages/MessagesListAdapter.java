@@ -108,6 +108,11 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
     }
 
     @Override
+    public long getItemId(int position) {
+        return items.get(position).timestamp;
+    }
+
+    @Override
     public int getItemCount() {
         return items.size();
     }

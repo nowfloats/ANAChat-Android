@@ -30,7 +30,7 @@ import com.google.android.gms.maps.model.LatLng;
  */
 
 public class LaunchActivity extends AppCompatActivity implements LocationPickListener {
-    public static final String BUSINESSID = "yout_id";
+    public static final String BUSINESSID = "your__business_id";
     public static final String BASE_URL = "your_url";
     private Long waitTime = 2000L;
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -49,7 +49,6 @@ public class LaunchActivity extends AppCompatActivity implements LocationPickLis
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
-        AnaChatBotMessagingService.addMessage(this);
         if (PreferencesManager.getsInstance(this).getUserName().isEmpty()) {
             LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                     new IntentFilter("startBot"));

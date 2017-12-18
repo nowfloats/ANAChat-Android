@@ -10,6 +10,6 @@ import com.anachat.chatsdk.internal.utils.ExceptionType;
 public enum UnexpectedException implements ExceptionType {
     GENERIC;
 
-    private UnexpectedException() {
+    UnexpectedException() {
     }
 }

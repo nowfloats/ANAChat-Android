@@ -2,16 +2,18 @@ package com.anachat.chatsdk.uimodule.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
+import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.model.MessageResponse;
+import com.anachat.chatsdk.library.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.anachat.chatsdk.library.R;
 
 import java.io.File;
 
@@ -51,6 +53,8 @@ public class MediaPreviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media_preview);
         ivSend = findViewById(R.id.send_image);
+        ivSend.setColorFilter(Color.parseColor
+                (PreferencesManager.getsInstance(this).getThemeColor()));
         ivPreview = findViewById(R.id.iv_preview);
         ivClose = findViewById(R.id.close_page);
         type = getIntent().getExtras().getInt(FILE_TYPE);

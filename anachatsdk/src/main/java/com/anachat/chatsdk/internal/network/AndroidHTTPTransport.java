@@ -12,6 +12,7 @@ import com.anachat.chatsdk.internal.utils.StringUtils;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,7 +23,6 @@ import java.net.SocketException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -55,12 +55,6 @@ public class AndroidHTTPTransport implements HTTPTransport {
                 NetworkException networkException;
                 try {
                     var26 = true;
-//                    if ("https://".equals(NetworkConstants.scheme)) {
-//                        connection = (new URL(request.url)).openConnection();
-//                        this.fixSSLSocketProtocols((HttpsURLConnection) connection);
-//                    } else {
-//                        connection = (new URL(request.url)).openConnection();
-//                    }
                     connection = (new URL(request.url)).openConnection();
                     if (request.url.startsWith("https"))
                         this.fixSSLSocketProtocols((HttpsURLConnection) connection);
@@ -261,21 +255,18 @@ public class AndroidHTTPTransport implements HTTPTransport {
     }
 
     private Response upload(UploadRequest uploadRequest) {
-        String responseString = "";
+        Response response = new Response(500, "", null);
         try {
-
-            //setup params
-            Map<String, String> params = new HashMap<>();
-
-            String result = MultipartUtility.multipartRequest(uploadRequest.url, params, uploadRequest.data.get("file"), "video", uploadRequest.mimeType);
+            MultipartUtility multipartUtility = new MultipartUtility(uploadRequest.url);
+            multipartUtility.addFilePart("file", new File(uploadRequest.data.get("file")));
+            return multipartUtility.finish();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (!responseString.isEmpty()) {
-            return new Response(200, responseString, null);
-        }
-        return new Response(400, responseString, null);
+        return response;
+
     }
-
-
 }
+
+
+

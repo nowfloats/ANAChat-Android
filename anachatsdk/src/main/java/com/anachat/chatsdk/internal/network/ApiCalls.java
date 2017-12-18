@@ -15,6 +15,7 @@ import com.anachat.chatsdk.internal.utils.constants.NetworkConstants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -117,12 +118,29 @@ public class ApiCalls {
             body.put("file", file);
             HTTPTransport httpTransport = new AndroidHTTPTransport();
             Request request = new UploadRequest(Method.POST,
-                    PreferencesManager.getsInstance(context).getBaseUrl() + "/files",
+                    PreferencesManager.getsInstance(context).getBaseUrl() + "/files/",
                     body, getMimeType(screenshotFile.getPath()), getFileHeaders(),
                     NetworkConstants.UPLOAD_CONNECT_TIMEOUT);
             Response response = httpTransport.makeRequest(request);
             if (response.status >= 200 && response.status < 300) {
-//                    messageResponse.
+                try {
+                    JSONObject jsonObject = new JSONObject(response.responseString);
+                    if (jsonObject.has("links")) {
+                        JSONArray url = jsonObject.getJSONArray("links");
+                        if (url.length() > 0) {
+                            String mediaUrl = url.getJSONObject(0).getString("href");
+                            messageResponse.getData().getContent().getInput().
+                                    getMedia().get(0).setPreviewUrl(mediaUrl);
+                            messageResponse.getData().getContent().getInput().
+                                    getMedia().get(0).setUrl(mediaUrl);
+                            messageResponse.setFileUpload(false);
+                            sendMessage(context, messageResponse);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
 
@@ -206,9 +224,11 @@ public class ApiCalls {
     }
 
     private static List<KeyValuePair> getFileHeaders() {
-        ArrayList headers = new ArrayList();
+        ArrayList<KeyValuePair> headers = new ArrayList<>();
+        String boundary = "===" + System.currentTimeMillis() + "===";
         headers.add(new KeyValuePair("Connection", "Keep-Alive"));
-        headers.add(new KeyValuePair("Content-Type", "multipart/form-data;boundary=*****"));
+        headers.add(new KeyValuePair("Content-Type", "multipart/form-data; boundary=" + boundary));
+        headers.add(new KeyValuePair("Accept", "*/*"));
         return headers;
     }
 
