@@ -359,8 +359,9 @@ public class MessageHolders {
             super.onBind(message);
             if (bubble != null) {
                 bubble.setSelected(isSelected());
+//                ViewCompat.setElevation(bubble, 4f);
+                ViewCompat.setTranslationZ(bubble, 4f);
             }
-
             if (text != null) {
                 text.setText(message.getText());
             }
@@ -389,6 +390,8 @@ public class MessageHolders {
         public void onBind(MESSAGE message) {
             super.onBind(message);
             if (bubble != null) {
+//                ViewCompat.setElevation(bubble, 8);
+                ViewCompat.setTranslationZ(bubble, 4f);
                 bubble.setSelected(isSelected());
             }
 
@@ -416,6 +419,8 @@ public class MessageHolders {
         @Override
         public void onBind(Date date) {
             if (text != null) {
+//                ViewCompat.setElevation(text, 8);
+                ViewCompat.setTranslationZ(text, 4f);
                 dateFormat = dateFormat == null ? DateFormatter.Template.STRING_DAY_MONTH_YEAR.get() : dateFormat;
                 String formattedDate = null;
                 if (dateHeadersFormatter != null) formattedDate = dateHeadersFormatter.format(date);

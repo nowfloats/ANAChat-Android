@@ -76,7 +76,7 @@ public class OptionsAdapterCarouselItem extends RecyclerView.Adapter<OptionsAdap
         }
         final Option option = optionList.get(position);
         holder.title.setText(option.getTitle());
-        holder.itemView.setOnClickListener(view -> {
+        holder.title.setOnClickListener(view -> {
             if (enableButtons) {
                 String value = option.getValue();
                 if (option.getType() == 0) {

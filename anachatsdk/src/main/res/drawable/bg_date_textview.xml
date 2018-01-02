@@ -5,5 +5,5 @@
     <solid android:color="@android:color/white" />
     <stroke
         android:width="0.5dip"
-        android:color="@color/text_color_date_header" />
+        android:color="@color/gray_light" />
 </shape>

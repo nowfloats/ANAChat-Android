@@ -51,6 +51,7 @@
             android:layout_height="27dp"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="3dp"
+            android:layout_marginStart="3dp"
             android:background="@drawable/bg_right_round_corner">
 
             <TextView
@@ -62,8 +63,8 @@
                 android:layout_centerVertical="true"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:textSize="10sp"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/message_type"
@@ -72,10 +73,13 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
+                android:drawableLeft="@drawable/ic_picture"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_picture"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:textColor="@color/white"
-                android:textSize="10sp" />
+                android:textSize="12sp" />
         </RelativeLayout>
 
 

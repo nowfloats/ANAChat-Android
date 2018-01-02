@@ -1,6 +1,5 @@
 package com.anachat.chatsdk.uimodule.viewholder.input;
 
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,7 +30,8 @@ public class OutcomingInputMediaMessageViewHolder
     @Override
     public void onBind(Message message) {
         super.onBind(message);
-        ivSentStatus.setColorFilter(Color.WHITE);
+        ivSentStatus.setAlpha(1f);
+        ivSentStatus.setColorFilter(ContextCompat.getColor(imageLoader.getContext(), R.color.white));
         if (message.getSyncWithServer()) {
             ivSentStatus.setImageDrawable
                     (ContextCompat.getDrawable(imageLoader.getContext(), R.drawable.ic_tick));

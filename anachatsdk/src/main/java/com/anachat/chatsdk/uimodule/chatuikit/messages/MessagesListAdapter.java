@@ -152,8 +152,10 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
 //        for (Wrapper wrapper : items) {
 //            Log.e("beforeSortTime", "" + wrapper.timestamp);
 //        }
+        if (items.size() > 0)
+            notifyItemChanged(1);
         notifyItemRangeInserted(0, isNewMessageToday ? 2 : 1);
-        sortItems();
+        //   sortItems();
 //        for (Wrapper wrapper : items) {
 //            Log.e("afterSortTime", "" + wrapper.timestamp);
 //        }
@@ -536,9 +538,10 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
 //            Message next = (Message) items.get(nextPos).item;
 //            if (next.getMessageType() == Constants.MessageType.SIMPLE &&
 //                    next.getMessageSimple().getMedia() != null) return true;
-
             return ((MESSAGE) items.get(nextPos).item).getMessageType() !=
                     ((MESSAGE) items.get(position).item).getMessageType();
+        } else if (items.get(nextPos).item instanceof String) {
+            return true;
         }
         return false;
     }

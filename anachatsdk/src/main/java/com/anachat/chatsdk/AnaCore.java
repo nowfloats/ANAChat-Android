@@ -93,7 +93,7 @@ public final class AnaCore {
                 List<Message> messages =
                         MessageRepository.getInstance(context).loadHistoryMessages(totalItems);
                 if (messages != null && messages.size() > 0) {
-                    ListenerManager.getInstance().notifyHistoryLoaded(messages);
+                    ListenerManager.getInstance().notifyHistoryLoaded(messages, page);
                 } else {
                     ApiCalls.fetchHistoryMessages(context, page, totalItems, timestamp);
                 }

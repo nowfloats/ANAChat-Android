@@ -12,5 +12,7 @@ public interface ApiExecutor {
 
     void submitToPool(Runnable var1);
 
+    void restart();
+
     <T> RunnableUtil.RunnableFuture<T> callAndReturn(RunnableUtil.ValueRunnable<T> var1);
 }

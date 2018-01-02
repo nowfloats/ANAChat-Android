@@ -18,6 +18,7 @@ import com.anachat.chatsdk.internal.model.MessageInput;
 import com.anachat.chatsdk.internal.model.MessageResponse;
 import com.anachat.chatsdk.internal.model.MessageSimple;
 import com.anachat.chatsdk.internal.model.Option;
+import com.anachat.chatsdk.internal.model.inputdata.Input;
 import com.anachat.chatsdk.internal.model.inputdata.InputTypeList;
 import com.anachat.chatsdk.internal.model.inputdata.InputTypeMedia;
 import com.anachat.chatsdk.internal.network.ApiCalls;
@@ -199,7 +200,7 @@ public class MessageRepository {
                         inputTypeMedia.setInput(messageResponse.getData().getContent().getInput());
                         inputTypeMedia.setMediaType(messageResponse.getData().getContent().getMediaType());
                         messageInput.setInputTypeMedia(inputTypeMedia);
-                        messageResponse.setFileUpload(true);
+//                        messageResponse.setFileUpload(true);
                         break;
                     case Constants.InputType.TEXT:
                         InputTypeText inputTypeText = new InputTypeText();
@@ -246,7 +247,6 @@ public class MessageRepository {
                                     .getContent().getValues());
                             messageInput.setInputTypeList(inputTypeList);
                             messageResponse.getMessage().setMessageInput(messageInput);
-//                            if (!isMessageExist(messageResponse.getMessage().getTimestamp()))
                             for (Option option : messageInput.getInputTypeList()
                                     .getValuesForeignCollection()) {
                                 option.setInputTypeList(inputTypeList);
@@ -311,7 +311,8 @@ public class MessageRepository {
         return mHelper.getMessageDao().query(builder.prepare());
     }
 
-    public void saveHistoryMessages(List<MessageResponse> messageResponses, Integer messageCount) throws IOException, SQLException {
+    public void saveHistoryMessages(List<MessageResponse> messageResponses,
+                                    Integer messageCount, Integer page) throws IOException, SQLException {
         for (MessageResponse messageResponse : messageResponses) {
             int messageType = messageResponse.getData().getType();
             messageResponse.getMessage().setMessageType(messageType);
@@ -319,7 +320,7 @@ public class MessageRepository {
             messageResponse.setNotifyMessage(false);
             handleMessageResponse(messageResponse);
         }
-        ListenerManager.getInstance().notifyHistoryLoaded(loadHistoryMessages(messageCount));
+        ListenerManager.getInstance().notifyHistoryLoaded(loadHistoryMessages(messageCount), page);
     }
 
     public void clearTables() {
@@ -355,6 +356,16 @@ public class MessageRepository {
         updateBuilder.updateColumnValue("messageId", message.getMessageId());
         updateBuilder.updateColumnValue("timestamp", message.getTimestamp());
         return updateBuilder.update();
+    }
+
+    public int updateMediaMessage(Input input, Integer id) throws SQLException {
+        UpdateBuilder<InputTypeMedia, Integer> updateBuilder
+                = mHelper.getInputTypeMediaDao().updateBuilder();
+        updateBuilder.where().eq("id", id);
+        updateBuilder.updateColumnValue("input", input);
+        int res = updateBuilder.update();
+        //if (res>0)//TODO update views
+        return res;
     }
 
 //    public int updateCarouselMessage() throws SQLException {

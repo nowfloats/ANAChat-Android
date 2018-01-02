@@ -10,7 +10,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.DrawableContainer;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
@@ -26,14 +29,17 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.OvershootInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -48,6 +54,7 @@ import android.widget.Toast;
 import com.anachat.chatsdk.AnaChatSDKConfig;
 import com.anachat.chatsdk.AnaCore;
 import com.anachat.chatsdk.MessageListener;
+import com.anachat.chatsdk.internal.MessengerCoreMethods;
 import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.internal.model.MessageResponse;
@@ -56,6 +63,7 @@ import com.anachat.chatsdk.internal.model.inputdata.Input;
 import com.anachat.chatsdk.internal.model.inputdata.Time;
 import com.anachat.chatsdk.internal.utils.ListenerManager;
 import com.anachat.chatsdk.internal.utils.NFChatUtils;
+import com.anachat.chatsdk.internal.utils.concurrent.ApiExecutorFactory;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
 import com.anachat.chatsdk.library.R;
 import com.anachat.chatsdk.uimodule.chatuikit.commons.ImageLoader;
@@ -64,14 +72,16 @@ import com.anachat.chatsdk.uimodule.chatuikit.messages.MessagesList;
 import com.anachat.chatsdk.uimodule.chatuikit.messages.MessagesListAdapter;
 import com.anachat.chatsdk.uimodule.chatuikit.utils.RangeTimePickerDialog;
 import com.anachat.chatsdk.uimodule.ui.MediaPreviewActivity;
-import com.anachat.chatsdk.uimodule.ui.PictureViewerActivity;
 import com.anachat.chatsdk.uimodule.ui.VideoViewerActivity;
 import com.anachat.chatsdk.uimodule.ui.adapter.InputListOptionsAdapter;
 import com.anachat.chatsdk.uimodule.ui.adapter.OptionsAdapter;
 import com.anachat.chatsdk.uimodule.utils.AppUtils;
+import com.anachat.chatsdk.uimodule.utils.ImagesCache;
 import com.anachat.chatsdk.uimodule.utils.InputIntents;
+import com.anachat.chatsdk.uimodule.utils.LruCache;
 import com.anachat.chatsdk.uimodule.utils.PathUtil;
 import com.anachat.chatsdk.uimodule.utils.SlideInLeftAnimator;
+import com.anachat.chatsdk.uimodule.utils.TouchImageView;
 import com.anachat.chatsdk.uimodule.viewholder.BlankMessageViewHolder;
 import com.anachat.chatsdk.uimodule.viewholder.carousel.IncomingCarouselMessageViewHolder;
 import com.anachat.chatsdk.uimodule.viewholder.carousel.OutComingCarouselTextMessageViewHolder;
@@ -87,6 +97,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -106,12 +119,15 @@ public class AnaChatActivity extends AppCompatActivity
         MessagesListAdapter.OnLoadMoreListener,
         MessageListener
         , View.OnClickListener,
+        SwipeRefreshLayout.OnRefreshListener,
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private MessagesList messagesList;
     protected ImageLoader imageLoader;
     protected MessagesListAdapter<Message> messagesAdapter;
     private EditText edInput;
+    private LruCache mMemoryCache;
+    private SwipeRefreshLayout swipeRefreshLayout;
     //    private Menu menu;
 //    private int selectionCount;
     private Button btnAction;
@@ -121,11 +137,13 @@ public class AnaChatActivity extends AppCompatActivity
     private ImageView ivToolbarLogo;
     private TextView tvTittle;
     private TextView tvDesc;
+    private ImageView ivOnline;
     private OptionsAdapter optionsAdapter;
     private Boolean isFirstHistoryLoaded = false;
     private static final int LOCATION_PERMISSION_REQUEST = 10;
     private BottomSheetDialog mBottomSheetDialog = null;
-//    private static final float SHAKE_THRESHOLD = 65; // m/S**2
+
+    //    private static final float SHAKE_THRESHOLD = 65; // m/S**2
 //    private static final int MIN_TIME_BETWEEN_SHAKES_MILLISECS = 4000;
 //    private long mLastShakeTime;
 //    private SensorManager mSensorMgr;
@@ -180,7 +198,6 @@ public class AnaChatActivity extends AppCompatActivity
 //        public void onAccuracyChanged(Sensor sensor, int accuracy) {
 //        }
 //    };
-
     private void showNoInternet() {
         if (mBottomSheetDialog != null && mBottomSheetDialog.isShowing()) return;
         mBottomSheetDialog = new BottomSheetDialog(this);
@@ -221,6 +238,7 @@ public class AnaChatActivity extends AppCompatActivity
         }
         setContentView(R.layout.activity_ana_chat);
         initViews();
+        setCache();
         installAna();
         initViews();
         initImageLoader();
@@ -228,13 +246,23 @@ public class AnaChatActivity extends AppCompatActivity
         if (getIntent().getExtras() != null) {
             int logo = getIntent().getExtras().
                     getInt(Constants.UIParams.ToolBar_Image, R.drawable.ic_placeholder);
-            ivToolbarLogo.setBackgroundResource(logo);
+            ivToolbarLogo.setBackgroundResource(R.color.white);
+            ivToolbarLogo.setImageResource(logo);
             String tittle = getIntent().getExtras().
                     getString(Constants.UIParams.ToolBar_Tittle, "ANAChat");
             tvTittle.setText(tittle);
 //            String desc = getIntent().getExtras().
 //                    getString(Constants.UIParams.ToolBar_Tittle_Desc, "ANA Intelligence");
         }
+    }
+
+    private void setCache() {
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+
+        // Use 1/8th of the available memory for this memory cache.
+        final int cacheSize = maxMemory / 8;
+
+        mMemoryCache = new LruCache(cacheSize);
     }
 
     private void installAna() {
@@ -270,6 +298,7 @@ public class AnaChatActivity extends AppCompatActivity
     protected void onPause() {
 //        if (mSensorMgr != null)
 //            mSensorMgr.unregisterListener(mSensorListener);
+        ApiExecutorFactory.getHandlerExecutor().restart();
         super.onPause();
     }
 
@@ -286,8 +315,12 @@ public class AnaChatActivity extends AppCompatActivity
             getSupportActionBar().hide();
         toolbar.setBackgroundColor(
                 Color.parseColor(PreferencesManager.getsInstance(this).getThemeColor()));
-
         messagesList = findViewById(R.id.messagesList);
+        swipeRefreshLayout = findViewById(R.id.swipe_container);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeColors(Color.
+                parseColor(PreferencesManager.getsInstance(this).getThemeColor()));
+        swipeRefreshLayout.setEnabled(false);
         SlideInLeftAnimator animator = new SlideInLeftAnimator();
         animator.setInterpolator(new OvershootInterpolator());
         messagesList.setItemAnimator(animator);
@@ -310,6 +343,7 @@ public class AnaChatActivity extends AppCompatActivity
         ivToolbarLogo = findViewById(R.id.iv_toolbar);
         tvTittle = findViewById(R.id.tv_tittle_name);
         tvDesc = findViewById(R.id.tv_desc);
+        ivOnline = findViewById(R.id.iv_online);
         input = findViewById(R.id.input);
         edInput = findViewById(R.id.messageInput);
         edInput.addTextChangedListener(new TextWatcher() {
@@ -360,6 +394,9 @@ public class AnaChatActivity extends AppCompatActivity
                                     .timeout(20000)
                                     .dontTransform())
                             .into(imageView);
+//                    ApiExecutor apiExecutor = ApiExecutorFactory.getHandlerExecutor();
+//                    apiExecutor.submitToPool(() -> DownloadImageFromPath(url, imageView));
+
                 } else {
                     Uri uri = Uri.fromFile(new File(url));
                     imageView.setImageURI(uri);
@@ -373,12 +410,47 @@ public class AnaChatActivity extends AppCompatActivity
                 }
             }
 
+            public void DownloadImageFromPath(String path, ImageView iv) {
+                ImagesCache imagesCache = ImagesCache.getInstance();
+                imagesCache.initializeCache();
+                Bitmap bitmap = imagesCache.getImageFromWarehouse(path);
+                if (bitmap != null) {
+                    iv.setImageBitmap(bitmap);
+                    return;
+                }
+                InputStream in = null;
+                Bitmap bmp = null;
+                int responseCode = -1;
+                try {
+                    URL url = new URL(path);
+                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                    con.setDoInput(true);
+                    con.connect();
+                    responseCode = con.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        //download
+                        in = con.getInputStream();
+                        bmp = BitmapFactory.decodeStream(in);
+                        in.close();
+                        iv.setImageBitmap(bmp);
+                        imagesCache.addImageToWarehouse(path, bmp);
+//                        mMemoryCache.put(path, bmp);
+                    }
+
+                } catch (Exception ex) {
+                    Log.e("Exception", ex.toString());
+                }
+            }
+
+
             @Override
             public void openMedia(String url, int type) {
-                if (type == Constants.MediaType.IMAGE)
-                    startActivity(PictureViewerActivity.startIntent(AnaChatActivity.this, url));
+                if (type == Constants.MediaType.IMAGE) {
+                    loadPhotoDialog(url);
+                }
                 if (type == Constants.MediaType.VIDEO)
                     startActivity(VideoViewerActivity.startIntent(AnaChatActivity.this, url));
+                //TODO add audio here
             }
 
             @Override
@@ -409,6 +481,28 @@ public class AnaChatActivity extends AppCompatActivity
         };
     }
 
+    private void loadPhotoDialog(String url) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog dialog = builder.create();
+        LayoutInflater inflater = getLayoutInflater();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if (dialog.getWindow() != null)
+            dialog.getWindow().
+                    setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        View dialogLayout = inflater.inflate(R.layout.activity_picture_viewer, null);
+        dialog.setView(dialogLayout);
+        TouchImageView image = dialogLayout.findViewById(R.id.image);
+        ImageView close = dialogLayout.findViewById(R.id.close_page);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        imageLoader.loadImage(image, url);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.show();
+    }
 
     public boolean onSubmit(CharSequence input) {
         String text = input.toString().trim();
@@ -781,6 +875,9 @@ public class AnaChatActivity extends AppCompatActivity
 
     @Override
     public void onLoadMore(int page, int totalItemsCount) {
+        if (page == 0 || totalItemsCount < 20) return;
+        swipeRefreshLayout.setRefreshing(true);
+//        swipeRefreshLayout.postDelayed(() -> swipeRefreshLayout.setRefreshing(false), 8000);
         AnaCore.loadMoreMessages(this, totalItemsCount, page,
                 AnaCore.getOldestTimeStamp(this));
     }
@@ -834,6 +931,7 @@ public class AnaChatActivity extends AppCompatActivity
 
     @Override
     public void onConversationUpdate(List<Message> messages) {
+        swipeRefreshLayout.setRefreshing(false);
         if (messages != null && messages.size() > 0) {
             messagesAdapter.addToEnd(messages, false);
         }
@@ -842,6 +940,15 @@ public class AnaChatActivity extends AppCompatActivity
             addGetStartedMessage();
 
         isFirstHistoryLoaded = true;
+    }
+
+    @Override
+    public void onHistoryLoaded(List<Message> messages) {
+        swipeRefreshLayout.setRefreshing(false);
+        if (!isFirstHistoryLoaded) return;
+        if (messages != null && messages.size() > 0) {
+            messagesAdapter.addToEnd(messages, false);
+        }
     }
 
     private void addGetStartedMessage() {
@@ -1409,11 +1516,17 @@ public class AnaChatActivity extends AppCompatActivity
         public void onReceive(Context context, Intent intent) {
             if (!NFChatUtils.isNetworkConnected(context)) {
                 tvDesc.setText(getString(R.string.no_internet_line_available));
+                ivOnline.setColorFilter(ContextCompat.getColor(context, R.color.red_800));
             } else {
                 tvDesc.setText(getString(R.string.internet_line_available));
-                // MessengerCoreMethods.syncMessages(AnaChatActivity.this);
+                ivOnline.setColorFilter(ContextCompat.getColor(context, R.color.green_online));
+                MessengerCoreMethods.syncMessages(AnaChatActivity.this);
             }
-
         }
     };
+
+    @Override
+    public void onRefresh() {
+
+    }
 }

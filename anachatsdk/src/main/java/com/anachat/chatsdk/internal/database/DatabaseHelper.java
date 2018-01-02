@@ -43,6 +43,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     private Dao<Message, Integer> messageDao;
+    private Dao<InputTypeMedia, Integer> inputTypeMediaDao;
     private Dao<Option, Integer> optionDao;
     private Dao<MessageInput, Integer> messageInputDao;
     private Dao<MessageCarousel, Integer> messageCarouselDao;
@@ -143,6 +144,13 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             messageDao = getDao(Message.class);
         }
         return messageDao;
+    }
+
+    public Dao<InputTypeMedia, Integer> getInputTypeMediaDao() throws SQLException {
+        if (inputTypeMediaDao == null) {
+            inputTypeMediaDao = getDao(InputTypeMedia.class);
+        }
+        return inputTypeMediaDao;
     }
 
     public Dao<Option, Integer> getOptionsDao() throws SQLException {

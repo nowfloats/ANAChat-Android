@@ -41,5 +41,5 @@
     <string name="label_save">SEND</string>
     <string name="label_more">MORE INFO</string>
     <string name="label_start">Get Started</string>
-    <string name="location">LOCATION</string>
+    <string name="location">MAP</string>
 </resources>

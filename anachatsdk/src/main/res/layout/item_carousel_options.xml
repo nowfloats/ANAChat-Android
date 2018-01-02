@@ -6,11 +6,9 @@
     android:layout_centerHorizontal="true"
     android:layout_gravity="center_horizontal"
     android:layout_marginBottom="8dp"
-    android:fontFamily="sans-serif"
     android:gravity="center_horizontal"
-    android:letterSpacing=".1"
-    android:text="@string/label_more"
     android:textAllCaps="true"
+    android:padding="8dp"
     android:textColor="@color/ana_primary"
     android:textSize="12sp"
-    android:textStyle="bold" />
+    android:textStyle="normal" />

@@ -1,11 +1,14 @@
 package com.anachat.chatsdk.uimodule.viewholder.carousel;
 
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.model.Message;
+import com.anachat.chatsdk.internal.utils.NFChatUtils;
 import com.anachat.chatsdk.library.R;
 import com.anachat.chatsdk.uimodule.chatuikit.messages.MessageHolders;
 import com.anachat.chatsdk.uimodule.chatuikit.utils.DateFormatter;
@@ -38,6 +41,8 @@ public class OutComingCarouselTextMessageViewHolder
         String text = message.getMessageCarousel().getInput().getText();
         tvText.setText(text);
         tvTime.setText(DateFormatter.format(message.getCreatedAt(), DateFormatter.Template.TIME));
+        ivSentStatus.setColorFilter(Color.parseColor(PreferencesManager.
+                getsInstance(imageLoader.getContext()).getThemeColor()));
         if (message.getSyncWithServer()) {
             ivSentStatus.setImageDrawable
                     (ContextCompat.getDrawable(imageLoader.getContext(), R.drawable.ic_tick));

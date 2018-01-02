@@ -13,7 +13,7 @@ public interface MessageListener {
 
     void onConversationUpdate(List<Message> messages);
 
-//    void onHistoryLoaded(List<Message> messages);
+    void onHistoryLoaded(List<Message> messages);
 
 }
 

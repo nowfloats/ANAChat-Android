@@ -55,6 +55,15 @@ public class HandlerThreadExecutor implements ApiExecutor {
         service.execute(r);
     }
 
+    public void restart() {
+        service.shutdownNow();
+        service = new ThreadPoolExecutor(NUMBER_OF_CORES,
+                NUMBER_OF_CORES * 2,
+                KEEP_ALIVE_TIME,
+                KEEP_ALIVE_TIME_UNIT,
+                taskQueue);
+    }
+
     public void runSync(Runnable r) {
         RunnableUtil.NotifyingRunnable runnable = new RunnableUtil.NotifyingRunnable(r);
         Object var3 = this.syncLock;

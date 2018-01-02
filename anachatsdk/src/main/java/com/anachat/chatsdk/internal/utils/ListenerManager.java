@@ -80,13 +80,14 @@ public class ListenerManager {
         });
     }
 
-    public void notifyHistoryLoaded(final List<Message> message) {
-        mHandler.post(new Runnable() {
-            public void run() {
-                if (message != null) {
-                    for (MessageListener messageListener : mChatMessageListeners) {
+    public void notifyHistoryLoaded(final List<Message> message, Integer page) {
+        mHandler.post(() -> {
+            if (message != null) {
+                for (MessageListener messageListener : mChatMessageListeners) {
+                    if (page != 0)
+                        messageListener.onHistoryLoaded(message);
+                    else
                         messageListener.onConversationUpdate(message);
-                    }
                 }
             }
         });

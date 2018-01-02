@@ -41,12 +41,11 @@ public class MessengerCoreMethods {
         NFChatSDK.instance().initialize(mContext);
         ListenerManager.getInstance().addMessageChangeListener(mListener);
         getAllMessages();
-//        syncMessages();
     }
 
     private void getAllMessages() {
         ApiExecutor apiExecutor = ApiExecutorFactory.getHandlerExecutor();
-        apiExecutor.runAsync(() -> {
+        apiExecutor.submitToPool(() -> {
             try {
                 if (NFChatUtils.isNetworkConnected(mContext)) {
                     AnaCore.loadInitialHistory(mContext);
@@ -54,12 +53,6 @@ public class MessengerCoreMethods {
                 }
                 final List<Message> messages
                         = MessageRepository.getInstance(mContext).getMessages();
-//                if (messages.size() < Constants.HISTORY_MESSAGES_LIMIT &&
-//                        !PreferencesManager.getsInstance(mContext).getHistorySynced() &&
-//                        NFChatUtils.isNetworkConnected(mContext)) {
-//                    AnaCore.loadInitialHistory(mContext);
-//                    return;
-//                }
                 ApiExecutor executor = ApiExecutorFactory.getHandlerExecutor();
                 executor.runOnUiThread(() -> mListener.onConversationUpdate(messages));
             } catch (SQLException | IOException e) {

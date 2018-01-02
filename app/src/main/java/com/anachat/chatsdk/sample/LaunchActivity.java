@@ -32,36 +32,13 @@ import com.google.android.gms.maps.model.LatLng;
 public class LaunchActivity extends AppCompatActivity implements LocationPickListener {
     public static final String BUSINESSID = "your__business_id";
     public static final String BASE_URL = "your_url";
-    private Long waitTime = 2000L;
-    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // Get extra data included in the Intent
-            String message = intent.getStringExtra("message");
-            if (message.equals("now start")) {
-                waitTime = 5000L;
-//                startThread();
-            }
-        }
-    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
-        if (PreferencesManager.getsInstance(this).getUserName().isEmpty()) {
-            LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
-                    new IntentFilter("startBot"));
-        }
-//        else
-//            startThread();
     }
 
-//    public void startThread(View view) {
-//        Handler handler
-//                = new Handler();
-//        handler.postDelayed(this::startMainScreen, waitTime);
-//    }
 
     /**
      * starting bot onclick of button
@@ -81,15 +58,6 @@ public class LaunchActivity extends AppCompatActivity implements LocationPickLis
             Toast.makeText(this, "User not initialized", Toast.LENGTH_SHORT).show();
             return;
         }
-//        if (!PreferencesManager.getsInstance(this).getUserName().isEmpty()) {
-//            finish();
-//        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
     }
 
     @Override

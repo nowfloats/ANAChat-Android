@@ -1,11 +1,14 @@
 package com.anachat.chatsdk.uimodule.viewholder.input;
 
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.model.Message;
+import com.anachat.chatsdk.internal.utils.NFChatUtils;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
 import com.anachat.chatsdk.uimodule.chatuikit.messages.MessageHolders;
 import com.anachat.chatsdk.uimodule.chatuikit.utils.DateFormatter;
@@ -27,8 +30,8 @@ public class OutcomingInputPhoneMessageViewHolder
     @Override
     public void onBind(Message message) {
         super.onBind(message);
-        ivSentStatus.setColorFilter(ContextCompat.getColor
-                (imageLoader.getContext(), R.color.text_color_chat_time));
+        ivSentStatus.setColorFilter(Color.parseColor(PreferencesManager.
+                getsInstance(imageLoader.getContext()).getThemeColor()));
         if (message.getSyncWithServer()) {
             ivSentStatus.setImageDrawable
                     (ContextCompat.getDrawable(imageLoader.getContext(), R.drawable.ic_tick));

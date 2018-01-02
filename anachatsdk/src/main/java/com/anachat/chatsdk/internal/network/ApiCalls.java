@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URLConnection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,7 +67,6 @@ public class ApiCalls {
                 }
             }
         });
-
     }
 
     public static void sendMessage(final Context context, final MessageResponse messageResponse) {
@@ -76,7 +76,7 @@ public class ApiCalls {
                     PreferencesManager.getsInstance(context).getFcmToken(), messageResponse);
             return;
         }
-        if (messageResponse.isFileUpload()) {
+        if (messageResponse.getData().isFileUpload()) {
             uploadFile(context, messageResponse);
             return;
         }
@@ -133,11 +133,17 @@ public class ApiCalls {
                                     getMedia().get(0).setPreviewUrl(mediaUrl);
                             messageResponse.getData().getContent().getInput().
                                     getMedia().get(0).setUrl(mediaUrl);
-                            messageResponse.setFileUpload(false);
+                            messageResponse.getData().setFileUpload(false);
+                            MessageRepository.getInstance(context).updateMediaMessage
+                                    (messageResponse.getData().getContent().getInput(),
+                                            messageResponse.getMessage().getMessageInput()
+                                                    .getInputTypeMedia().getId());
                             sendMessage(context, messageResponse);
                         }
                     }
                 } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
 
@@ -149,10 +155,13 @@ public class ApiCalls {
 
     public static void fetchHistoryMessages(final Context context, Integer page, Integer size,
                                             long timestamp) {
-        if (PreferencesManager.getsInstance(context).getBaseUrl().isEmpty()) return;
-        if (!NFChatUtils.isNetworkConnected(context)) return;
-        if (PreferencesManager.getsInstance(context).getHistorySynced() && page != 0) return;
-
+        if (PreferencesManager.getsInstance(context).getBaseUrl().isEmpty()
+                || !NFChatUtils.isNetworkConnected(context)
+                || (PreferencesManager.getsInstance(context).getHistorySynced() && page != 0)) {
+            if (page > 0)
+                ListenerManager.getInstance().notifyHistoryLoaded(new ArrayList<>(), page);
+            return;
+        }
         ApiExecutor apiExecutor = ApiExecutorFactory.getHandlerExecutor();
         apiExecutor.runAsync(() -> {
             String urlparms = "?userId=" + PreferencesManager.
@@ -189,7 +198,7 @@ public class ApiCalls {
                             PreferencesManager.getsInstance(context).setIsHistorySynced(true);
                         if (messageResponses != null && messageResponses.size() > 0) {
                             MessageRepository.getInstance(context)
-                                    .saveHistoryMessages(messageResponses, size);
+                                    .saveHistoryMessages(messageResponses, size, page);
                             return;
                         }
                     }
@@ -197,7 +206,8 @@ public class ApiCalls {
                     e.printStackTrace();
                 }
             }
-            ListenerManager.getInstance().notifyHistoryLoaded(new ArrayList<>());
+            //TODO failing when single message added from get started and history loads
+            ListenerManager.getInstance().notifyHistoryLoaded(new ArrayList<>(), page);
         });
 
     }

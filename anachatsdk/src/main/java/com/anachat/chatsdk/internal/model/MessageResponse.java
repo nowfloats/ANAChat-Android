@@ -25,7 +25,6 @@ public class MessageResponse extends BaseModel {
     private Data data;
     private transient Context context;
     private transient boolean onlyUpdate = false;
-    private transient boolean fileUpload = false;
     private transient boolean notifyMessage = true;
     private transient long timestampToUpdate;
 
@@ -267,6 +266,9 @@ public class MessageResponse extends BaseModel {
                 case Constants.InputType.MEDIA:
                     Media input = message.getMessageInput().getInputTypeMedia().getInput().
                             getMedia().get(0);
+                    if (!input.getPreviewUrl().startsWith("http")) {
+                        this.data.setFileUpload(true);
+                    }
                     buildMediaInput(input.getPreviewUrl(), input.getType());
                     inputMedia(message.getResponseTo(),
                             message.getMessageInput().getMandatory(), message.getSessionId());
@@ -341,7 +343,6 @@ public class MessageResponse extends BaseModel {
             message.setTo(new Participant(
                     PreferencesManager.getsInstance(mContext).getBusinessId(), 1));
             message.setSenderType(Constants.SenderType.USER);
-//            message.setTimestamp(System.currentTimeMillis());
             message.setTimestamp(Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis());
             return message;
         }
@@ -381,14 +382,6 @@ public class MessageResponse extends BaseModel {
 
     public void setOnlyUpdate(boolean onlyUpdate) {
         this.onlyUpdate = onlyUpdate;
-    }
-
-    public boolean isFileUpload() {
-        return fileUpload;
-    }
-
-    public void setFileUpload(boolean fileUpload) {
-        this.fileUpload = fileUpload;
     }
 
     public long getTimestampToUpdate() {

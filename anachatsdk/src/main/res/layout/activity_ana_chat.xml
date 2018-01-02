@@ -18,8 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:padding="4dp"
             android:src="@drawable/ic_back_arrow" />
 
         <ImageView
@@ -29,6 +28,7 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
+            android:layout_toEndOf="@+id/iv_back"
             android:layout_toRightOf="@id/iv_back" />
 
         <TextView
@@ -42,28 +42,46 @@
             android:textSize="14sp"
             android:textStyle="bold" />
 
+        <ImageView
+            android:id="@+id/iv_online"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_below="@id/tv_tittle_name"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="7dp"
+            android:layout_toEndOf="@id/iv_toolbar"
+            android:layout_toRightOf="@id/iv_toolbar"
+            android:src="@drawable/bg_circle_online" />
+
         <TextView
             android:id="@+id/tv_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_tittle_name"
             android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/iv_toolbar"
-            android:layout_toRightOf="@id/iv_toolbar"
+            android:layout_toEndOf="@id/iv_online"
+            android:layout_toRightOf="@id/iv_online"
             android:text="@string/desc_toolbar"
             android:textColor="@color/white"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textStyle="normal" />
     </RelativeLayout>
 
-
-    <com.anachat.chatsdk.uimodule.chatuikit.messages.MessagesList
-        android:id="@+id/messagesList"
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/rl_input"
-        android:layout_below="@id/rl_toolbar"
-        android:overScrollMode="never" />
+        android:layout_below="@id/rl_toolbar">
+
+        <com.anachat.chatsdk.uimodule.chatuikit.messages.MessagesList
+            android:id="@+id/messagesList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
     <RelativeLayout
         android:id="@+id/rl_input"

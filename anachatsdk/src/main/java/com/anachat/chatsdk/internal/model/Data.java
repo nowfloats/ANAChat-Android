@@ -8,6 +8,15 @@ package com.anachat.chatsdk.internal.model;
 public class Data extends BaseModel {
     private int type;
     private Content content;
+    private transient boolean fileUpload = false;
+
+    public boolean isFileUpload() {
+        return fileUpload;
+    }
+
+    public void setFileUpload(boolean fileUpload) {
+        this.fileUpload = fileUpload;
+    }
 
     public int getType() {
         return type;

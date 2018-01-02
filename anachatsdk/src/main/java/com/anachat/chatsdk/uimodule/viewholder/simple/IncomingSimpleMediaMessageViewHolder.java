@@ -6,11 +6,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.anachat.chatsdk.internal.database.PreferencesManager;
-import com.anachat.chatsdk.uimodule.chatuikit.messages.MessageHolders;
-import com.anachat.chatsdk.uimodule.chatuikit.utils.DateFormatter;
 import com.anachat.chatsdk.internal.model.Media;
 import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.library.R;
+import com.anachat.chatsdk.uimodule.chatuikit.messages.MessageHolders;
+import com.anachat.chatsdk.uimodule.chatuikit.utils.DateFormatter;
 
 public class IncomingSimpleMediaMessageViewHolder
         extends MessageHolders.OutcomingTextMessageViewHolder<Message> {
@@ -41,15 +41,21 @@ public class IncomingSimpleMediaMessageViewHolder
         Media media = message.getMessageSimple().getMedia();
         imageLoader.loadImage(ivPreviewMedia, media.getUrl());
         tvTime.setText(DateFormatter.format(message.getCreatedAt(), DateFormatter.Template.TIME));
-        switch (media.getType()) {
-            case 2:
-                tvType.setText("VIDEO");
-                break;
-            case 1:
-                break;
-            case 0:
-                tvType.setText("PHOTO");
-                break;
+
+        if (message.getMessageSimple().getText() != null
+                && !message.getMessageSimple().getText().isEmpty()) {
+            tvType.setText(message.getMessageSimple().getText());
+        } else {
+            switch (media.getType()) {
+                case 2:
+                    tvType.setText("VIDEO");
+                    break;
+                case 1:
+                    break;
+                case 0:
+                    tvType.setText("PHOTO");
+                    break;
+            }
         }
         itemView.setOnClickListener(view -> {
             imageLoader.openMedia(media.getUrl(), media.getType());

@@ -1,17 +1,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="3dp"
-    android:layout_marginEnd="120dp"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="120dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="3dp">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@id/bubble"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="120dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="3dp"
         android:background="@drawable/bg_chat_buuble_incoming"
         android:gravity="center"
         android:orientation="vertical"
@@ -23,19 +23,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
+            android:fontFamily="sans-serif-light"
             android:gravity="start"
-            android:paddingLeft="26dp"
-            android:paddingStart="26dp"
-            android:paddingRight="28dp"
             android:paddingEnd="28dp"
+            android:paddingLeft="26dp"
+            android:paddingRight="28dp"
+            android:paddingStart="26dp"
             android:textColor="@color/text_color_chat_input"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@id/messageTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
+            android:fontFamily="sans-serif-light"
             android:gravity="end"
             android:paddingEnd="8dp"
             android:paddingLeft="4dp"
@@ -43,7 +45,7 @@
             android:paddingStart="4dp"
             android:paddingTop="4dp"
             android:textColor="@color/text_color_chat_time"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 
@@ -51,12 +53,14 @@
         android:id="@id/iv_triangle"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:layout_marginTop="-2.3dip"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@id/bubble"
-        android:layout_marginLeft="1dp"
-        android:layout_marginStart="1dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="120dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="-3dip"
         android:src="@drawable/bg_left_trinagle"
         android:tint="@color/ana_primary" />
 
