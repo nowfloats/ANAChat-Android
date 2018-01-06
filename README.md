@@ -2,7 +2,7 @@ ANAChat Android
 ===================
 
 
-The Powerful **ANAchat**  Android SDK allows you to integrate ANA to your app in two simple steps. Customise the UI according to your App Theme and you are all set. It is that simple!
+The Powerful **ANAchat**  android SDK allows you to integrate ANA to your app in two simple steps. Customise the UI according to your App Theme and you are all set. It is that simple!
 
 ----------
 
@@ -22,7 +22,7 @@ Add below mandatory dependencies in your app level build.gradle.
     ...
     }
 ```
-**FCM configuration** is required to use this SDK the please check the documentation [here](https://firebase.google.com/docs/cloud-messaging/android/client) to configure.
+**FCM configuration** is required to use this SDK please check the documentation [here](https://firebase.google.com/docs/cloud-messaging/android/client) to configure.
 
 After successful configuration of FCM, Modify below classes:
 
@@ -64,9 +64,9 @@ In `FirebaseMessagingService`
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    ```
 
-#### <i class="icon-book"></i> Start BOT
+
+ **Start BOT**
 
              new AnaChatBuilder(activity)
                 .setBusinessId("your_businessId")
@@ -77,16 +77,15 @@ In `FirebaseMessagingService`
                 .setToolBarLogo(R.drawable.ic_your_logo)
           (optional).registerLocationSelectListener(this)
                 .start();
-
-
+```
 
 `Note`: Pass Valid businessId and BaseUrl in  builder.
 
-OPTIONAL:-
-To enable **Location** support in SDK, Follow steps:
+OPTIONAL :-
+To enable **Location** support in SDK follow below steps:
 
-1. Register or Login [here](https://developers.google.com/places/android-api/signup) to get places API key.
-2. add google places key in the manifest file under application tag.
+1. Register or Login [here](https://developers.google.com/places/android-api/signup) to get places api key.
+2. add google places key in manifest file under application tag.
 	` <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="your_key" />`
@@ -125,48 +124,6 @@ License
 =======
 
    ANA Conversation Suite is available under the [GNU GPLv3 license](https://www.gnu.org/licenses/gpl-3.0.en.html).
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
