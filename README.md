@@ -11,23 +11,22 @@ Getting started
 
 
 Add below mandatory dependencies in your app level build.gradle.
-
+```ruby
     dependencies {
     ...
-    compile 'com.kitsune:anachatsdk:1.9@aar'
+    compile 'com.kitsune:anachatsdk:1.10@aar'
     compile 'com.android.support:design:26.1.0'
     compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.github.bumptech.glide:glide:4.1.1'
     ...
     }
-
+```
 **FCM configuration** is required to use this SDK please check the documentation [here](https://firebase.google.com/docs/cloud-messaging/android/client) to configure.
 
 After successful configuration of FCM, Modify below classes:
 
 In `FirebaseInstanceIdService`
-
     public class AnaChatBotInstanceIDService extends FirebaseInstanceIdService {
 
     @Override
@@ -39,7 +38,6 @@ In `FirebaseInstanceIdService`
     }
 
 In `FirebaseMessagingService`
-
     public class AnaChatBotMessagingService extends FirebaseMessagingService {
 
     @Override
@@ -59,24 +57,27 @@ In `FirebaseMessagingService`
 
 
 
-
+```ruby
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    ```
 
 #### <i class="icon-book"></i> Start BOT
+```ruby
              new AnaChatBuilder(activity)
                 .setBusinessId("your_businessId")
                 .setBaseUrl("your_base_url")
                 .setThemeColor(R.color.primary)
                 .setToolBarDescription("Your Toolbar desc")
                 .setToolBarTittle("Your Tittle")
-                .registerLocationSelectListener(this) //optional
                 .setToolBarLogo(R.drawable.ic_your_logo)
+          (optional).registerLocationSelectListener(this)
                 .start();
+```
 
 `Note`: Pass Valid businessId and BaseUrl in  builder.
 
@@ -123,55 +124,3 @@ License
 =======
 
    ANA Conversation Suite is available under the [GNU GPLv3 license](https://www.gnu.org/licenses/gpl-3.0.en.html).
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

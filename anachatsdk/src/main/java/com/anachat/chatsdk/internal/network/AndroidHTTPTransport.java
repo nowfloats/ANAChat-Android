@@ -152,7 +152,6 @@ public class AndroidHTTPTransport implements HTTPTransport {
                         networkException3.route = request.url;
                         throw RootAPIException.wrap(var29, networkException3, "Network error");
                     }
-
                 }
             }
 

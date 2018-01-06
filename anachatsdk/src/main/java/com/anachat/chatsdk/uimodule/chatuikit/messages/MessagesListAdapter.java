@@ -106,11 +106,11 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
                 dateHeadersFormatter,
                 viewClickListenersArray);
     }
-
-    @Override
-    public long getItemId(int position) {
-        return items.get(position).timestamp;
-    }
+//
+//    @Override
+//    public long getItemId(int position) {
+//        return items.get(position).timestamp;
+//    }
 
     @Override
     public int getItemCount() {
@@ -535,9 +535,6 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
         int nextPos = position - 1;
         if (nextPos < 0 || items.size() <= nextPos) return true;
         else if (items.get(nextPos).item instanceof IMessage) {
-//            Message next = (Message) items.get(nextPos).item;
-//            if (next.getMessageType() == Constants.MessageType.SIMPLE &&
-//                    next.getMessageSimple().getMedia() != null) return true;
             return ((MESSAGE) items.get(nextPos).item).getMessageType() !=
                     ((MESSAGE) items.get(position).item).getMessageType();
         } else if (items.get(nextPos).item instanceof String) {

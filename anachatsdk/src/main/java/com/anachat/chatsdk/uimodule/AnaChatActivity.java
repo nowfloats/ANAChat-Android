@@ -251,8 +251,9 @@ public class AnaChatActivity extends AppCompatActivity
             String tittle = getIntent().getExtras().
                     getString(Constants.UIParams.ToolBar_Tittle, "ANAChat");
             tvTittle.setText(tittle);
-//            String desc = getIntent().getExtras().
-//                    getString(Constants.UIParams.ToolBar_Tittle_Desc, "ANA Intelligence");
+            String desc = getIntent().getExtras().
+                    getString(Constants.UIParams.ToolBar_Tittle_Desc, "ANA Intelligence");
+            tvDesc.setText(desc);
         }
     }
 
@@ -732,7 +733,7 @@ public class AnaChatActivity extends AppCompatActivity
                 , registerMessagesTypes(), imageLoader);
         messagesAdapter.enableSelectionMode(this);
         messagesAdapter.setLoadMoreListener(this);
-        messagesAdapter.setHasStableIds(true);
+//        messagesAdapter.setHasStableIds(true);
         messagesList.setAdapter(messagesAdapter);
     }
 

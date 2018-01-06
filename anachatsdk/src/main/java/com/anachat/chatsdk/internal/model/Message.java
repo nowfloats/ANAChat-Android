@@ -15,9 +15,12 @@ public class Message extends BaseModel implements IMessage, MessageContentType {
     @DatabaseField(generatedId = true, index = true)
     public transient int id;
 
-    @DatabaseField(columnName = "messageId")
+    @DatabaseField(columnName = "messageId", unique = true)
     @SerializedName("id")
     private String messageId;
+
+    @DatabaseField(columnName = "flow_id")
+    private String flowId;
 
     @SerializedName("sender")
     @DatabaseField(columnName = "from", dataType = DataType.SERIALIZABLE)
@@ -164,6 +167,14 @@ public class Message extends BaseModel implements IMessage, MessageContentType {
 
     public void setExternalMessage(String externalMessage) {
         this.externalMessage = externalMessage;
+    }
+
+    public String getFlowId() {
+        return flowId;
+    }
+
+    public void setFlowId(String flowId) {
+        this.flowId = flowId;
     }
 
     public MessageSimple getMessageSimple() {

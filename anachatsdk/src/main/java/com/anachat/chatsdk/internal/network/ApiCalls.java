@@ -39,7 +39,8 @@ public class ApiCalls {
         if (!NFChatUtils.isNetworkConnected(context)) return;
         ApiExecutor apiExecutor = ApiExecutorFactory.getHandlerExecutor();
         apiExecutor.runAsync(() -> {
-            FcmToken fcmToken = new FcmToken(NFChatUtils.getUUID(context),
+            FcmToken fcmToken = new FcmToken(
+                    NFChatUtils.getUUID(context),
                     token,
                     "ANDROID",
                     PreferencesManager.getsInstance(context).getBusinessId());

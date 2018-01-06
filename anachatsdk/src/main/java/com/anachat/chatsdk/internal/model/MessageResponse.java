@@ -23,6 +23,7 @@ public class MessageResponse extends BaseModel {
     private Message message;
     @SerializedName("data")
     private Data data;
+    private List<Event> events;
     private transient Context context;
     private transient boolean onlyUpdate = false;
     private transient boolean notifyMessage = true;
@@ -366,6 +367,14 @@ public class MessageResponse extends BaseModel {
 
     public void setData(Data data) {
         this.data = data;
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
     }
 
     public Context getContext() {

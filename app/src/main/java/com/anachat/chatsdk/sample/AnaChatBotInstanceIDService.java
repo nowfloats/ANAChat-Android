@@ -15,10 +15,10 @@ public class AnaChatBotInstanceIDService extends FirebaseInstanceIdService {
 
     @Override
     public void onTokenRefresh() {
-// Get updated InstanceID token.
+        // Get updated InstanceID token.
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        AnaCore.updateToken(this, refreshedToken, LaunchActivity.BASE_URL, LaunchActivity.BUSINESSID);
-        sendMessage();
+        AnaCore.updateToken(this, refreshedToken,
+                LaunchActivity.BASE_URL, LaunchActivity.BUSINESSID, null);
     }
 
     private void sendMessage() {

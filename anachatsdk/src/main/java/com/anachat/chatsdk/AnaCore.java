@@ -9,6 +9,7 @@ import com.anachat.chatsdk.internal.database.MessageRepository;
 import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.model.Content;
 import com.anachat.chatsdk.internal.model.Data;
+import com.anachat.chatsdk.internal.model.Event;
 import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.internal.model.MessageResponse;
 import com.anachat.chatsdk.internal.model.inputdata.DefaultLocation;
@@ -24,6 +25,7 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class AnaCore {
@@ -47,9 +49,12 @@ public final class AnaCore {
     }
 
     public static void updateToken(Context context, String refreshedToken,
-                                   @NonNull String baseUrl, @NonNull String businessId) {
+                                   @NonNull String baseUrl, @NonNull String businessId,
+                                   String userId) {
         PreferencesManager.getsInstance(context).setBusinessId(businessId);
         PreferencesManager.getsInstance(context).setBaseUrl(baseUrl);
+        if (userId != null && !userId.isEmpty())
+            PreferencesManager.getsInstance(context).setUserName(userId);
         ApiCalls.updateToken(context, refreshedToken, null);
     }
 
@@ -117,6 +122,7 @@ public final class AnaCore {
         MessageResponse.MessageResponseBuilder responseBuilder
                 = new MessageResponse.MessageResponseBuilder(context);
         MessageResponse messageResponse = responseBuilder.build();
+
         Data data
                 = new Data();
         data.setType(Constants.MessageType.INPUT);
@@ -128,6 +134,15 @@ public final class AnaCore {
         input.setVal("Get Started");
         data.getContent().setInput(input);
         messageResponse.setData(data);
+        if (!PreferencesManager.getsInstance(context).getEventsData().isEmpty()) {
+            Event event
+                    = new Event();
+            event.setType(21);
+            event.setData(PreferencesManager.getsInstance(context).getEventsData());
+            List<Event> events = new ArrayList<>();
+            events.add(event);
+            messageResponse.setEvents(events);
+        }
         int messageType = messageResponse.getData().getType();
         messageResponse.getMessage().setMessageType(messageType);
         messageResponse.getMessage().setSyncWithServer(false);

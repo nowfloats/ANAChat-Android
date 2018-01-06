@@ -17,6 +17,7 @@ public class PreferencesManager {
     private static final String BUSINESS_ID = "com.ana.sdk.business_id";
     private static final String FCM_TOKEN = "com.ana.sdk.fcm_token";
     private static final String BASE_URL = "com.ana.sdk.base_url";
+    private static final String EVENTS_DATA = "com.ana.sdk.events.data";
     private static final String IS_HISTORY_SYNCED = "com.ana.sdk.history_sync";
 
     private static PreferencesManager sInstance;
@@ -122,6 +123,17 @@ public class PreferencesManager {
 
     public String getBaseUrl() {
         return mPref.getString(BASE_URL, "");
+    }
+
+
+    public void setEventsData(String value) {
+        mPref.edit()
+                .putString(EVENTS_DATA, value)
+                .apply();
+    }
+
+    public String getEventsData() {
+        return mPref.getString(EVENTS_DATA, "");
     }
 
     public boolean clear() {

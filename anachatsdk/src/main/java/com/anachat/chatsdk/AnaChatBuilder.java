@@ -14,6 +14,10 @@ import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.network.ApiCalls;
 import com.anachat.chatsdk.uimodule.AnaChatActivity;
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
 import static com.anachat.chatsdk.internal.utils.constants.Constants.UIParams.Theme_color;
 import static com.anachat.chatsdk.internal.utils.constants.Constants.UIParams.ToolBar_Image;
 import static com.anachat.chatsdk.internal.utils.constants.Constants.UIParams.ToolBar_Tittle;
@@ -69,6 +73,15 @@ public class AnaChatBuilder {
         return this;
     }
 
+    public AnaChatBuilder setUserId(String userId) {
+        PreferencesManager.getsInstance(activity).setUserName(userId);
+        return this;
+    }
+
+    public AnaChatBuilder setEvents(HashMap<String, String> events) {
+        PreferencesManager.getsInstance(activity).setEventsData(new JSONObject(events).toString());
+        return this;
+    }
 
     public void start() {
         if (businessId.isEmpty())

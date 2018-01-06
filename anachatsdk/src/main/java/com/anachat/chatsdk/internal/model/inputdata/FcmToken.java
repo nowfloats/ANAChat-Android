@@ -10,6 +10,7 @@ public class FcmToken {
     private String fcmNotificationId;
     private String devicePlatform;
     private String businessId;
+    private String userId;
 //    private String userId;
 
     public FcmToken(String deviceId, String fcmNotificationId, String devicePlatform

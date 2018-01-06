@@ -11,7 +11,6 @@ import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.internal.model.inputdata.Address;
 import com.anachat.chatsdk.internal.model.inputdata.Date;
 import com.anachat.chatsdk.internal.model.inputdata.Time;
-import com.anachat.chatsdk.internal.utils.NFChatUtils;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
 import com.anachat.chatsdk.library.R;
 import com.anachat.chatsdk.uimodule.chatuikit.messages.MessageHolders;
@@ -67,6 +66,7 @@ public class DefaultStringInputViewHolder
                     text = address.getLine1() + " " + address.getArea() + "\n" + address.getCity() + " "
                             + address.getState() + " " + address.getCountry() + " "
                             + address.getPin();
+                    text = text.trim();
                     break;
                 case Constants.InputType.TEXT:
                     if (message.getMessageInput().getMandatory() == Constants.FCMConstants.MANDATORY_TRUE)

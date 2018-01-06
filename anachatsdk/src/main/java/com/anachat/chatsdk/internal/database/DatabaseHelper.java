@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.anachat.chatsdk.internal.model.Event;
 import com.anachat.chatsdk.internal.model.InputTypeAddress;
 import com.anachat.chatsdk.internal.model.InputTypeDate;
 import com.anachat.chatsdk.internal.model.InputTypeEmail;
