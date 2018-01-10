@@ -11,14 +11,14 @@ public class FcmToken {
     private String devicePlatform;
     private String businessId;
     private String userId;
-//    private String userId;
 
     public FcmToken(String deviceId, String fcmNotificationId, String devicePlatform
-            , String businessId) {
+            , String businessId, String userId) {
         this.deviceId = deviceId;
         this.fcmNotificationId = fcmNotificationId;
         this.devicePlatform = devicePlatform;
         this.businessId = businessId;
-//        this.userId = userId;
+        if (userId != null && !userId.isEmpty())
+            this.userId = userId;
     }
 }

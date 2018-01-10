@@ -45,7 +45,7 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyViewHo
     public OptionsAdapter(ImageLoader imageLoader) {
         this.context = imageLoader.getContext();
         this.imageLoader = imageLoader;
-        optionList =new ArrayList<>();
+        optionList = new ArrayList<>();
     }
 
     public void setData(Message message) {
@@ -85,7 +85,8 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyViewHo
                     if (jsonObject.has("url")) {
                         value = jsonObject.getString("value");
                         context.startActivity(
-                                InputIntents.getBrowserIntent(jsonObject.getString("url")));
+                                InputIntents.getBrowserIntent(imageLoader.getContext(),
+                                        jsonObject.getString("url")));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

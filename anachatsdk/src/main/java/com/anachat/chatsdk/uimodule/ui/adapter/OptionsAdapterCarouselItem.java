@@ -85,7 +85,8 @@ public class OptionsAdapterCarouselItem extends RecyclerView.Adapter<OptionsAdap
                         if (jsonObject.has("url")) {
                             value = jsonObject.getString("value");
                             context.startActivity(
-                                    InputIntents.getBrowserIntent(jsonObject.getString("url")));
+                                    InputIntents.getBrowserIntent(imageLoader.getContext(),
+                                            jsonObject.getString("url")));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

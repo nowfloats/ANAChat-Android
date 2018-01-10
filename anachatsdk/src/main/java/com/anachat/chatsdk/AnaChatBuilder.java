@@ -83,6 +83,11 @@ public class AnaChatBuilder {
         return this;
     }
 
+    public AnaChatBuilder openUrlInBrowser(Boolean val) {
+        PreferencesManager.getsInstance(activity).setUrlStatus(val);
+        return this;
+    }
+
     public void start() {
         if (businessId.isEmpty())
             throw new IllegalArgumentException("Business Id can't be empty please set businessId");

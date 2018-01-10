@@ -43,7 +43,8 @@ public class ApiCalls {
                     NFChatUtils.getUUID(context),
                     token,
                     "ANDROID",
-                    PreferencesManager.getsInstance(context).getBusinessId());
+                    PreferencesManager.getsInstance(context).getBusinessId(),
+                    PreferencesManager.getsInstance(context).getUserName());
             String body = new Gson().toJson(fcmToken);
             HTTPTransport httpTransport = new AndroidHTTPTransport();
             Request request = new POSTRequest(Method.POST,

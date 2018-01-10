@@ -8,6 +8,9 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 
+import com.anachat.chatsdk.internal.database.PreferencesManager;
+import com.anachat.chatsdk.uimodule.ui.WebViewActivity;
+
 /**
  * Created by lookup on 30/08/17.
  */
@@ -72,7 +75,13 @@ public class InputIntents {
         return intent;
     }
 
-    public static Intent getBrowserIntent(String url) {
-        return new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+    public static Intent getBrowserIntent(Context context, String url) {
+        if (PreferencesManager.getsInstance(context).getUrlStatus()) {
+            return new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        }
+        Intent intent
+                = new Intent(context, WebViewActivity.class);
+        intent.putExtra("URL", url);
+        return intent;
     }
 }

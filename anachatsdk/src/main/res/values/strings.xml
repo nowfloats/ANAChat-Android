@@ -42,4 +42,5 @@
     <string name="label_more">MORE INFO</string>
     <string name="label_start">Get Started</string>
     <string name="location">MAP</string>
+    <string name="lbl_webview">ANA</string>
 </resources>

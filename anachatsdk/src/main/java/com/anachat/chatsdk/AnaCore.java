@@ -151,6 +151,17 @@ public final class AnaCore {
     }
 
 
+    public static void registerUser(@NonNull Context context, @NonNull String userId) {
+        PreferencesManager.getsInstance(context).setUserName(userId);
+        ApiCalls.updateToken(context,
+                PreferencesManager.getsInstance(context).getFcmToken(), null);
+    }
+
+    public static void logoutUser(@NonNull Context context) {
+        PreferencesManager.getsInstance(context).clear();
+        MessageRepository.getInstance(context).clearTables();
+    }
+
     public static void sendLocation(Double lat, Double lng, Context context) {
         Message message
                 = getLastMessage(context);
