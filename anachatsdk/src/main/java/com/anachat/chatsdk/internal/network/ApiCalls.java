@@ -40,7 +40,7 @@ public class ApiCalls {
         ApiExecutor apiExecutor = ApiExecutorFactory.getHandlerExecutor();
         apiExecutor.runAsync(() -> {
             FcmToken fcmToken = new FcmToken(
-                    NFChatUtils.getUUID(context) + System.currentTimeMillis(),
+                    NFChatUtils.getUUID(context),
                     token,
                     "ANDROID",
                     PreferencesManager.getsInstance(context).getBusinessId(),

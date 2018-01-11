@@ -1,7 +1,6 @@
 package com.anachat.chatsdk.internal.database;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.anachat.chatsdk.internal.model.InputTypeAddress;
 import com.anachat.chatsdk.internal.model.InputTypeDate;
@@ -32,8 +31,6 @@ import com.j256.ormlite.stmt.UpdateBuilder;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by lookup on 06/09/17.
@@ -67,8 +64,6 @@ public class MessageRepository {
     }
 
     public void handleMessageResponse(MessageResponse messageResponse) {
-        Log.d(TAG, "handleMessageResponse with API!" +
-                messageResponse.getMessage().getMessageType());
         switch (messageResponse.getMessage().getMessageType()) {
             case Constants.MessageType.CAROUSEL:
                 setCarousalContent(messageResponse);
@@ -95,15 +90,13 @@ public class MessageRepository {
 
     public void setCarousalContent(MessageResponse messageResponse) {
         MessageCarousel messageCarousel = new MessageCarousel();
-//        if (!messageResponse.isNotifyMessage()) messageCarousel.setEnabled(false);
         try {
             if (!isMessageExist(messageResponse.getMessage().getTimestamp())) {
                 if (messageResponse.getData().getContent().getInput() != null)
                     messageCarousel.setInput(messageResponse.getData().getContent().getInput());
                 messageCarousel.setMandatory(messageResponse.getData().getContent().getMandatory());
                 messageCarousel.setItems(messageResponse.getData().getContent().getItems());
-                if (messageResponse.getData().getContent().getItems() != null &&
-                        !isMessageExist(messageResponse.getMessage().getTimestamp())) {
+                if (messageResponse.getData().getContent().getItems() != null) {
                     for (Item item : messageCarousel.getItems()) {
                         item.setOptionsForeignCollection(item.getOptions());
                         for (Option option : item.getOptions()) {
@@ -231,7 +224,6 @@ public class MessageRepository {
                             messageInput.setOptionsForeignCollection(messageResponse.getData()
                                     .getContent().getOptions());
                             messageResponse.getMessage().setMessageInput(messageInput);
-//                            if (!isMessageExist(messageResponse.getMessage().getTimestamp()))
                             for (Option option : messageInput.getOptionsForeignCollection()) {
                                 option.setMessageInput(messageInput);
                                 mHelper.getOptionsDao().create(option);
@@ -367,14 +359,5 @@ public class MessageRepository {
         //if (res>0)//TODO update views
         return res;
     }
-
-//    public int updateCarouselMessage() throws SQLException {
-//        UpdateBuilder<MessageCarousel, Integer> updateBuilder
-//                = mHelper.getMessageCarouselDao().updateBuilder();
-//        updateBuilder.where().eq("is_enable", true);
-//        updateBuilder.updateColumnValue("is_enable",
-//                false);
-//        return updateBuilder.update();
-//    }
 
 }
