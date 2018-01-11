@@ -2,6 +2,7 @@ package com.anachat.chatsdk.uimodule.viewholder.input;
 
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -91,7 +92,16 @@ public class DefaultStringInputViewHolder
         if (message.getMessageType() == Constants.MessageType.CAROUSEL) {
             text = message.getMessageCarousel().getInput().getText();
         }
-        tvText.setText(text);
+
+        if (text != null && !text.trim().isEmpty()) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                tvText.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY));
+            } else {
+                tvText.setText(Html.fromHtml(text));
+            }
+        } else {
+            tvText.setText(text);
+        }
         tvTime.setText(DateFormatter.format(message.getCreatedAt(), DateFormatter.Template.TIME));
 
     }

@@ -299,7 +299,8 @@ public class MessageRepository {
         QueryBuilder<Message, Integer> builder = mHelper.getMessageDao().queryBuilder();
         builder.orderBy("timestamp", false);  // true for ascending, false for descending
         builder.limit(Constants.HISTORY_MESSAGES_LIMIT);
-        builder.offset((long) totalItems);
+        builder.where().ge("id", totalItems);
+//        builder.offset((long) totalItems);
         return mHelper.getMessageDao().query(builder.prepare());
     }
 
