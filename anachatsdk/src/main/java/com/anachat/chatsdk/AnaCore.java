@@ -54,7 +54,7 @@ public final class AnaCore {
         PreferencesManager.getsInstance(context).setBusinessId(businessId);
         PreferencesManager.getsInstance(context).setBaseUrl(baseUrl);
         if (userId != null && !userId.isEmpty())
-            PreferencesManager.getsInstance(context).setUserName(userId);
+            PreferencesManager.getsInstance(context).setUserNameLogin(userId);
         ApiCalls.updateToken(context, refreshedToken, null);
     }
 
@@ -152,7 +152,7 @@ public final class AnaCore {
 
 
     public static void registerUser(@NonNull Context context, @NonNull String userId) {
-        PreferencesManager.getsInstance(context).setUserName(userId);
+        PreferencesManager.getsInstance(context).setUserNameLogin(userId);
         ApiCalls.updateToken(context,
                 PreferencesManager.getsInstance(context).getFcmToken(), null);
     }

@@ -40,11 +40,11 @@ public class ApiCalls {
         ApiExecutor apiExecutor = ApiExecutorFactory.getHandlerExecutor();
         apiExecutor.runAsync(() -> {
             FcmToken fcmToken = new FcmToken(
-                    NFChatUtils.getUUID(context),
+                    NFChatUtils.getUUID(context) + System.currentTimeMillis(),
                     token,
                     "ANDROID",
                     PreferencesManager.getsInstance(context).getBusinessId(),
-                    PreferencesManager.getsInstance(context).getUserName());
+                    PreferencesManager.getsInstance(context).getUserNameLogin());
             String body = new Gson().toJson(fcmToken);
             HTTPTransport httpTransport = new AndroidHTTPTransport();
             Request request = new POSTRequest(Method.POST,

@@ -11,6 +11,7 @@ public class PreferencesManager {
 
     private static final String PREF_NAME = "com.ana.PREF_NAME";
     private static final String USER_NAME = "com.ana.sdk.USER_NAME";
+    private static final String USER_NAME_LOGIN = "com.ana.sdk.USER_NAME_LOGIN";
     private static final String FIRST_LAUNCH = "com.ana.sdk.FIRST_TIME";
     private static final String TOKEN_SYNC = "com.ana.sdk.token_sync";
     private static final String THEME_COLOR = "com.ana.sdk.theme";
@@ -42,6 +43,17 @@ public class PreferencesManager {
     public void setUserName(String value) {
         mPref.edit()
                 .putString(USER_NAME, value)
+                .apply();
+    }
+
+    public String getUserNameLogin() {
+        return mPref.getString(USER_NAME_LOGIN, "");
+    }
+
+
+    public void setUserNameLogin(String value) {
+        mPref.edit()
+                .putString(USER_NAME_LOGIN, value)
                 .apply();
     }
 
