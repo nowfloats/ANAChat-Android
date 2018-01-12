@@ -31,6 +31,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -76,6 +77,7 @@ import com.anachat.chatsdk.uimodule.ui.VideoViewerActivity;
 import com.anachat.chatsdk.uimodule.ui.adapter.InputListOptionsAdapter;
 import com.anachat.chatsdk.uimodule.ui.adapter.OptionsAdapter;
 import com.anachat.chatsdk.uimodule.utils.AppUtils;
+import com.anachat.chatsdk.uimodule.utils.GridSpacingItemDecoration;
 import com.anachat.chatsdk.uimodule.utils.ImagesCache;
 import com.anachat.chatsdk.uimodule.utils.InputIntents;
 import com.anachat.chatsdk.uimodule.utils.LruCache;
@@ -109,6 +111,7 @@ import java.util.Locale;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.anachat.chatsdk.uimodule.utils.AppUtils.dpToPx;
 
 
 public class AnaChatActivity extends AppCompatActivity
@@ -328,9 +331,10 @@ public class AnaChatActivity extends AppCompatActivity
         btnAction = findViewById(R.id.btn_action);
         btnAction.setOnClickListener(this);
         rvOptions = findViewById(R.id.rv_options);
-        rvOptions.setLayoutManager(new LinearLayoutManager(this,
-                LinearLayoutManager.HORIZONTAL, false));
-
+        rvOptions.setLayoutManager(new GridLayoutManager(this,
+                3));
+        rvOptions.addItemDecoration(new
+                GridSpacingItemDecoration(3, dpToPx(10), true));
 
         StateListDrawable drawable = (StateListDrawable) btnAction.getBackground();
         DrawableContainer.DrawableContainerState drawableContainerState =
@@ -1299,6 +1303,17 @@ public class AnaChatActivity extends AppCompatActivity
             rvOptions.setAdapter(optionsAdapter);
         }
         optionsAdapter.setData(message);
+        if (optionsAdapter.getItemCount() > 2) {
+            updateItemSpanCount(3);
+        } else {
+            updateItemSpanCount(optionsAdapter.getItemCount());
+        }
+    }
+
+    private void updateItemSpanCount(int count) {
+        GridLayoutManager gridLayoutManager = (GridLayoutManager) rvOptions.getLayoutManager();
+        gridLayoutManager.setSpanCount(count);
+        rvOptions.setLayoutManager(gridLayoutManager);
     }
 
     private void showAddressDialog() {

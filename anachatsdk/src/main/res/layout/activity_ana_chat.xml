@@ -95,7 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:gravity="center_horizontal"
+            android:gravity="center_vertical"
             android:overScrollMode="never"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
