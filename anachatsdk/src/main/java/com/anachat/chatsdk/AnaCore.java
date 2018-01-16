@@ -48,14 +48,20 @@ public final class AnaCore {
         }
     }
 
-    public static void updateToken(Context context, String refreshedToken,
-                                   @NonNull String baseUrl, @NonNull String businessId,
-                                   String userId) {
-        PreferencesManager.getsInstance(context).setBusinessId(businessId);
-        PreferencesManager.getsInstance(context).setBaseUrl(baseUrl);
-        if (userId != null && !userId.isEmpty())
-            PreferencesManager.getsInstance(context).setUserNameLogin(userId);
-        ApiCalls.updateToken(context, refreshedToken, null);
+//    public static void updateToken(Context context, String refreshedToken,
+//                                   @NonNull String baseUrl, @NonNull String businessId,
+//                                   String userId) {
+//        PreferencesManager.getsInstance(context).setBusinessId(businessId);
+//        PreferencesManager.getsInstance(context).setBaseUrl(baseUrl);
+//        if (userId != null && !userId.isEmpty())
+//            PreferencesManager.getsInstance(context).setUserNameLogin(userId);
+//        ApiCalls.updateToken(context, refreshedToken, null);
+//    }
+
+    public static void saveFcmToken(@NonNull Context context, @NonNull String token) {
+        if (!token.isEmpty()) {
+            PreferencesManager.getsInstance(context).setFcmToken(token);
+        }
     }
 
 
@@ -151,10 +157,13 @@ public final class AnaCore {
     }
 
 
-    public static void registerUser(@NonNull Context context, @NonNull String userId) {
+    public static void registerUser(@NonNull Context context,
+                                    @NonNull String userId,
+                                    @NonNull String businessId, @NonNull String baseUrl) {
+        PreferencesManager.getsInstance(context).setBusinessId(businessId);
+        PreferencesManager.getsInstance(context).setBaseUrl(baseUrl);
         PreferencesManager.getsInstance(context).setUserNameLogin(userId);
-        ApiCalls.updateToken(context,
-                PreferencesManager.getsInstance(context).getFcmToken(), null);
+        ApiCalls.updateToken(context, null);
     }
 
     public static void logoutUser(@NonNull Context context) {

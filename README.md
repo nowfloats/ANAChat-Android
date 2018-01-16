@@ -14,7 +14,7 @@ Add below mandatory dependencies in your app level build.gradle.
 ```ruby
     dependencies {
     ...
-    compile 'com.kitsune:anachatsdk:1.13@aar'
+    compile 'com.kitsune:anachatsdk:1.14@aar'
     compile 'com.android.support:design:26.1.0'
     compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'com.google.code.gson:gson:2.8.1'
@@ -33,7 +33,7 @@ In `FirebaseInstanceIdService`
     public void onTokenRefresh() {
         // Get updated InstanceID token.
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        AnaCore.updateToken(this, refreshedToken,"your_base_url","your_business_id");
+        AnaCore.saveFcmToken(this, refreshedToken);
 	    }
     }
 
@@ -51,13 +51,14 @@ In `FirebaseMessagingService`
     }
     }
 
-#### <i class="icon-file"></i> add permissions In manifest
+ **Register user** after your login flow:
+ `AnaCore.registerUser(context, "your_user_id", YOUR_BUSINESSID, YOUR_BASE_URL);`
 
-
-
-
-
+ To unregister user:
+`AnaCore.logoutUser(context);`
 ```ruby
+**Add permissions In manifest**
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -123,16 +124,4 @@ To enable **Location** support in SDK follow below steps:
 License
 =======
 
-   ANA Conversation Suite is available under the [GNU GPLv3 license](https://www.gnu.org/licenses/gpl-3.0.en.html).
-
-
-
-
-
-
-
-
-
-
-
-
+ANA Conversation Suite is available under the [GNU GPLv3 license](https://www.gnu.org/licenses/gpl-3.0.en.html).

@@ -31,17 +31,18 @@ import java.util.Map;
 
 public class ApiCalls {
 
-    public static void updateToken(final Context context, final String token,
+    public static void updateToken(final Context context,
                                    final MessageResponse messageResponse) {
-        PreferencesManager.getsInstance(context).setFcmToken(token);
+//        PreferencesManager.getsInstance(context).setFcmToken(token);
         PreferencesManager.getsInstance(context).setTokenSync(false);
         if (PreferencesManager.getsInstance(context).getBaseUrl().isEmpty()) return;
+        if (PreferencesManager.getsInstance(context).getFcmToken().isEmpty()) return;
         if (!NFChatUtils.isNetworkConnected(context)) return;
         ApiExecutor apiExecutor = ApiExecutorFactory.getHandlerExecutor();
         apiExecutor.runAsync(() -> {
             FcmToken fcmToken = new FcmToken(
                     NFChatUtils.getUUID(context),
-                    token,
+                    PreferencesManager.getsInstance(context).getFcmToken(),
                     "ANDROID",
                     PreferencesManager.getsInstance(context).getBusinessId(),
                     PreferencesManager.getsInstance(context).getUserNameLogin());
@@ -74,8 +75,7 @@ public class ApiCalls {
     public static void sendMessage(final Context context, final MessageResponse messageResponse) {
         if (!NFChatUtils.isNetworkConnected(context)) return;
         if (!PreferencesManager.getsInstance(context).getTokenSync()) {
-            updateToken(context,
-                    PreferencesManager.getsInstance(context).getFcmToken(), messageResponse);
+            updateToken(context, messageResponse);
             return;
         }
         if (messageResponse.getData().isFileUpload()) {
