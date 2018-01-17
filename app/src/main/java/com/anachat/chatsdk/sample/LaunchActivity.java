@@ -52,8 +52,7 @@ public class LaunchActivity extends AppCompatActivity implements LocationPickLis
                 .start();
 
         if (PreferencesManager.getsInstance(this).getUserName().isEmpty()) {
-            Toast.makeText(this, "User not initialized", Toast.LENGTH_SHORT).show();
-            return;
+            Toast.makeText(this, "User not Registered", Toast.LENGTH_SHORT).show();
         }
     }
 

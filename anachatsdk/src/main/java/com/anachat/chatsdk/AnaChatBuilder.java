@@ -93,7 +93,7 @@ public class AnaChatBuilder {
             if (!PreferencesManager.getsInstance(activity).getFcmToken().isEmpty()) {
                 ApiCalls.updateToken(activity.getApplicationContext(), null);
             }
-            Log.d("User Not Initialized", "Please wait..");
+            Log.d("User Not Registered", "Please wait..");
             return;
         }
         PreferencesManager.getsInstance(activity).setBusinessId(businessId);

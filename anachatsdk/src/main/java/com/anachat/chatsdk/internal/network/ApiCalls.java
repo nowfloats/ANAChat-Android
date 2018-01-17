@@ -33,7 +33,6 @@ public class ApiCalls {
 
     public static void updateToken(final Context context,
                                    final MessageResponse messageResponse) {
-//        PreferencesManager.getsInstance(context).setFcmToken(token);
         PreferencesManager.getsInstance(context).setTokenSync(false);
         if (PreferencesManager.getsInstance(context).getBaseUrl().isEmpty()) return;
         if (PreferencesManager.getsInstance(context).getFcmToken().isEmpty()) return;

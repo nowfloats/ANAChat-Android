@@ -167,7 +167,11 @@ public final class AnaCore {
     }
 
     public static void logoutUser(@NonNull Context context) {
+        String fcmToken = PreferencesManager.getsInstance(context).getFcmToken();
         PreferencesManager.getsInstance(context).clear();
+        if (!fcmToken.isEmpty()){
+            PreferencesManager.getsInstance(context).setFcmToken(fcmToken);
+        }
         MessageRepository.getInstance(context).clearTables();
     }
 
