@@ -52,8 +52,13 @@ public class ApiCalls {
                     PreferencesManager.getsInstance(context).getBaseUrl()
                             + "/fcm/devices", body, getHeaders(),
                     NetworkConstants.CONNECT_TIMEOUT);
-            Response response = httpTransport.makeRequest(request);
-            if (response.status >= 200 && response.status < 300) {
+            Response response = null;
+            try {
+                response = httpTransport.makeRequest(request);
+            } catch (RootAPIException e) {
+                e.printStackTrace();
+            }
+            if (response != null && response.status >= 200 && response.status < 300) {
                 try {
                     String responseString = response.responseString;
                     JSONObject jsonObject = new JSONObject(responseString);
@@ -89,8 +94,13 @@ public class ApiCalls {
             Request request = new POSTRequest(Method.POST,
                     PreferencesManager.getsInstance(context).getBaseUrl() + "/api", body, getHeaders(),
                     NetworkConstants.CONNECT_TIMEOUT);
-            Response response = httpTransport.makeRequest(request);
-            if (response.status >= 200 && response.status < 300) {
+            Response response = null;
+            try {
+                response = httpTransport.makeRequest(request);
+            } catch (RootAPIException e) {
+                e.printStackTrace();
+            }
+            if (response != null && response.status >= 200 && response.status < 300) {
                 try {
                     MessageResponse messageResponseServer = new Gson().
                             fromJson(response.responseString, MessageResponse.class);
@@ -123,8 +133,13 @@ public class ApiCalls {
                     PreferencesManager.getsInstance(context).getBaseUrl() + "/files/",
                     body, getMimeType(screenshotFile.getPath()), getFileHeaders(),
                     NetworkConstants.UPLOAD_CONNECT_TIMEOUT);
-            Response response = httpTransport.makeRequest(request);
-            if (response.status >= 200 && response.status < 300) {
+            Response response = null;
+            try {
+                response = httpTransport.makeRequest(request);
+            } catch (RootAPIException e) {
+                e.printStackTrace();
+            }
+            if (response != null && response.status >= 200 && response.status < 300) {
                 try {
                     JSONObject jsonObject = new JSONObject(response.responseString);
                     if (jsonObject.has("links")) {
@@ -183,7 +198,7 @@ public class ApiCalls {
             Response response = null;
             try {
                 response = httpTransport.makeRequest(request);
-            } catch (Exception e) {
+            } catch (RootAPIException e) {
                 e.printStackTrace();
             }
             if (response != null && response.status >= 200 && response.status < 300) {

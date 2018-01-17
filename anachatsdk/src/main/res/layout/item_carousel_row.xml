@@ -7,6 +7,7 @@
     android:layout_marginRight="5dp"
     android:background="@drawable/bg_carousel_item"
     android:layout_marginBottom="4dp"
+    android:layout_marginTop="4dp"
     android:paddingBottom="4dp">
 
 
@@ -63,6 +64,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dip"
+            android:alpha="0.5"
             android:background="@color/gray_light" />
 
 
