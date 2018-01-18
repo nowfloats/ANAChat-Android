@@ -1,7 +1,6 @@
 package com.anachat.chatsdk.internal.database;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.anachat.chatsdk.internal.model.InputTypeAddress;
 import com.anachat.chatsdk.internal.model.InputTypeDate;
@@ -33,7 +32,6 @@ import com.j256.ormlite.stmt.UpdateBuilder;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 /**
  * Created by lookup on 06/09/17.
@@ -302,7 +300,7 @@ public class MessageRepository {
         QueryBuilder<Message, Integer> builder = mHelper.getMessageDao().queryBuilder();
         builder.orderBy("timestamp", false);  // true for ascending, false for descending
         builder.limit(Constants.HISTORY_MESSAGES_LIMIT);
-        builder.where().ge("id", totalItems);
+        builder.offset((long) totalItems);
         return mHelper.getMessageDao().query(builder.prepare());
     }
 

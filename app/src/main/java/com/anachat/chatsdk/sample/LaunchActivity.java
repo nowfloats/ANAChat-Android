@@ -33,7 +33,7 @@ public class LaunchActivity extends AppCompatActivity implements LocationPickLis
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
-        AnaCore.registerUser(this, "abs123", BUSINESSID, BASE_URL);
+        AnaCore.registerUser(this, "user_id", BUSINESSID, BASE_URL);
     }
 
 
