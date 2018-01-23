@@ -75,8 +75,7 @@ public class MessageResponse extends BaseModel {
         }
 
         private MessageResponseBuilder inputText(String value, Message message) {
-            this.message.setResponseTo(message.getMessageId());
-            this.message.setSessionId(message.getSessionId());
+            setFlows(this.message, message);
             data.setType(Constants.MessageType.INPUT);
             this.message.setMessageType(Constants.MessageType.INPUT);
             data.getContent().setInputType(Constants.InputType.TEXT);
@@ -88,8 +87,13 @@ public class MessageResponse extends BaseModel {
         }
 
         private MessageResponseBuilder inputEmail(String value, Message message) {
-            this.message.setResponseTo(message.getMessageId());
-            this.message.setSessionId(message.getSessionId());
+            setFlows(this.message, message);
+            if (message.getPrevFlowId() != null) {
+                this.message.setPrevFlowId(message.getPrevFlowId());
+            }
+            if (message.getCurrentFlowId() != null) {
+                this.message.setCurrentFlowId(message.getCurrentFlowId());
+            }
             data.setType(Constants.MessageType.INPUT);
             this.message.setMessageType(Constants.MessageType.INPUT);
             data.getContent().setInputType(Constants.InputType.EMAIL);
@@ -99,8 +103,7 @@ public class MessageResponse extends BaseModel {
         }
 
         private MessageResponseBuilder inputPhone(String value, Message message) {
-            this.message.setResponseTo(message.getMessageId());
-            this.message.setSessionId(message.getSessionId());
+            setFlows(this.message, message);
             data.setType(Constants.MessageType.INPUT);
             this.message.setMessageType(Constants.MessageType.INPUT);
             data.getContent().setInputType(Constants.InputType.PHONE);
@@ -110,8 +113,7 @@ public class MessageResponse extends BaseModel {
         }
 
         private MessageResponseBuilder inputNumeric(String value, Message message) {
-            this.message.setResponseTo(message.getMessageId());
-            this.message.setSessionId(message.getSessionId());
+            setFlows(this.message, message);
             data.setType(Constants.MessageType.INPUT);
             this.message.setMessageType(Constants.MessageType.INPUT);
             data.getContent().setInputType(Constants.InputType.NUMERIC);
@@ -121,8 +123,7 @@ public class MessageResponse extends BaseModel {
         }
 
         public MessageResponseBuilder inputOption(String value, Message message) {
-            this.message.setResponseTo(message.getMessageId());
-            this.message.setSessionId(message.getSessionId());
+            setFlows(this.message, message);
             data.setType(Constants.MessageType.INPUT);
             this.message.setMessageType(Constants.MessageType.INPUT);
             data.getContent().setInputType(Constants.InputType.OPTIONS);
@@ -133,8 +134,7 @@ public class MessageResponse extends BaseModel {
         }
 
         public MessageResponseBuilder inputListOption(String value, Message message) {
-            this.message.setResponseTo(message.getMessageId());
-            this.message.setSessionId(message.getSessionId());
+            setFlows(this.message, message);
             data.setType(Constants.MessageType.INPUT);
             this.message.setMessageType(Constants.MessageType.INPUT);
             data.getContent().setInputType(Constants.InputType.LIST);
@@ -147,8 +147,7 @@ public class MessageResponse extends BaseModel {
 
         public MessageResponseBuilder inputCarousel(Input value, Message message) {
             message.getMessageCarousel().setEnabled(false);
-            this.message.setResponseTo(message.getMessageId());
-            this.message.setSessionId(message.getSessionId());
+            setFlows(this.message, message);
             data.setType(Constants.MessageType.CAROUSEL);
             this.message.setMessageType(Constants.MessageType.CAROUSEL);
             for (Item item : message.getMessageCarousel().getItems()) {
@@ -164,21 +163,22 @@ public class MessageResponse extends BaseModel {
             return this;
         }
 
-        public MessageResponseBuilder inputMedia(String messageResponseId, int mandatory
-                , String sessionId) {
-            this.message.setResponseTo(messageResponseId);
-            this.message.setSessionId(sessionId);
+        public MessageResponseBuilder inputMedia(Message message) {
+            //TODO add message
+//            this.message.setResponseTo(messageResponseId);
+//            this.message.setSessionId(sessionId);
+            setFlows(this.message, message);
             data.setType(Constants.MessageType.INPUT);
+            data.setFileUpload(true);
             this.message.setMessageType(Constants.MessageType.INPUT);
             data.getContent().setInputType(Constants.InputType.MEDIA);
-            data.getContent().setMandatory(mandatory);
+            data.getContent().setMandatory(message.getMessageInput().getMandatory());
 //            data.getContent().setInput(buildMediaInput(path, mediaType));
             return this;
         }
 
         public MessageResponseBuilder inputDate(Message message, Input input) {
-            this.message.setResponseTo(message.getMessageId());
-            this.message.setSessionId(message.getSessionId());
+            setFlows(this.message, message);
             data.setType(Constants.MessageType.INPUT);
             this.message.setMessageType(Constants.MessageType.INPUT);
             data.getContent().setInputType(Constants.InputType.DATE);
@@ -190,8 +190,7 @@ public class MessageResponse extends BaseModel {
         }
 
         public MessageResponseBuilder inputTime(Message message, Input input) {
-            this.message.setResponseTo(message.getMessageId());
-            this.message.setSessionId(message.getSessionId());
+            setFlows(this.message, message);
             data.setType(Constants.MessageType.INPUT);
             this.message.setMessageType(Constants.MessageType.INPUT);
             data.getContent().setInputType(Constants.InputType.TIME);
@@ -203,8 +202,7 @@ public class MessageResponse extends BaseModel {
         }
 
         public MessageResponseBuilder inputAddress(Message message, Input input) {
-            this.message.setResponseTo(message.getMessageId());
-            this.message.setSessionId(message.getSessionId());
+            setFlows(this.message, message);
             data.setType(Constants.MessageType.INPUT);
             this.message.setMessageType(Constants.MessageType.INPUT);
             data.getContent().setInputType(Constants.InputType.ADDRESS);
@@ -217,8 +215,7 @@ public class MessageResponse extends BaseModel {
         }
 
         public MessageResponseBuilder inputLocation(Message message, Input input) {
-            this.message.setResponseTo(message.getMessageId());
-            this.message.setSessionId(message.getSessionId());
+            setFlows(this.message, message);
             data.setType(Constants.MessageType.INPUT);
             this.message.setMessageType(Constants.MessageType.INPUT);
             data.getContent().setInputType(Constants.InputType.LOCATION);
@@ -269,10 +266,11 @@ public class MessageResponse extends BaseModel {
                             getMedia().get(0);
                     if (!input.getPreviewUrl().startsWith("http")) {
                         this.data.setFileUpload(true);
+                    } else {
+                        this.data.setFileUpload(false);
                     }
                     buildMediaInput(input.getPreviewUrl(), input.getType());
-                    inputMedia(message.getResponseTo(),
-                            message.getMessageInput().getMandatory(), message.getSessionId());
+                    inputMedia(message);
                     break;
                 case Constants.InputType.LIST:
                     inputListOption(message.getMessageInput().
@@ -290,7 +288,7 @@ public class MessageResponse extends BaseModel {
             }
 
             this.message = message;
-            this.message.setResponseTo(message.getResponseTo());
+            setFlows(this.message, message);
             return this;
         }
 
@@ -298,7 +296,7 @@ public class MessageResponse extends BaseModel {
             this.data.setType(message.getMessageType());
             inputCarousel(message.getMessageCarousel().getInput(), message);
             this.message = message;
-            this.message.setResponseTo(message.getResponseTo());
+            setFlows(this.message, message);
             return this;
         }
 
@@ -319,6 +317,20 @@ public class MessageResponse extends BaseModel {
                 input.setVal(value);
             }
             return input;
+        }
+
+        private void setFlows(Message messageNew, Message message) {
+            messageNew.setResponseTo(message.getMessageId());
+            messageNew.setSessionId(message.getSessionId());
+            if (message.getPrevFlowId() != null) {
+                messageNew.setPrevFlowId(message.getPrevFlowId());
+            }
+            if (message.getCurrentFlowId() != null) {
+                messageNew.setCurrentFlowId(message.getCurrentFlowId());
+            }
+            if (!PreferencesManager.getsInstance(mContext).getFlowId().isEmpty()) {
+                messageNew.setFlowId(PreferencesManager.getsInstance(mContext).getFlowId());
+            }
         }
 
         public MessageResponseBuilder buildMediaInput(String path, int mediaType) {
@@ -348,6 +360,7 @@ public class MessageResponse extends BaseModel {
             return message;
         }
     }
+
 
     public void send() {
         MessageRepository.getInstance(context).handleMessageResponse(this);

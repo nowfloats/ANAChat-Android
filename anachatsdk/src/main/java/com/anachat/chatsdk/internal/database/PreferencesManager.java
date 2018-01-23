@@ -21,6 +21,7 @@ public class PreferencesManager {
     private static final String EVENTS_DATA = "com.ana.sdk.events.data";
     private static final String IS_HISTORY_SYNCED = "com.ana.sdk.history_sync";
     private static final String URL_Status = "com.ana.sdk.url_browser";
+    private static final String FLOW_ID = "com.ana.sdk.flow_id";
 
     private static PreferencesManager sInstance;
     private final SharedPreferences mPref;
@@ -139,6 +140,15 @@ public class PreferencesManager {
     }
 
 
+    public void setFlowId(String value) {
+        mPref.edit()
+                .putString(FLOW_ID, value)
+                .apply();
+    }
+
+    public String getFlowId() {
+        return mPref.getString(FLOW_ID, "");
+    }
     public void setEventsData(String value) {
         mPref.edit()
                 .putString(EVENTS_DATA, value)

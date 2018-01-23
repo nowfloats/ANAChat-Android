@@ -141,7 +141,7 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
      * @param scroll  {@code true} if need to scroll list to bottom when message added.
      */
     public void addToStart(MESSAGE message, boolean scroll) {
-        checkRemoveLoadingIfExist();
+        removeLoadingIfExist();
         boolean isNewMessageToday = !isPreviousSameDate(0, message.getCreatedAt());
         if (isNewMessageToday) {
             items.add(0, new Wrapper<>(message.getCreatedAt(),
@@ -522,7 +522,7 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
         } else return false;
     }
 
-    public void checkRemoveLoadingIfExist() {
+    public void removeLoadingIfExist() {
         if (items.size() > 0 &&
                 items.get(0).item instanceof String) {
             items.remove(0);

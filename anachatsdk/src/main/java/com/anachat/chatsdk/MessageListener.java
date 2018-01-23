@@ -15,5 +15,7 @@ public interface MessageListener {
 
     void onHistoryLoaded(List<Message> messages);
 
+    void addTypingIndicator(Integer type);
+
 }
 

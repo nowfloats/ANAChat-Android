@@ -73,6 +73,13 @@ public class AnaChatBuilder {
         return this;
     }
 
+    public AnaChatBuilder setFlowId(@NonNull String flowId) {
+        if (!flowId.isEmpty()) {
+            PreferencesManager.getsInstance(activity).setFlowId(flowId);
+        }
+        return this;
+    }
+
     public AnaChatBuilder setEvents(HashMap<String, String> events) {
         PreferencesManager.getsInstance(activity).setEventsData(new JSONObject(events).toString());
         return this;

@@ -916,6 +916,15 @@ public class AnaChatActivity extends AppCompatActivity
     }
 
     @Override
+    public void addTypingIndicator(Integer type) {
+        if (!isFirstHistoryLoaded) return;
+        if (type == 1)
+            messagesAdapter.addLoadingIndicator();
+        else
+            messagesAdapter.removeLoadingIfExist();
+    }
+
+    @Override
     public void onMessageInserted(Message message) {
         if (!isFirstHistoryLoaded) return;
         if (message.getSenderType() != Constants.SenderType.USER &&
@@ -962,6 +971,7 @@ public class AnaChatActivity extends AppCompatActivity
     }
 
     private void checkLastMessage() {
+        //TODO add check if history api is empty but db contains input items
         Message lastMessage = getLastMessage();
         if (lastMessage != null && lastMessage.getMessageType() == Constants.MessageType.INPUT)
             updateBottomUIForInputType(lastMessage);
@@ -987,10 +997,8 @@ public class AnaChatActivity extends AppCompatActivity
             if (requestCode == InputIntents.REQUEST_TAKE_FILE) {
                 type = Constants.MediaType.FILE;
             }
-            Message message = getLastMessage();
-            startActivity(MediaPreviewActivity.startIntent(this, filePath, type,
-                    message.getMId(), message.getMessageInput().getMandatory(),
-                    message.getSessionId()));
+//            Message message = getLastMessage();
+            startActivity(MediaPreviewActivity.startIntent(this, filePath, type));
         }
     }
 

@@ -12,46 +12,47 @@ import java.util.PriorityQueue;
  * Created by lookup on 26/10/17.
  */
 
-public class PushConsumer implements Runnable {
-    private static PushConsumer instance;
-    private Thread thread;
-
+public class PushConsumer {
+    private static volatile PushConsumer instance;
+    private Boolean threadRunning = false;
     //    private List<MessageResponse> messageResponses = new ArrayList<>();
-    private Context context;
+//    private Context context;
     private PriorityQueue<MessageResponse> queue = new PriorityQueue<>(5, new Checker());
 
-    public static PushConsumer getInstance(Context context) {
+    public static PushConsumer getInstance() {
         if (instance == null) { // first time lock
             synchronized (PushConsumer.class) {
                 if (instance == null) {  // second time lock
-                    instance = new PushConsumer(context);
+                    instance = new PushConsumer();
                 }
             }
         }
         return instance;
     }
 
-    private PushConsumer(Context context) {
-        this.context = context;
+    private PushConsumer() {
+
     }
 
-    public void addTask(MessageResponse messageResponse) {
+//    public void setContext(Context context) {
+//        if (this.context == null)
+//            this.context = context;
+//    }
+
+    public void addTask(MessageResponse messageResponse, Context context) {
         queue.add(messageResponse);
-        if (thread == null) {
-            thread = new Thread(this);
-        }
-        if (!thread.isAlive()) {
-            thread.start();
-        }
+        startConsumer(context);
     }
 
-    public void clearQueue() {
-        if (thread != null) {
-            thread = null;
-        }
+
+    private void startConsumer(Context context) {
+        if (threadRunning) return;
+        ApiExecutor apiExecutor = ApiExecutorFactory.getHandlerExecutor();
+        apiExecutor.submitToPool(() -> executeQueue(context));
     }
 
-    private void executeQueue() {
+    private void executeQueue(Context context) {
+        threadRunning = true;
         while (queue.size() > 0) {
             try {
                 Thread.sleep(1500);
@@ -65,14 +66,8 @@ public class PushConsumer implements Runnable {
             if (messageResponse != null)
                 messageRepository.handleMessageResponse(messageResponse);
         }
-        thread = null;
+        threadRunning = false;
     }
-
-    @Override
-    public void run() {
-        executeQueue();
-    }
-
 
     class Checker implements Comparator<MessageResponse> {
         public int compare(MessageResponse str1, MessageResponse str2) {

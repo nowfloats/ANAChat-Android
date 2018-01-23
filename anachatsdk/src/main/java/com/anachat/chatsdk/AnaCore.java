@@ -73,7 +73,7 @@ public final class AnaCore {
             messageResponse.getMessage().setMessageType(messageType);
             messageResponse.getMessage().setSyncWithServer(true);
             messageResponse.setNotifyMessage(true);
-            PushConsumer.getInstance(context).addTask(messageResponse);
+            PushConsumer.getInstance().addTask(messageResponse, context);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -169,7 +169,7 @@ public final class AnaCore {
     public static void logoutUser(@NonNull Context context) {
         String fcmToken = PreferencesManager.getsInstance(context).getFcmToken();
         PreferencesManager.getsInstance(context).clear();
-        if (!fcmToken.isEmpty()){
+        if (!fcmToken.isEmpty()) {
             PreferencesManager.getsInstance(context).setFcmToken(fcmToken);
         }
         MessageRepository.getInstance(context).clearTables();

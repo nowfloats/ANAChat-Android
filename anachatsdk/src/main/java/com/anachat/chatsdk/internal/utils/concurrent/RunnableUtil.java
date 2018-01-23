@@ -29,7 +29,7 @@ public class RunnableUtil {
     }
 
     public static class NotifyingRunnable implements Runnable {
-        private static final String TAG = "Helpshift_NotiRunnable";
+        private static final String TAG = "ANA_NotiRunnable";
         private final Runnable runnable;
         private boolean isFinished;
         private final Object syncLock = new Object();

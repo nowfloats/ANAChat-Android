@@ -23,7 +23,7 @@ public class ListenerManager {
     private Set<LocationPickListener> mLocationListeners = new HashSet<>();
 
 
-    private static ListenerManager instance;
+    private static volatile ListenerManager instance;
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
     private ListenerManager() {
@@ -90,6 +90,15 @@ public class ListenerManager {
                         messageListener.onConversationUpdate(message);
                 }
             }
+        });
+    }
+
+    public void notifyTypingIndicator(Integer type) {
+        mHandler.post(() -> {
+            for (MessageListener messageListener : mChatMessageListeners) {
+                messageListener.addTypingIndicator(type);
+            }
+
         });
     }
 

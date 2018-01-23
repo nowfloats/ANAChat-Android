@@ -39,7 +39,7 @@ import java.util.List;
 
 public class MessageRepository {
 
-    private static MessageRepository instance = null;
+    private static volatile MessageRepository instance = null;
     private Context context;
 
     public static MessageRepository getInstance(Context context) {

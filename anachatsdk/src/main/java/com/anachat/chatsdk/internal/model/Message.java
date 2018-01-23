@@ -64,6 +64,12 @@ public class Message extends BaseModel implements IMessage, MessageContentType {
             columnName = "input_message", foreignAutoCreate = true, maxForeignAutoRefreshLevel = 6)
     private transient MessageInput messageInput;
 
+    @DatabaseField(columnName = "current_flow_id")
+    private String currentFlowId;
+
+    @DatabaseField(columnName = "prev_flow_id")
+    private String prevFlowId;
+
     @Override
     public String getText() {
         return messageId;
@@ -175,6 +181,22 @@ public class Message extends BaseModel implements IMessage, MessageContentType {
 
     public void setFlowId(String flowId) {
         this.flowId = flowId;
+    }
+
+    public String getCurrentFlowId() {
+        return currentFlowId;
+    }
+
+    public void setCurrentFlowId(String currentFlowId) {
+        this.currentFlowId = currentFlowId;
+    }
+
+    public String getPrevFlowId() {
+        return prevFlowId;
+    }
+
+    public void setPrevFlowId(String prevFlowId) {
+        this.prevFlowId = prevFlowId;
     }
 
     public MessageSimple getMessageSimple() {

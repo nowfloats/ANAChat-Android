@@ -43,11 +43,7 @@ public class HandlerThreadExecutor implements ApiExecutor {
     }
 
     public void runOnUiThread(final Runnable r) {
-        this.runAsync(new Runnable() {
-            public void run() {
-                HandlerThreadExecutor.this.uiHandler.post(r);
-            }
-        });
+        this.runAsync(() -> HandlerThreadExecutor.this.uiHandler.post(r));
     }
 
 
