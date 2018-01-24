@@ -1,3 +1,4 @@
+
 ANAChat Android
 ===================
 
@@ -120,6 +121,8 @@ To enable **Location** support in SDK follow below steps:
         AnaCore.sendLocation(latLng.latitude, latLng.longitude, this);
     }
    ```
+**Proguard** :-
+Please check & paste configuration from [here](https://github.com/Kitsune-tools/ANAChat-Android/blob/master/app/proguard-rules.pro)
 
 License
 =======
