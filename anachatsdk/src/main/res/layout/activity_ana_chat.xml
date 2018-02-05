@@ -66,9 +66,20 @@
             android:textColor="@color/white"
             android:textSize="12sp"
             android:textStyle="normal" />
+
+        <ImageView
+            android:id="@+id/iv_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:padding="4dp"
+            android:onClick="sendWelcomeMessage"
+            android:src="@drawable/ic_reload" />
     </RelativeLayout>
 
-    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -93,26 +104,25 @@
             android:id="@+id/rv_options"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:gravity="center_vertical"
             android:overScrollMode="never"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
+            android:paddingBottom="6dp"
+            android:paddingTop="6dp"
             android:visibility="gone" />
 
-        <View
-            android:id="@+id/view_divider"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_below="@id/rv_options"
-            android:background="@color/grey_100" />
+        <!--<View-->
+        <!--android:id="@+id/view_divider"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="2dp"-->
+        <!--android:layout_below="@id/rv_options"-->
+        <!--android:background="@color/grey_100" />-->
 
         <include
             layout="@layout/layout_message_composer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/view_divider" />
+            android:layout_below="@id/rv_options" />
 
         <Button
             android:id="@+id/btn_action"

@@ -65,15 +65,32 @@ public final class AnaCore {
     }
 
 
+    public static void saveFcmToken(@NonNull Context context, @NonNull String token,
+                                    @NonNull String username) {
+        if (!token.isEmpty() && !username.isEmpty()) {
+            PreferencesManager.getsInstance(context).setFcmToken(token);
+            PreferencesManager.getsInstance(context).setUserNameLogin(username);
+            if (PreferencesManager.getsInstance(context).getBusinessId().isEmpty() ||
+                    PreferencesManager.getsInstance(context).getBaseUrl().isEmpty()) return;
+            registerUser(context, username,
+                    PreferencesManager.getsInstance(context).getBusinessId(),
+                    PreferencesManager.getsInstance(context).getBaseUrl());
+        }
+    }
+
+
     public static void handlePush(final Context context, final String payload) {
         try {
             MessageResponse messageResponse =
                     new Gson().fromJson(payload, MessageResponse.class);
-            int messageType = messageResponse.getData().getType();
-            messageResponse.getMessage().setMessageType(messageType);
-            messageResponse.getMessage().setSyncWithServer(true);
-            messageResponse.setNotifyMessage(true);
-            PushConsumer.getInstance().addTask(messageResponse, context);
+            if (messageResponse != null && messageResponse.getData() != null &&
+                    messageResponse.getMessage() != null) {
+                int messageType = messageResponse.getData().getType();
+                messageResponse.getMessage().setMessageType(messageType);
+                messageResponse.getMessage().setSyncWithServer(true);
+                messageResponse.setNotifyMessage(true);
+                PushConsumer.getInstance().addTask(messageResponse, context);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

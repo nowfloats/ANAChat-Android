@@ -34,11 +34,6 @@ public class PushConsumer {
 
     }
 
-//    public void setContext(Context context) {
-//        if (this.context == null)
-//            this.context = context;
-//    }
-
     public void addTask(MessageResponse messageResponse, Context context) {
         queue.add(messageResponse);
         startConsumer(context);
@@ -63,8 +58,7 @@ public class PushConsumer {
                     MessageRepository.getInstance(context);
             MessageResponse messageResponse = queue.peek();
             queue.remove(messageResponse);
-            if (messageResponse != null)
-                messageRepository.handleMessageResponse(messageResponse);
+            messageRepository.handleMessageResponse(messageResponse);
         }
         threadRunning = false;
     }

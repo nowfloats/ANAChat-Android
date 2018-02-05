@@ -309,11 +309,14 @@ public class MessageRepository {
             throws IOException, SQLException {
         TransactionManager.callInTransaction(mHelper.getConnectionSource(), () -> {
             for (MessageResponse messageResponse : messageResponses) {
-                int messageType = messageResponse.getData().getType();
-                messageResponse.getMessage().setMessageType(messageType);
-                messageResponse.getMessage().setSyncWithServer(true);
-                messageResponse.setNotifyMessage(false);
-                handleMessageResponse(messageResponse);
+                if (messageResponse != null && messageResponse.getData() != null &&
+                        messageResponse.getMessage() != null) {
+                    int messageType = messageResponse.getData().getType();
+                    messageResponse.getMessage().setMessageType(messageType);
+                    messageResponse.getMessage().setSyncWithServer(true);
+                    messageResponse.setNotifyMessage(false);
+                    handleMessageResponse(messageResponse);
+                }
             }
             ListenerManager.getInstance().notifyHistoryLoaded(loadHistoryMessages(messageCount), page);
             return null;

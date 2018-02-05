@@ -145,6 +145,8 @@ public class AnaChatActivity extends AppCompatActivity
     private Boolean isFirstHistoryLoaded = false;
     private static final int LOCATION_PERMISSION_REQUEST = 10;
     private BottomSheetDialog mBottomSheetDialog = null;
+    private Integer loadedItemsSize = 0;
+    private ImageView ivRefresh;
 
     //    private static final float SHAKE_THRESHOLD = 65; // m/S**2
 //    private static final int MIN_TIME_BETWEEN_SHAKES_MILLISECS = 4000;
@@ -227,7 +229,6 @@ public class AnaChatActivity extends AppCompatActivity
             }
         });
         mBottomSheetDialog.show();
-
     }
 
     @Override
@@ -310,7 +311,6 @@ public class AnaChatActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(networkStateReceiver);
-
     }
 
     private void initViews() {
@@ -334,7 +334,7 @@ public class AnaChatActivity extends AppCompatActivity
         rvOptions.setLayoutManager(new GridLayoutManager(this,
                 3));
         rvOptions.addItemDecoration(new
-                GridSpacingItemDecoration(3, dpToPx(10), true));
+                GridSpacingItemDecoration(3, dpToPx(10), false));
 
         StateListDrawable drawable = (StateListDrawable) btnAction.getBackground();
         DrawableContainer.DrawableContainerState drawableContainerState =
@@ -381,6 +381,7 @@ public class AnaChatActivity extends AppCompatActivity
             }
         });
         ImageView ivBack = findViewById(R.id.iv_back);
+        ivRefresh = findViewById(R.id.iv_refresh);
         ivBack.setOnClickListener(view -> onBackPressed());
         RelativeLayout rlRoot = findViewById(R.id.rl_root);
         rlRoot.getBackground().setAlpha(180);
@@ -739,6 +740,7 @@ public class AnaChatActivity extends AppCompatActivity
         messagesAdapter.setLoadMoreListener(this);
 //        messagesAdapter.setHasStableIds(true);
         messagesList.setAdapter(messagesAdapter);
+        swipeRefreshLayout.setRefreshing(true);
     }
 
     private MessageHolders registerMessagesTypes() {
@@ -882,8 +884,7 @@ public class AnaChatActivity extends AppCompatActivity
     public void onLoadMore(int page, int totalItemsCount) {
         if (page == 0 || totalItemsCount < 20) return;
         swipeRefreshLayout.setRefreshing(true);
-//        swipeRefreshLayout.postDelayed(() -> swipeRefreshLayout.setRefreshing(false), 8000);
-        AnaCore.loadMoreMessages(this, totalItemsCount, page,
+        AnaCore.loadMoreMessages(this, loadedItemsSize, page,
                 AnaCore.getOldestTimeStamp(this));
     }
 
@@ -948,6 +949,7 @@ public class AnaChatActivity extends AppCompatActivity
         swipeRefreshLayout.setRefreshing(false);
         if (messages != null && messages.size() > 0) {
             messagesAdapter.addToEnd(messages, false);
+            loadedItemsSize = loadedItemsSize + messages.size();
         }
         checkLastMessage();
         if (messages != null && messages.size() == 0 && messagesAdapter.getItemCount() == 0)
@@ -962,11 +964,12 @@ public class AnaChatActivity extends AppCompatActivity
         if (!isFirstHistoryLoaded) return;
         if (messages != null && messages.size() > 0) {
             messagesAdapter.addToEnd(messages, false);
+            loadedItemsSize = loadedItemsSize + messages.size();
         }
     }
 
     private void addGetStartedMessage() {
-//        AnaCore.addWelcomeMessage(this);
+        ivRefresh.setVisibility(GONE);
         showActionButton("GET STARTED");
     }
 
@@ -1050,6 +1053,10 @@ public class AnaChatActivity extends AppCompatActivity
                 showListDialog();
                 break;
         }
+    }
+
+    public void sendWelcomeMessage(View view) {
+        AnaCore.addWelcomeMessage(this);
     }
 
     private void showDateDialog() {
@@ -1496,7 +1503,9 @@ public class AnaChatActivity extends AppCompatActivity
                 edInput.setInputType(InputType.TYPE_CLASS_PHONE);
                 break;
             case Constants.InputType.NUMERIC:
-                edInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+//                edInput.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                edInput.setInputType(InputType.TYPE_CLASS_NUMBER
+                        | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
                 break;
             case Constants.InputType.TEXT:
                 edInput.setInputType(InputType.TYPE_CLASS_TEXT);
