@@ -4,12 +4,12 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.Files;
 
 public class MultipartUtility {
     private HttpURLConnection httpConn;
@@ -73,9 +73,34 @@ public class MultipartUtility {
                 fieldName + "\";filename=\"" +
                 fileName + "\"" + this.crlf);
         request.writeBytes(this.crlf);
-
-        byte[] bytes = Files.readAllBytes(uploadFile.toPath());
+        byte[] bytes = fullyReadFileToBytes(uploadFile);
         request.write(bytes);
+    }
+
+    byte[] fullyReadFileToBytes(File f) throws IOException {
+        int size = (int) f.length();
+        byte bytes[] = new byte[size];
+        byte tmpBuff[] = new byte[size];
+        FileInputStream fis = new FileInputStream(f);
+        ;
+        try {
+
+            int read = fis.read(bytes, 0, size);
+            if (read < size) {
+                int remain = size - read;
+                while (remain > 0) {
+                    read = fis.read(tmpBuff, 0, remain);
+                    System.arraycopy(tmpBuff, 0, bytes, size - remain, read);
+                    remain -= read;
+                }
+            }
+        } catch (IOException e) {
+            throw e;
+        } finally {
+            fis.close();
+        }
+
+        return bytes;
     }
 
     /**

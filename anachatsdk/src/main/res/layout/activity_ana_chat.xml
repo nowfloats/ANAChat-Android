@@ -71,11 +71,11 @@
             android:id="@+id/iv_refresh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:padding="4dp"
+            android:layout_centerVertical="true"
             android:onClick="sendWelcomeMessage"
+            android:padding="4dp"
             android:src="@drawable/ic_reload" />
     </RelativeLayout>
 
@@ -100,23 +100,32 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
+        <!--<RelativeLayout-->
+        <!--android:id="@+id/rl_options"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="150dp">-->
+
+        <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/rv_options"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginBottom="4dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:overScrollMode="never"-->
+        <!--android:visibility="gone" />-->
+        <!--</RelativeLayout>-->
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_options"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="4dp"
+            android:fadeScrollbars="false"
             android:gravity="center_vertical"
             android:overScrollMode="never"
-            android:paddingBottom="6dp"
-            android:paddingTop="6dp"
             android:visibility="gone" />
-
-        <!--<View-->
-        <!--android:id="@+id/view_divider"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="2dp"-->
-        <!--android:layout_below="@id/rv_options"-->
-        <!--android:background="@color/grey_100" />-->
 
         <include
             layout="@layout/layout_message_composer"

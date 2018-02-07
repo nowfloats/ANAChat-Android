@@ -1,6 +1,7 @@
 package com.anachat.chatsdk.uimodule;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -31,15 +32,16 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.OvershootInterpolator;
 import android.view.inputmethod.InputMethodManager;
@@ -64,6 +66,7 @@ import com.anachat.chatsdk.internal.model.inputdata.Input;
 import com.anachat.chatsdk.internal.model.inputdata.Time;
 import com.anachat.chatsdk.internal.utils.ListenerManager;
 import com.anachat.chatsdk.internal.utils.NFChatUtils;
+import com.anachat.chatsdk.internal.utils.OnSwipeListener;
 import com.anachat.chatsdk.internal.utils.concurrent.ApiExecutorFactory;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
 import com.anachat.chatsdk.library.R;
@@ -77,7 +80,6 @@ import com.anachat.chatsdk.uimodule.ui.VideoViewerActivity;
 import com.anachat.chatsdk.uimodule.ui.adapter.InputListOptionsAdapter;
 import com.anachat.chatsdk.uimodule.ui.adapter.OptionsAdapter;
 import com.anachat.chatsdk.uimodule.utils.AppUtils;
-import com.anachat.chatsdk.uimodule.utils.GridSpacingItemDecoration;
 import com.anachat.chatsdk.uimodule.utils.ImagesCache;
 import com.anachat.chatsdk.uimodule.utils.InputIntents;
 import com.anachat.chatsdk.uimodule.utils.LruCache;
@@ -111,7 +113,6 @@ import java.util.Locale;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.anachat.chatsdk.uimodule.utils.AppUtils.dpToPx;
 
 
 public class AnaChatActivity extends AppCompatActivity
@@ -147,6 +148,7 @@ public class AnaChatActivity extends AppCompatActivity
     private BottomSheetDialog mBottomSheetDialog = null;
     private Integer loadedItemsSize = 0;
     private ImageView ivRefresh;
+    private RelativeLayout toolbar;
 
     //    private static final float SHAKE_THRESHOLD = 65; // m/S**2
 //    private static final int MIN_TIME_BETWEEN_SHAKES_MILLISECS = 4000;
@@ -244,7 +246,6 @@ public class AnaChatActivity extends AppCompatActivity
         initViews();
         setCache();
         installAna();
-        initViews();
         initImageLoader();
         initAdapter();
         if (getIntent().getExtras() != null) {
@@ -314,7 +315,7 @@ public class AnaChatActivity extends AppCompatActivity
     }
 
     private void initViews() {
-        RelativeLayout toolbar = findViewById(R.id.rl_toolbar);
+        toolbar = findViewById(R.id.rl_toolbar);
         if (getSupportActionBar() != null)
             getSupportActionBar().hide();
         toolbar.setBackgroundColor(
@@ -331,11 +332,7 @@ public class AnaChatActivity extends AppCompatActivity
         btnAction = findViewById(R.id.btn_action);
         btnAction.setOnClickListener(this);
         rvOptions = findViewById(R.id.rv_options);
-        rvOptions.setLayoutManager(new GridLayoutManager(this,
-                3));
-        rvOptions.addItemDecoration(new
-                GridSpacingItemDecoration(3, dpToPx(10), false));
-
+        rvOptions.setLayoutManager(new LinearLayoutManager(this));
         StateListDrawable drawable = (StateListDrawable) btnAction.getBackground();
         DrawableContainer.DrawableContainerState drawableContainerState =
                 (DrawableContainer.DrawableContainerState) drawable.getConstantState();
@@ -385,6 +382,27 @@ public class AnaChatActivity extends AppCompatActivity
         ivBack.setOnClickListener(view -> onBackPressed());
         RelativeLayout rlRoot = findViewById(R.id.rl_root);
         rlRoot.getBackground().setAlpha(180);
+        initBottomSheet();
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void initBottomSheet() {
+        GestureDetector gestureScanner
+                = new GestureDetector(this, new OnSwipeListener() {
+
+            @Override
+            public boolean onSwipe(Direction direction) {
+                if (direction == Direction.up) {
+                    updateOptionsViewHeight(2);
+                }
+                if (direction == Direction.down) {
+                    updateOptionsViewHeight(0);
+                }
+                return true;
+            }
+        });
+        View.OnTouchListener touchListener = (v, event) -> gestureScanner.onTouchEvent(event);
+        rvOptions.setOnTouchListener(touchListener);
     }
 
     private void initImageLoader() {
@@ -400,9 +418,6 @@ public class AnaChatActivity extends AppCompatActivity
                                     .timeout(20000)
                                     .dontTransform())
                             .into(imageView);
-//                    ApiExecutor apiExecutor = ApiExecutorFactory.getHandlerExecutor();
-//                    apiExecutor.submitToPool(() -> DownloadImageFromPath(url, imageView));
-
                 } else {
                     Uri uri = Uri.fromFile(new File(url));
                     imageView.setImageURI(uri);
@@ -1093,7 +1108,8 @@ public class AnaChatActivity extends AppCompatActivity
         datePickerDialog.show();
     }
 
-    private void setDateRangeOnPicker(String string_date, String ending_date, DatePickerDialog datePickerDialog) {
+    private void setDateRangeOnPicker(String string_date, String ending_date,
+                                      DatePickerDialog datePickerDialog) {
         SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
         try {
             Date start = f.parse(string_date);
@@ -1256,7 +1272,8 @@ public class AnaChatActivity extends AppCompatActivity
                     hideBottomViews();
                     return;
                 }
-                if (message.getMessageInput().getMandatory() == Constants.FCMConstants.MANDATORY_TRUE) {
+                if (message.getMessageInput().getMandatory()
+                        == Constants.FCMConstants.MANDATORY_TRUE) {
                     hide();
                 } else {
                     updateHint("");
@@ -1318,17 +1335,29 @@ public class AnaChatActivity extends AppCompatActivity
             rvOptions.setAdapter(optionsAdapter);
         }
         optionsAdapter.setData(message);
-        if (optionsAdapter.getItemCount() > 2) {
-            updateItemSpanCount(3);
+        if (optionsAdapter.getItemCount() > 3) {
+            updateOptionsViewHeight(0);
         } else {
-            updateItemSpanCount(optionsAdapter.getItemCount());
+            updateOptionsViewHeight(1);
         }
     }
 
-    private void updateItemSpanCount(int count) {
-        GridLayoutManager gridLayoutManager = (GridLayoutManager) rvOptions.getLayoutManager();
-        gridLayoutManager.setSpanCount(count);
-        rvOptions.setLayoutManager(gridLayoutManager);
+    private void updateOptionsViewHeight(Integer heightFix) {
+        ViewGroup.LayoutParams params = rvOptions.getLayoutParams();
+        toolbar.setVisibility(VISIBLE);
+        if (heightFix == 0) {
+            if (optionsAdapter != null && optionsAdapter.getItemCount() > 3) {
+                params.height = AppUtils.dpToPx(160);
+            }
+        } else if (heightFix == 1) {
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        } else {
+            if (optionsAdapter != null && optionsAdapter.getItemCount() > 3) {
+                toolbar.setVisibility(GONE);
+                params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+            }
+        }
+        rvOptions.setLayoutParams(params);
     }
 
     private void showAddressDialog() {
@@ -1562,4 +1591,5 @@ public class AnaChatActivity extends AppCompatActivity
     public void onRefresh() {
 
     }
+
 }

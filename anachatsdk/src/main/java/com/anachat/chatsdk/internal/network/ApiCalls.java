@@ -1,6 +1,9 @@
 package com.anachat.chatsdk.internal.network;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 
 import com.anachat.chatsdk.internal.database.MessageRepository;
 import com.anachat.chatsdk.internal.database.PreferencesManager;
@@ -19,9 +22,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLConnection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -134,8 +139,12 @@ public class ApiCalls {
                     NetworkConstants.UPLOAD_CONNECT_TIMEOUT);
             Response response = null;
             try {
+//                Bitmap src= BitmapFactory.decodeFile(screenshotFile.getPath());
+//                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                src.compress(Bitmap.CompressFormat.PNG, 100, baos);
+//                byte[]  data = baos.toByteArray();
                 response = httpTransport.makeRequest(request);
-            } catch (RootAPIException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             if (response != null && response.status >= 200 && response.status < 300) {
@@ -168,6 +177,17 @@ public class ApiCalls {
 
     }
 
+    private static byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
+    }
 
     public static void fetchHistoryMessages(final Context context, Integer page, Integer size,
                                             long timestamp) {
