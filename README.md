@@ -15,7 +15,7 @@ Add below mandatory dependencies in your app level build.gradle.
 ```ruby
     dependencies {
     ...
-    compile 'com.kitsune:anachatsdk:1.18.1@aar'
+    compile 'com.kitsune:anachatsdk:1.18.2@aar'
     compile 'com.android.support:design:26.1.0'
     compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'com.google.code.gson:gson:2.8.1'
@@ -34,7 +34,10 @@ In `FirebaseInstanceIdService`
     public void onTokenRefresh() {
         // Get updated InstanceID token.
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        //If(user is not registered)
         AnaCore.saveFcmToken(this, refreshedToken);
+        else
+        AnaCore.saveFcmToken(this, refreshedToken,"user_id");
 	    }
     }
 

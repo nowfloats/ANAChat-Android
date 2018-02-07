@@ -14,7 +14,11 @@ public class AnaChatBotInstanceIDService extends FirebaseInstanceIdService {
     public void onTokenRefresh() {
         // Get updated InstanceID token, Save this token in your preferences or database
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+
+        //When user is not registered
         AnaCore.saveFcmToken(this, refreshedToken);
+        //When user registered
+      //  AnaCore.saveFcmToken(this, refreshedToken,"user_id");
     }
 }
 

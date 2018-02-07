@@ -305,13 +305,14 @@ public class AnaChatActivity extends AppCompatActivity
 //        if (mSensorMgr != null)
 //            mSensorMgr.unregisterListener(mSensorListener);
         ApiExecutorFactory.getHandlerExecutor().restart();
+        unregisterReceiver(networkStateReceiver);
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(networkStateReceiver);
+//        unregisterReceiver(networkStateReceiver);
     }
 
     private void initViews() {
