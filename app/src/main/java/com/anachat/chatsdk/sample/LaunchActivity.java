@@ -47,7 +47,7 @@ public class LaunchActivity extends AppCompatActivity implements LocationPickLis
                 .setThemeColor(R.color.colorPrimary)
                 .setToolBarDescription("Talk to BOT - Available")
                 .setToolBarTittle("ANA")
-                .setFlowId(BUSINESSID)
+                .setFlowId("YOUR_FLOW_ID")
                 .setToolBarLogo(R.drawable.ic_ana)
                 .registerLocationSelectListener(this)
                 .start();

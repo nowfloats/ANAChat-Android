@@ -40,6 +40,11 @@ public class OutcomingInputEmailMessageViewHolder
             ivSentStatus.setImageDrawable
                     (ContextCompat.getDrawable(imageLoader.getContext(), R.drawable.ic_wait));
         }
+        if (!imageLoader.isPreviousMessageHasSameAuthor(message.getUserId(), getAdapterPosition())) {
+            triangle.setVisibility(View.GONE);
+        } else {
+            triangle.setVisibility(View.VISIBLE);
+        }
         if (message.getMessageInput().getMandatory()==Constants.FCMConstants.MANDATORY_TRUE) {
             tvDuration.setText(message.getMessageInput().getInputTypeEmail().getInput().getVal());
         } else {

@@ -125,6 +125,8 @@
             android:fadeScrollbars="false"
             android:gravity="center_vertical"
             android:overScrollMode="never"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
             android:visibility="gone" />
 
         <include
