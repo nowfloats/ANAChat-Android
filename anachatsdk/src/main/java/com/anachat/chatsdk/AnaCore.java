@@ -48,6 +48,15 @@ public final class AnaCore {
         }
     }
 
+    public static Message getLastSimpleMessage(Context context) {
+        try {
+            return MessageRepository.getInstance(context).getLastSimpleMessage().get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 //    public static void updateToken(Context context, String refreshedToken,
 //                                   @NonNull String baseUrl, @NonNull String businessId,
 //                                   String userId) {
@@ -165,6 +174,10 @@ public final class AnaCore {
             List<Event> events = new ArrayList<>();
             events.add(event);
             messageResponse.setEvents(events);
+        }
+        if (!PreferencesManager.getsInstance(context).getFlowId().isEmpty()) {
+            messageResponse.getMessage().setFlowId(PreferencesManager.getsInstance(context)
+                    .getFlowId());
         }
         int messageType = messageResponse.getData().getType();
         messageResponse.getMessage().setMessageType(messageType);

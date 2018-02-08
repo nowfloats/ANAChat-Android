@@ -28,6 +28,7 @@
     <color name="grey_300">#E0E0E0</color>
     <color name="grey_400">#BDBDBD</color>
     <color name="white_alpha">#f0f0f0</color>
+    <color name="bg_options_view">#E7E7E7</color>
 
 
 </resources>

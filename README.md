@@ -81,6 +81,7 @@ In `FirebaseMessagingService`
                 .setToolBarTittle("Your Tittle")
                 .setToolBarLogo(R.drawable.ic_your_logo)
           (optional).registerLocationSelectListener(this)
+                .setFlowId(YOUR_FLOW_ID)
                 .start();
 ```
 

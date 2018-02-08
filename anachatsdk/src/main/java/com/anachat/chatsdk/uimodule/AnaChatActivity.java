@@ -1,7 +1,6 @@
 package com.anachat.chatsdk.uimodule;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -38,7 +37,6 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +64,6 @@ import com.anachat.chatsdk.internal.model.inputdata.Input;
 import com.anachat.chatsdk.internal.model.inputdata.Time;
 import com.anachat.chatsdk.internal.utils.ListenerManager;
 import com.anachat.chatsdk.internal.utils.NFChatUtils;
-import com.anachat.chatsdk.internal.utils.OnSwipeListener;
 import com.anachat.chatsdk.internal.utils.concurrent.ApiExecutorFactory;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
 import com.anachat.chatsdk.library.R;
@@ -383,28 +380,28 @@ public class AnaChatActivity extends AppCompatActivity
         ivBack.setOnClickListener(view -> onBackPressed());
         RelativeLayout rlRoot = findViewById(R.id.rl_root);
         rlRoot.getBackground().setAlpha(180);
-        initBottomSheet();
+//        initBottomSheet();
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private void initBottomSheet() {
-        GestureDetector gestureScanner
-                = new GestureDetector(this, new OnSwipeListener() {
-
-            @Override
-            public boolean onSwipe(Direction direction) {
-                if (direction == Direction.up) {
-                    updateOptionsViewHeight(2);
-                }
-                if (direction == Direction.down) {
-                    updateOptionsViewHeight(0);
-                }
-                return true;
-            }
-        });
-        View.OnTouchListener touchListener = (v, event) -> gestureScanner.onTouchEvent(event);
-        rvOptions.setOnTouchListener(touchListener);
-    }
+//    @SuppressLint("ClickableViewAccessibility")
+//    private void initBottomSheet() {
+//        GestureDetector gestureScanner
+//                = new GestureDetector(this, new OnSwipeListener() {
+//
+//            @Override
+//            public boolean onSwipe(Direction direction) {
+//                if (direction == Direction.up) {
+//                    updateOptionsViewHeight(2);
+//                }
+//                if (direction == Direction.down) {
+//                    updateOptionsViewHeight(0);
+//                }
+//                return true;
+//            }
+//        });
+//        View.OnTouchListener touchListener = (v, event) -> gestureScanner.onTouchEvent(event);
+//        rvOptions.setOnTouchListener(touchListener);
+//    }
 
     private void initImageLoader() {
         imageLoader = new ImageLoader() {
@@ -1328,6 +1325,7 @@ public class AnaChatActivity extends AppCompatActivity
     }
 
     private void showOptionsView(Message message) {
+
         if (rvOptions.getVisibility() != VISIBLE) {
             rvOptions.setVisibility(VISIBLE);
         }
@@ -1348,16 +1346,25 @@ public class AnaChatActivity extends AppCompatActivity
         toolbar.setVisibility(VISIBLE);
         if (heightFix == 0) {
             if (optionsAdapter != null && optionsAdapter.getItemCount() > 3) {
-                params.height = AppUtils.dpToPx(160);
+                params.height = AppUtils.dpToPx(202);
             }
         } else if (heightFix == 1) {
             params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        } else {
-            if (optionsAdapter != null && optionsAdapter.getItemCount() > 3) {
-                toolbar.setVisibility(GONE);
-                params.height = ViewGroup.LayoutParams.MATCH_PARENT;
-            }
         }
+//        else {
+//            if (optionsAdapter != null && optionsAdapter.getItemCount() > 3) {
+//                toolbar.setVisibility(GONE);
+//                params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+//                Message simpleMessage =
+//                        AnaCore.getLastSimpleMessage(this);
+//                if (simpleMessage != null) {
+//                    tvTittleOptions.setText(simpleMessage.getMessageSimple().getText());
+//                    tvTittleOptions.setVisibility(VISIBLE);
+//                } else {
+//                    tvTittleOptions.setVisibility(GONE);
+//                }
+//            }
+//        }
         rvOptions.setLayoutParams(params);
     }
 

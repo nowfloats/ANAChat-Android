@@ -334,6 +334,14 @@ public class MessageRepository {
         return mHelper.getMessageDao().query(builder.prepare());
     }
 
+    public List<Message> getLastSimpleMessage() throws SQLException, IOException {
+        QueryBuilder<Message, Integer> builder = mHelper.getMessageDao().queryBuilder();
+        builder.limit(1L);
+        builder.where().eq("message_type", Constants.MessageType.SIMPLE);
+        builder.orderBy("timestamp", false);  // true for ascending, false for descending
+        return mHelper.getMessageDao().query(builder.prepare());
+    }
+
     public List<Message> getFirstMessage() throws SQLException, IOException {
         QueryBuilder<Message, Integer> builder = mHelper.getMessageDao().queryBuilder();
         builder.limit(1L);
