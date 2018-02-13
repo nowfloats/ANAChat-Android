@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.StringRes;
-import android.text.TextUtils;
 import android.widget.Toast;
 
 public class AppUtils {
@@ -39,7 +38,8 @@ public class AppUtils {
     }
 
     public static Boolean checkNumberString(String number) {
-        return TextUtils.isDigitsOnly(number);
+        return (number.matches("\\d*\\.?\\d+"));
+//            return TextUtils.isDigitsOnly(number);
     }
 
     public static ProgressDialog createProgressDialog(Context context, String message) {
