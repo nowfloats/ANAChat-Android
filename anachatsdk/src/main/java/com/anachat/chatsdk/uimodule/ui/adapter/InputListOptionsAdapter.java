@@ -25,6 +25,7 @@ import java.util.List;
 public class InputListOptionsAdapter extends RecyclerView.Adapter<InputListOptionsAdapter.MyViewHolder> {
 
     private List<Option> optionList;
+    private Boolean multipleSelection = false;
     private Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -42,6 +43,7 @@ public class InputListOptionsAdapter extends RecyclerView.Adapter<InputListOptio
     public InputListOptionsAdapter(Context context, Message message) {
         this.optionList = message.getMessageInput().getInputTypeList().getValuesAsList();
         this.context = context;
+        this.multipleSelection = message.getMessageInput().getInputTypeList().getMultiple();
     }
 
     @Override
@@ -56,6 +58,9 @@ public class InputListOptionsAdapter extends RecyclerView.Adapter<InputListOptio
         final Option option = optionList.get(position);
         holder.title.setText(option.getText());
         holder.itemView.setOnClickListener(view -> {
+            if (!multipleSelection) {
+                deSelectAll();
+            }
             if (!option.getSelected())
                 option.setSelected(true);
             else option.setSelected(false);
@@ -80,6 +85,13 @@ public class InputListOptionsAdapter extends RecyclerView.Adapter<InputListOptio
             }
         }
         return result.length() > 0 ? result.substring(0, result.length() - 1) : "";
+    }
+
+    private void deSelectAll() {
+        for (Option option
+                : optionList) {
+            option.setSelected(false);
+        }
     }
 
     @Override

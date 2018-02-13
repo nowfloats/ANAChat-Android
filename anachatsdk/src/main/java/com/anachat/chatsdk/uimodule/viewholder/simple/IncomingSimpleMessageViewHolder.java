@@ -48,11 +48,13 @@ public class IncomingSimpleMessageViewHolder
         }
         if (message.getMessageSimple().getText() != null &&
                 !message.getMessageSimple().getText().trim().isEmpty()) {
+            String text = message.getMessageSimple().getText().trim().
+                    replaceAll("\n", "");
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                tvText.setText(Html.fromHtml(message.getMessageSimple().getText().trim(),
+                tvText.setText(Html.fromHtml(text.trim(),
                         Html.FROM_HTML_MODE_LEGACY));
             } else {
-                tvText.setText(Html.fromHtml(message.getMessageSimple().getText().trim()));
+                tvText.setText(Html.fromHtml(text.trim()));
             }
         } else {
             tvText.setText(message.getMessageSimple().getText().trim());

@@ -21,6 +21,9 @@ public class InputTypeList {
     @DatabaseField(generatedId = true)
     private transient int id;
 
+    @DatabaseField()
+    private Boolean multiple;
+
     private List<Option> values;
     @SerializedName("optionsForeign")
     @ForeignCollectionField(eager = true)
@@ -51,6 +54,14 @@ public class InputTypeList {
 
     public void setValuesForeignCollection(Collection<Option> valuesForeignCollection) {
         this.valuesForeignCollection = valuesForeignCollection;
+    }
+
+    public Boolean getMultiple() {
+        return multiple;
+    }
+
+    public void setMultiple(Boolean multiple) {
+        this.multiple = multiple;
     }
 
     public Input getInput() {

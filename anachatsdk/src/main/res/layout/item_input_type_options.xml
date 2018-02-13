@@ -14,4 +14,4 @@
     android:paddingTop="16dp"
     android:textAllCaps="true"
     android:textColor="@color/white"
-    android:textSize="12sp" />
+    android:textSize="14sp" />

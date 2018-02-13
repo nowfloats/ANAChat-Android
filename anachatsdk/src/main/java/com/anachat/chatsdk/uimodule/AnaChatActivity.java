@@ -1069,10 +1069,16 @@ public class AnaChatActivity extends AppCompatActivity
     }
 
     public void sendWelcomeMessage(View view) {
+        view.setVisibility(GONE);
+        ivRefresh.setEnabled(false);
         MessageRepository.getInstance(this).clearTables();
         if (messagesAdapter != null)
             messagesAdapter.clear();
         AnaCore.addWelcomeMessage(this);
+        view.postDelayed(() -> {
+            ivRefresh.setEnabled(true);
+            view.setVisibility(VISIBLE);
+        }, 2000);
     }
 
     private void showDateDialog() {
