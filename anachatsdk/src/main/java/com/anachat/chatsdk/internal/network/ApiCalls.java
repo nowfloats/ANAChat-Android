@@ -1,9 +1,6 @@
 package com.anachat.chatsdk.internal.network;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 
 import com.anachat.chatsdk.internal.database.MessageRepository;
 import com.anachat.chatsdk.internal.database.PreferencesManager;
@@ -139,10 +136,6 @@ public class ApiCalls {
                     NetworkConstants.UPLOAD_CONNECT_TIMEOUT);
             Response response = null;
             try {
-//                Bitmap src= BitmapFactory.decodeFile(screenshotFile.getPath());
-//                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//                src.compress(Bitmap.CompressFormat.PNG, 100, baos);
-//                byte[]  data = baos.toByteArray();
                 response = httpTransport.makeRequest(request);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -203,7 +196,8 @@ public class ApiCalls {
             String urlparms = "?userId=" + PreferencesManager.
                     getsInstance(context).getUserName() + "&businessId=" +
                     PreferencesManager.getsInstance(context).getBusinessId() +
-                    "&size=" + Constants.HISTORY_MESSAGES_LIMIT;
+                    "&size=" + Constants.HISTORY_MESSAGES_LIMIT + "&ofCurrentSession=true&flowId="
+                    + PreferencesManager.getsInstance(context).getFlowId();
             if (timestamp == 0) {
                 urlparms = urlparms + "&page=" + page;
             } else {
@@ -242,7 +236,7 @@ public class ApiCalls {
                     e.printStackTrace();
                 }
             }
-            //TODO failing when single message added from get started and history loads
+            //TODO failing when single message added from get started and history loads clear tables
             ListenerManager.getInstance().notifyHistoryLoaded(new ArrayList<>(), page);
         });
 

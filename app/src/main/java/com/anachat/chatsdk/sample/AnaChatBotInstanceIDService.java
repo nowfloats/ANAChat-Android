@@ -18,7 +18,7 @@ public class AnaChatBotInstanceIDService extends FirebaseInstanceIdService {
         //When user is not registered
         AnaCore.saveFcmToken(this, refreshedToken);
         //When user registered
-      //  AnaCore.saveFcmToken(this, refreshedToken,"user_id");
+        //  AnaCore.saveFcmToken(this, refreshedToken,"user_id");
     }
 }
 

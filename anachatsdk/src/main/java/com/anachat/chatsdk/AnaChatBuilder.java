@@ -91,8 +91,9 @@ public class AnaChatBuilder {
     }
 
     public void start() {
-        if (businessId.isEmpty())
-            throw new IllegalArgumentException("Business Id can't be empty please set businessId");
+        if (businessId.isEmpty() ||
+                PreferencesManager.getsInstance(activity).getFlowId().isEmpty())
+            throw new IllegalArgumentException("Business Id Or FlowId can't be empty");
 
         if (baseUrl.isEmpty())
             throw new IllegalArgumentException("BaseUrl can't be empty please setBaseUrl");

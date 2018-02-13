@@ -56,6 +56,7 @@ import com.anachat.chatsdk.AnaChatSDKConfig;
 import com.anachat.chatsdk.AnaCore;
 import com.anachat.chatsdk.MessageListener;
 import com.anachat.chatsdk.internal.MessengerCoreMethods;
+import com.anachat.chatsdk.internal.database.MessageRepository;
 import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.internal.model.MessageResponse;
@@ -982,7 +983,6 @@ public class AnaChatActivity extends AppCompatActivity
     }
 
     private void addGetStartedMessage() {
-        ivRefresh.setVisibility(GONE);
         showActionButton("GET STARTED");
     }
 
@@ -1069,6 +1069,9 @@ public class AnaChatActivity extends AppCompatActivity
     }
 
     public void sendWelcomeMessage(View view) {
+        MessageRepository.getInstance(this).clearTables();
+        if (messagesAdapter != null)
+            messagesAdapter.clear();
         AnaCore.addWelcomeMessage(this);
     }
 

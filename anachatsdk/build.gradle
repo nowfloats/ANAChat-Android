@@ -41,7 +41,7 @@ ext {
     siteUrl = 'http://ana.chat/'
     gitUrl = 'https://github.com/Kitsune-tools/ANAChat-Android.git'
 
-    libraryVersion = '1.18.4'
+    libraryVersion = '1.18.5'
 
     developerId = 'rakshitsoni02'
     developerName = 'Rakshit Soni'

@@ -303,6 +303,7 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
      */
     public void clear() {
         items.clear();
+        notifyDataSetChanged();
     }
 
     /**
