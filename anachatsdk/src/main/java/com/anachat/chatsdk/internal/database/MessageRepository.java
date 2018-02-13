@@ -238,6 +238,12 @@ public class MessageRepository {
                                     getData().getContent().getInput());
                             inputTypeList.setValuesForeignCollection(messageResponse.getData()
                                     .getContent().getValues());
+                            if (messageResponse.getData().getContent().getMultiple() != null) {
+                                inputTypeList.setMultiple(messageResponse.getData().getContent()
+                                        .getMultiple());
+                            } else {
+                                inputTypeList.setMultiple(true);
+                            }
                             messageInput.setInputTypeList(inputTypeList);
                             messageResponse.getMessage().setMessageInput(messageInput);
                             for (Option option : messageInput.getInputTypeList()

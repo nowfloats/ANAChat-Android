@@ -27,6 +27,15 @@ public class Content extends BaseModel {
     private TimeRange timeRange;
     private List<Option> options;
     private List<Option> values;
+    private Boolean multiple;
+
+    public Boolean getMultiple() {
+        return multiple;
+    }
+
+    public void setMultiple(Boolean multiple) {
+        this.multiple = multiple;
+    }
 
     public String getText() {
         return text;

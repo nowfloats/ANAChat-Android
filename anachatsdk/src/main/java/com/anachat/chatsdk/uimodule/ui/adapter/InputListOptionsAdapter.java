@@ -43,7 +43,8 @@ public class InputListOptionsAdapter extends RecyclerView.Adapter<InputListOptio
     public InputListOptionsAdapter(Context context, Message message) {
         this.optionList = message.getMessageInput().getInputTypeList().getValuesAsList();
         this.context = context;
-        this.multipleSelection = message.getMessageInput().getInputTypeList().getMultiple();
+        if (message.getMessageInput().getInputTypeList().getMultiple() != null)
+            this.multipleSelection = message.getMessageInput().getInputTypeList().getMultiple();
     }
 
     @Override
