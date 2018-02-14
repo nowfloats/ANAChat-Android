@@ -1,10 +1,10 @@
 package com.anachat.chatsdk.internal.model;
 
 import com.anachat.chatsdk.internal.model.inputdata.DateRange;
-import com.anachat.chatsdk.internal.model.inputdata.TextInputAttr;
-import com.anachat.chatsdk.internal.model.inputdata.TimeRange;
 import com.anachat.chatsdk.internal.model.inputdata.DefaultLocation;
 import com.anachat.chatsdk.internal.model.inputdata.Input;
+import com.anachat.chatsdk.internal.model.inputdata.TextInputAttr;
+import com.anachat.chatsdk.internal.model.inputdata.TimeRange;
 
 import java.util.List;
 
@@ -27,13 +27,13 @@ public class Content extends BaseModel {
     private TimeRange timeRange;
     private List<Option> options;
     private List<Option> values;
-    private Boolean multiple;
+    private Integer multiple;
 
-    public Boolean getMultiple() {
+    public Integer getMultiple() {
         return multiple;
     }
 
-    public void setMultiple(Boolean multiple) {
+    public void setMultiple(Integer multiple) {
         this.multiple = multiple;
     }
 

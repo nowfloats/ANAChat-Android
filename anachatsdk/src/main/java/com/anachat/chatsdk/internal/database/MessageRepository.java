@@ -239,8 +239,9 @@ public class MessageRepository {
                             inputTypeList.setValuesForeignCollection(messageResponse.getData()
                                     .getContent().getValues());
                             if (messageResponse.getData().getContent().getMultiple() != null) {
-                                inputTypeList.setMultiple(messageResponse.getData().getContent()
-                                        .getMultiple());
+                                Boolean val = messageResponse.getData().getContent()
+                                        .getMultiple() == 1;
+                                inputTypeList.setMultiple(val);
                             } else {
                                 inputTypeList.setMultiple(true);
                             }
