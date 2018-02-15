@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.anachat.chatsdk.internal.model.Event;
 import com.anachat.chatsdk.internal.model.InputTypeAddress;
 import com.anachat.chatsdk.internal.model.InputTypeDate;
 import com.anachat.chatsdk.internal.model.InputTypeEmail;
@@ -41,7 +40,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static DatabaseHelper databaseHelper = null;
 
     private static final String DATABASE_NAME = "nfchat.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private Dao<Message, Integer> messageDao;
     private Dao<InputTypeMedia, Integer> inputTypeMediaDao;
