@@ -85,7 +85,7 @@ public class DefaultStringInputViewHolder
                     if (message.getMessageInput().getMandatory() == Constants.FCMConstants.MANDATORY_TRUE)
                         text = message.getMessageInput().getInputTypeList().getInput().getVal();
                     else
-                        text = message.getMessageInput().getInputForOptions().getInput();
+                        text = message.getMessageInput().getInputTypeList().getInput().getInput();
                     break;
             }
         }
