@@ -1480,6 +1480,11 @@ public class AnaChatActivity extends AppCompatActivity
         InputListOptionsAdapter inputListOptionsAdapter =
                 new InputListOptionsAdapter(this, message);
         rvList.setAdapter(inputListOptionsAdapter);
+        if (inputListOptionsAdapter.getItemCount() > 10) {
+            ViewGroup.LayoutParams params = rvList.getLayoutParams();
+            params.height = AppUtils.dpToPx(250);
+            rvList.setLayoutParams(params);
+        }
         tvSend.setOnClickListener(view -> {
             if (inputListOptionsAdapter.getValues().isEmpty()) {
                 Toast.makeText(this, "Please make Select from List",

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +76,19 @@ public class OptionsAdapterCarouselItem extends RecyclerView.Adapter<OptionsAdap
                     (PreferencesManager.getsInstance(context).getThemeColor()));
         }
         final Option option = optionList.get(position);
-        holder.title.setText(option.getTitle());
+        if (option.getTitle() != null &&
+                !option.getTitle().trim().isEmpty()) {
+            String text = option.getTitle().trim().
+                    replaceAll("\\n?\n", "<br>");
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                holder.title.setText(Html.fromHtml(text.trim(),
+                        Html.FROM_HTML_MODE_LEGACY));
+            } else {
+                holder.title.setText(Html.fromHtml(text.trim()));
+            }
+        } else {
+            holder.title.setText(option.getTitle());
+        }
         holder.title.setOnClickListener(view -> {
             if (enableButtons) {
                 String value = option.getValue();

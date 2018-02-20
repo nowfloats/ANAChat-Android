@@ -75,7 +75,13 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
                 imageLoader.getContext(), LinearLayoutManager.VERTICAL, false));
         holder.rvOptions.setAdapter(new OptionsAdapterCarouselItem(imageLoader,
                 message, item, enabled));
-        imageLoader.loadImage(holder.ivItem, item.getMedia().getUrl());
+        if (item.getMedia() == null || item.getMedia().getUrl() == null
+                || item.getMedia().getUrl().isEmpty()) {
+            holder.ivItem.setVisibility(View.INVISIBLE);
+        } else {
+            holder.ivItem.setVisibility(View.VISIBLE);
+            imageLoader.loadImage(holder.ivItem, item.getMedia().getUrl());
+        }
     }
 
     @Override
