@@ -63,7 +63,6 @@ public class OptionsAdapterCarouselItem extends RecyclerView.Adapter<OptionsAdap
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_carousel_options, parent, false);
-
         return new MyViewHolder(itemView);
     }
 
@@ -92,7 +91,7 @@ public class OptionsAdapterCarouselItem extends RecyclerView.Adapter<OptionsAdap
         holder.title.setOnClickListener(view -> {
             if (enableButtons) {
                 String value = option.getValue();
-                if (option.getType() == 0) {
+                if (option.getType() != null && option.getType() == 0) {
                     try {
                         JSONObject jsonObject = new JSONObject(option.getValue());
                         if (jsonObject.has("url")) {

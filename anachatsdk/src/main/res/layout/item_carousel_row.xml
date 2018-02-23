@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_root"
     android:layout_width="280dp"
-    android:layout_height="360dp"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
-    android:background="@drawable/bg_carousel_item"
-    android:layout_marginBottom="4dp"
     android:layout_marginTop="4dp"
+    android:background="@drawable/bg_carousel_item"
     android:paddingBottom="4dp">
 
 
@@ -15,7 +16,10 @@
         android:id="@+id/iv_item"
         android:layout_width="247dp"
         android:layout_height="152dp"
-        android:layout_margin="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:visibility="visible"
         app:cornerRadius="10dp"
         app:roundedCorners="all" />
 
@@ -23,17 +27,18 @@
         android:id="@+id/ll_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/linear_layout_bottom"
         android:layout_below="@id/iv_item"
+        android:layout_marginTop="16dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:maxLines="2"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:fontFamily="sans-serif-medium"
             android:textColor="@color/text_color_chat_input"
             android:textSize="14sp"
             android:textStyle="normal" />
@@ -42,11 +47,11 @@
             android:id="@+id/tv_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="8dp"
-            android:fontFamily="sans-serif-light"
-            android:scrollbars="vertical"
+            android:scrollbars="none"
             android:textColor="@color/text_color_chat_input"
             android:textSize="12sp"
             android:textStyle="normal" />
@@ -57,9 +62,10 @@
         android:id="@+id/linear_layout_bottom"
         android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/ll_text"
         android:gravity="bottom"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="4dp">
 
         <View
             android:layout_width="match_parent"
@@ -67,14 +73,13 @@
             android:alpha="0.5"
             android:background="@color/gray_light" />
 
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_options"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:paddingTop="8dp" />
+            android:paddingTop="4dp" />
     </LinearLayout>
 
 </RelativeLayout>
