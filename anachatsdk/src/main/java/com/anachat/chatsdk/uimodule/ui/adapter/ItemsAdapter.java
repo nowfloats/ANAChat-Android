@@ -118,6 +118,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
                 imageLoader.getContext(), LinearLayoutManager.VERTICAL, false));
         holder.rvOptions.setAdapter(new OptionsAdapterCarouselItem(imageLoader,
                 message, item, enabled));
+        item.setMedia(null);
         if (item.getMedia() == null || item.getMedia().getUrl() == null
                 || item.getMedia().getUrl().isEmpty()) {
             holder.ivItem.setVisibility(View.GONE);
@@ -143,8 +144,13 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
         // this Point already uses pixels
         final int deviceWidth = AppUtils.dpToPx(280);
         final int textSize = context.getResources().getDimensionPixelSize(R.dimen.message_time_text_size);
-        return method2UsingTextViewAndMeasureSpec
+        int height = method2UsingTextViewAndMeasureSpec
                 (context, maxValue.getDesc(), textSize, deviceWidth, AppUtils.dpToPx(8));
+        boolean containsHTMLTag = maxValue.getDesc().matches(".*\\<[^>]+>.*");
+        if (containsHTMLTag) {
+            height = height + AppUtils.dpToPx(12);
+        }
+        return height;
     }
 
     public static int method2UsingTextViewAndMeasureSpec(
