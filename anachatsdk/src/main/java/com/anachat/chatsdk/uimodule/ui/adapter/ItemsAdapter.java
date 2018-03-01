@@ -25,7 +25,6 @@ import com.anachat.chatsdk.uimodule.chatuikit.utils.RoundishImageView;
 import com.anachat.chatsdk.uimodule.utils.AppUtils;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder> {
@@ -62,6 +61,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
         this.imageLoader = imageLoader;
         this.message = message;
         this.enabled = enabled;
+       // itemList.get(0).setDesc("<b>Business name:</b> <i>Rocket Singh</i><br><b>Contact Number:</b> <i>9911778775</i><br>VISITS: 89<br> VISITORS: 42<br> TRACKED CALLS: 12<br> POTENTIAL CALLS: 0<br> BUSINESS ENQUIRIES: 0");
         try {
             maxHeight = getMaxHeight(itemList, imageLoader.getContext());
         } catch (Exception e) {
@@ -140,15 +140,25 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
     public static int getMaxHeight(
             List<Item> itemList, Context context
     ) {
-        Item maxValue = itemList.stream().max(Comparator.comparing(v -> v.getDesc().length())).get();
+        int maxLength = 0;
+        Item maxValue = null;
+        for (Item item : itemList) {
+            if (item.getDesc() != null && !item.getDesc().isEmpty()) {
+                if (item.getDesc().length() > maxLength) {
+                    maxLength = item.getDesc().length();
+                    maxValue = item;
+                }
+            }
+        }
         // this Point already uses pixels
+        if (maxValue == null) return 400;
         final int deviceWidth = AppUtils.dpToPx(280);
         final int textSize = context.getResources().getDimensionPixelSize(R.dimen.message_time_text_size);
         int height = method2UsingTextViewAndMeasureSpec
                 (context, maxValue.getDesc(), textSize, deviceWidth, AppUtils.dpToPx(8));
         boolean containsHTMLTag = maxValue.getDesc().matches(".*\\<[^>]+>.*");
         if (containsHTMLTag) {
-            height = height + AppUtils.dpToPx(12);
+            height = height + AppUtils.dpToPx(22);
         }
         return height;
     }

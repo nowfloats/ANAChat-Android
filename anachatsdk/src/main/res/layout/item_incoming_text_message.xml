@@ -16,10 +16,11 @@
         android:gravity="center"
         android:orientation="vertical"
         android:paddingBottom="4dp"
-        android:paddingTop="16dp">
+        >
 
         <TextView
             android:id="@id/messageText"
+            android:paddingTop="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"

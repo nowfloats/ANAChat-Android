@@ -58,7 +58,8 @@ public class PushConsumer {
                     MessageRepository.getInstance(context);
             MessageResponse messageResponse = queue.peek();
             queue.remove(messageResponse);
-            messageRepository.handleMessageResponse(messageResponse);
+            if (messageResponse != null)
+                messageRepository.handleMessageResponse(messageResponse);
         }
         threadRunning = false;
     }
