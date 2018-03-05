@@ -419,7 +419,7 @@ public class AnaChatActivity extends AppCompatActivity
                             .into(imageView);
                 } else {
                     Uri uri = Uri.fromFile(new File(url));
-                    imageView.setImageURI(uri);
+//                    imageView.setImageURI(uri);
                     Glide.with(AnaChatActivity.this)
                             .load(uri)
                             .apply(new RequestOptions()

@@ -50,6 +50,7 @@
             android:fontFamily="sans-serif-light"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:autoLink="all"
             android:paddingTop="8dp"
             android:scrollbars="none"
             android:textColor="@color/text_color_chat_input"
