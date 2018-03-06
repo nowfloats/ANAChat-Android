@@ -26,8 +26,8 @@ import com.google.android.gms.maps.model.LatLng;
  */
 
 public class LaunchActivity extends AppCompatActivity implements LocationPickListener {
-    public static final String BUSINESSID = "your__business_id";
-    public static final String BASE_URL = "your_url";
+    public static final String BUSINESSID = "rocketsingh";
+    public static final String BASE_URL = "http://chat-dev.nowfloatsdev.com/";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class LaunchActivity extends AppCompatActivity implements LocationPickLis
                 .setThemeColor(R.color.colorPrimary)
                 .setToolBarDescription("Talk to BOT - Available")
                 .setToolBarTittle("ANA")
-                .setFlowId("YOUR_FLOW_ID")
+                .setFlowId("landingpage")
                 .setToolBarLogo(R.drawable.ic_ana)
                 .registerLocationSelectListener(this)
                 .start();

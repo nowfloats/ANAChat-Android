@@ -41,11 +41,11 @@ ext {
     siteUrl = 'http://ana.chat/'
     gitUrl = 'https://github.com/Kitsune-tools/ANAChat-Android.git'
 
-    libraryVersion = '1.18.24'
+    libraryVersion = '1.2.0'
 
-    developerId = 'rakshitsoni02'
-    developerName = 'Rakshit Soni'
-    developerEmail = 'rakshitsoni02@gmail.com'
+    developerId = 'PraharshSri'
+    developerName = 'Praharsh'
+    developerEmail = 'praharsh.sri@gmail.com'
 
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
