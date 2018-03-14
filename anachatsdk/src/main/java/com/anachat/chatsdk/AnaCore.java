@@ -150,6 +150,10 @@ public final class AnaCore {
         ListenerManager.getInstance().addMessageChangeListener(locationPickListener);
     }
 
+    public static void addCustomMethodListener(CustomMethodListener customMethodListener) {
+        ListenerManager.getInstance().addCustomMethodListener(customMethodListener);
+    }
+
     public static void addWelcomeMessage(Context context) {
         MessageResponse.MessageResponseBuilder responseBuilder
                 = new MessageResponse.MessageResponseBuilder(context);

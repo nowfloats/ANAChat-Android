@@ -1339,7 +1339,7 @@ public class AnaChatActivity extends AppCompatActivity
             rvOptions.setVisibility(VISIBLE);
         }
         if (optionsAdapter == null) {
-            optionsAdapter = new OptionsAdapter(imageLoader);
+            optionsAdapter = new OptionsAdapter(imageLoader, AnaChatActivity.this);
             rvOptions.setAdapter(optionsAdapter);
         }
         optionsAdapter.setData(message);

@@ -15,6 +15,7 @@ import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.internal.model.MessageResponse;
 import com.anachat.chatsdk.internal.model.Option;
+import com.anachat.chatsdk.internal.utils.ListenerManager;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
 import com.anachat.chatsdk.library.R;
 import com.anachat.chatsdk.uimodule.chatuikit.commons.ImageLoader;
@@ -30,6 +31,7 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyViewHo
 
     private List<Option> optionList;
     private Context context;
+    private Context mContext;
     private Message message;
     private ImageLoader imageLoader;
 
@@ -43,8 +45,9 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyViewHo
     }
 
 
-    public OptionsAdapter(ImageLoader imageLoader) {
+    public OptionsAdapter(ImageLoader imageLoader, Context context) {
         this.context = imageLoader.getContext();
+        this.mContext = context;
         this.imageLoader = imageLoader;
         optionList = new ArrayList<>();
     }
@@ -102,6 +105,17 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyViewHo
                         context.startActivity(
                                 InputIntents.getBrowserIntent(imageLoader.getContext(),
                                         jsonObject.getString("url")));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            else if (option.getType() == 3) {
+                try {
+                    JSONObject jsonObject = new JSONObject(option.getValue());
+                    if (jsonObject.has("url")) {
+                        value = jsonObject.getString("value");
+                        ListenerManager.getInstance().callCustomMethod(mContext, jsonObject.getString("url"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

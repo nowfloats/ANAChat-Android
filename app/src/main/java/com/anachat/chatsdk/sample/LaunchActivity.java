@@ -1,17 +1,21 @@
 package com.anachat.chatsdk.sample;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
 import com.anachat.chatsdk.AnaChatBuilder;
 import com.anachat.chatsdk.AnaCore;
+import com.anachat.chatsdk.CustomMethodListener;
 import com.anachat.chatsdk.LocationPickListener;
 import com.anachat.chatsdk.internal.database.PreferencesManager;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -25,7 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
  * Created by lookup on 12/10/17.
  */
 
-public class LaunchActivity extends AppCompatActivity implements LocationPickListener {
+public class LaunchActivity extends AppCompatActivity implements LocationPickListener, CustomMethodListener {
     public static final String BUSINESSID = "rocketsingh";
     public static final String BASE_URL = "http://chat-dev.nowfloatsdev.com/";
 
@@ -50,6 +54,7 @@ public class LaunchActivity extends AppCompatActivity implements LocationPickLis
                 .setFlowId("landingpage")
                 .setToolBarLogo(R.drawable.ic_ana)
                 .registerLocationSelectListener(this)
+                .registerCustomMethodListener(this)
                 .start();
 
         if (PreferencesManager.getsInstance(this).getUserName().isEmpty()) {
@@ -81,5 +86,9 @@ public class LaunchActivity extends AppCompatActivity implements LocationPickLis
         AnaCore.sendLocation(latLng.latitude, latLng.longitude, this);
     }
 
+    @Override
+    public void implementCustomMethod(Context context, String deeplinkUrl) {
+        Toast.makeText(this,deeplinkUrl, Toast.LENGTH_LONG).show();
+    }
 }
 

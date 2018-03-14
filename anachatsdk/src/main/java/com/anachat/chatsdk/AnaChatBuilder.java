@@ -68,6 +68,11 @@ public class AnaChatBuilder {
         return this;
     }
 
+    public AnaChatBuilder registerCustomMethodListener(CustomMethodListener customMethodListener) {
+        AnaCore.addCustomMethodListener(customMethodListener);
+        return this;
+    }
+
     public AnaChatBuilder setBaseUrl(String url) {
         this.baseUrl = url;
         return this;
