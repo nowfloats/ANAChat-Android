@@ -16,6 +16,7 @@ import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.internal.model.MessageResponse;
 import com.anachat.chatsdk.internal.model.Option;
 import com.anachat.chatsdk.internal.model.inputdata.Input;
+import com.anachat.chatsdk.internal.utils.ListenerManager;
 import com.anachat.chatsdk.library.R;
 import com.anachat.chatsdk.uimodule.chatuikit.commons.ImageLoader;
 import com.anachat.chatsdk.uimodule.utils.InputIntents;
@@ -99,6 +100,17 @@ public class OptionsAdapterCarouselItem extends RecyclerView.Adapter<OptionsAdap
                             context.startActivity(
                                     InputIntents.getBrowserIntent(imageLoader.getContext(),
                                             jsonObject.getString("url")));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else if (option.getType() != null && option.getType() == 3) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(option.getValue());
+                        if (jsonObject.has("url")) {
+                            value = jsonObject.getString("value");
+                            ListenerManager.getInstance().callCustomMethod(imageLoader.getContext(), jsonObject.getString("url"));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

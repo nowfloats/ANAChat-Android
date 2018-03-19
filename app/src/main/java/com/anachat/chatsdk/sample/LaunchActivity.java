@@ -30,8 +30,8 @@ import com.google.android.gms.maps.model.LatLng;
  */
 
 public class LaunchActivity extends AppCompatActivity implements LocationPickListener, CustomMethodListener {
-    public static final String BUSINESSID = "rocketsingh";
-    public static final String BASE_URL = "http://chat-dev.nowfloatsdev.com/";
+    public static final String BUSINESSID = "your_business_id";
+    public static final String BASE_URL = "your_base_url";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,7 +51,7 @@ public class LaunchActivity extends AppCompatActivity implements LocationPickLis
                 .setThemeColor(R.color.colorPrimary)
                 .setToolBarDescription("Talk to BOT - Available")
                 .setToolBarTittle("ANA")
-                .setFlowId("landingpage")
+                .setFlowId("your_flow_id")
                 .setToolBarLogo(R.drawable.ic_ana)
                 .registerLocationSelectListener(this)
                 .registerCustomMethodListener(this)
@@ -88,7 +88,7 @@ public class LaunchActivity extends AppCompatActivity implements LocationPickLis
 
     @Override
     public void implementCustomMethod(Context context, String deeplinkUrl) {
-        Toast.makeText(this,deeplinkUrl, Toast.LENGTH_LONG).show();
+        Toast.makeText(context, deeplinkUrl, Toast.LENGTH_LONG).show();
     }
 }
 
