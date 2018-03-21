@@ -1168,7 +1168,7 @@ public class AnaChatActivity extends AppCompatActivity
         com.anachat.chatsdk.internal.model.inputdata.Date date =
                 new com.anachat.chatsdk.internal.model.inputdata.Date(
                         String.valueOf(datePicker.getYear()),
-                        String.valueOf(datePicker.getMonth()), String.valueOf(datePicker.getDayOfMonth()));
+                        String.valueOf(datePicker.getMonth()+1), String.valueOf(datePicker.getDayOfMonth()));
         input.setDate(date);
         MessageResponse.MessageResponseBuilder responseBuilder
                 = new MessageResponse.MessageResponseBuilder(AnaChatActivity.this);
