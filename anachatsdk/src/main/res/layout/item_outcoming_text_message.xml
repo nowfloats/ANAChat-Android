@@ -29,6 +29,7 @@
             android:gravity="start"
             android:paddingEnd="26dp"
             android:paddingLeft="28dp"
+            android:textIsSelectable="true"
             android:autoLink="all"
             android:paddingRight="26dp"
             android:paddingStart="28dp"

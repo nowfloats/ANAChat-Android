@@ -29,6 +29,7 @@
             android:paddingEnd="28dp"
             android:paddingLeft="26dp"
             android:autoLink="all"
+            android:textIsSelectable="true"
             android:paddingRight="28dp"
             android:paddingStart="26dp"
             android:textColor="@color/text_color_chat_input"
