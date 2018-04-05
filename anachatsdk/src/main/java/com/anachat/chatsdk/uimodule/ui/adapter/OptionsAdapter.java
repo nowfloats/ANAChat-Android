@@ -117,31 +117,23 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyViewHo
                     JSONObject jsonObject = new JSONObject(option.getValue());
                     if (jsonObject.has("url")) {
                         value = jsonObject.getString("value");
-                        ListenerManager.getInstance().callCustomMethod(mContext, jsonObject.getString("url"));
+                        ListenerManager.getInstance().callCustomMethod(mContext, jsonObject.getString("url"), option.getTitle(), value);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-            message.getMessageInput().setMandatory(Constants.FCMConstants.MANDATORY_TRUE);
-            MessageResponse.MessageResponseBuilder responseBuilder
-                    = new MessageResponse.MessageResponseBuilder
-                    (context.getApplicationContext().getApplicationContext());
-            MessageResponse messageResponse = responseBuilder.inputTextString(value,
-                    message)
-                    .build();
-            if ((option.getType() == 3) && (!PreferencesManager.getsInstance(context).getDeeplinkEventsData().isEmpty())) {
-                Event event
-                        = new Event();
-                event.setType(21);
-                event.setData(PreferencesManager.getsInstance(context).getDeeplinkEventsData());
-                PreferencesManager.getsInstance(context).setDeeplinkEventsData("");
-                List<Event> events = new ArrayList<>();
-                events.add(event);
-                messageResponse.setEvents(events);
+            if(option.getType() != 3) {
+                message.getMessageInput().setMandatory(Constants.FCMConstants.MANDATORY_TRUE);
+                MessageResponse.MessageResponseBuilder responseBuilder
+                        = new MessageResponse.MessageResponseBuilder
+                        (context.getApplicationContext().getApplicationContext());
+                MessageResponse messageResponse = responseBuilder.inputTextString(value,
+                        message)
+                        .build();
+                messageResponse.getData().getContent().getInput().setText(option.getTitle());
+                messageResponse.send();
             }
-            messageResponse.getData().getContent().getInput().setText(option.getTitle());
-            messageResponse.send();
         });
     }
 

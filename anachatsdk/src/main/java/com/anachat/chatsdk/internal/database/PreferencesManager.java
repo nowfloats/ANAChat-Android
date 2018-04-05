@@ -160,17 +160,6 @@ public class PreferencesManager {
         return mPref.getString(EVENTS_DATA, "");
     }
 
-    public void setDeeplinkEventsData(String value) {
-        mPref.edit()
-                .putString(DEEPLINK_EVENTS_DATA, value)
-                .apply();
-    }
-
-    public String getDeeplinkEventsData() {
-        return mPref.getString(DEEPLINK_EVENTS_DATA, "");
-    }
-
-
     public Boolean getUrlStatus() {
         return mPref.getBoolean(URL_Status, true);
     }

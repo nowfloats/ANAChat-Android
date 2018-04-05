@@ -138,9 +138,9 @@ public class ListenerManager {
         });
     }
 
-    public void callCustomMethod(Context context, String url) {
+    public void callCustomMethod(Context context, String url, String title, String value) {
             for (CustomMethodListener methodListener : mCustomMethodListeners) {
-                methodListener.implementCustomMethod(context, url);
+                methodListener.implementCustomMethod(context, url, title, value);
             }
     }
 }
