@@ -35,6 +35,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,6 +49,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -141,6 +143,7 @@ public class AnaChatActivity extends AppCompatActivity
     private TextView tvDesc;
     private ImageView ivOnline;
     private OptionsAdapter optionsAdapter;
+    private InputListOptionsAdapter inputListOptionsAdapter;
     private Boolean isFirstHistoryLoaded = false;
     private static final int LOCATION_PERMISSION_REQUEST = 10;
     private BottomSheetDialog mBottomSheetDialog = null;
@@ -1471,15 +1474,50 @@ public class AnaChatActivity extends AppCompatActivity
         final RecyclerView rvList = listDialogView.findViewById(R.id.input_list);
         final TextView tvSend = listDialogView.findViewById(R.id.tv_send);
         final TextView tvTittle = listDialogView.findViewById(R.id.tv_title);
+        final SearchView svSearchText = listDialogView.findViewById(R.id.sv_searchtext);
         tvTittle.setBackgroundColor(
                 Color.parseColor(PreferencesManager.getsInstance(this).getThemeColor()));
         GradientDrawable drawable = (GradientDrawable) tvSend.getBackground();
         drawable.setColor(Color.parseColor(PreferencesManager.getsInstance(this).getThemeColor()));
         rvList.setLayoutManager(new
                 LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        InputListOptionsAdapter inputListOptionsAdapter =
-                new InputListOptionsAdapter(this, message);
+        inputListOptionsAdapter =
+                new InputListOptionsAdapter(this, message, null);
+        svSearchText.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String searchText) {
+                inputListOptionsAdapter =
+                        new InputListOptionsAdapter(AnaChatActivity.this, message, searchText);
+                rvList.setAdapter(inputListOptionsAdapter);
+                inputListOptionsAdapter.notifyDataSetChanged();
+                if (inputListOptionsAdapter.getItemCount() > 10) {
+                    ViewGroup.LayoutParams params = rvList.getLayoutParams();
+                    params.height = AppUtils.dpToPx(250);
+                    rvList.setLayoutParams(params);
+                }
+                svSearchText.clearFocus();
+                hideKeyPad();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if(TextUtils.isEmpty(s)){
+                    inputListOptionsAdapter =
+                            new InputListOptionsAdapter(AnaChatActivity.this, message, null);
+                    rvList.setAdapter(inputListOptionsAdapter);
+                    inputListOptionsAdapter.notifyDataSetChanged();
+                    if (inputListOptionsAdapter.getItemCount() > 10) {
+                        ViewGroup.LayoutParams params = rvList.getLayoutParams();
+                        params.height = AppUtils.dpToPx(250);
+                        rvList.setLayoutParams(params);
+                    }
+                }
+                return false;
+            }
+        });
         rvList.setAdapter(inputListOptionsAdapter);
+        inputListOptionsAdapter.notifyDataSetChanged();
         if (inputListOptionsAdapter.getItemCount() > 10) {
             ViewGroup.LayoutParams params = rvList.getLayoutParams();
             params.height = AppUtils.dpToPx(250);

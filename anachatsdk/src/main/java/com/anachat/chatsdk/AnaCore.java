@@ -22,10 +22,13 @@ import com.anachat.chatsdk.internal.utils.concurrent.PushConsumer;
 import com.anachat.chatsdk.internal.utils.constants.Constants;
 import com.google.gson.Gson;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public final class AnaCore {
@@ -220,6 +223,11 @@ public final class AnaCore {
         responseBuilder.
                 inputLocation(message, input)
                 .build().send();
+    }
+
+    public static void addDeeplinkEventData(Context context, HashMap<String, String> events)
+    {
+        PreferencesManager.getsInstance(context).setDeeplinkEventsData(new JSONObject(events).toString());
     }
 }
 

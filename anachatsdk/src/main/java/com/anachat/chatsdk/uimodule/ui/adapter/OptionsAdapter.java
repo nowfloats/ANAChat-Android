@@ -6,12 +6,14 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.anachat.chatsdk.internal.database.PreferencesManager;
+import com.anachat.chatsdk.internal.model.Event;
 import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.internal.model.MessageResponse;
 import com.anachat.chatsdk.internal.model.Option;
@@ -128,6 +130,16 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyViewHo
             MessageResponse messageResponse = responseBuilder.inputTextString(value,
                     message)
                     .build();
+            if ((option.getType() == 3) && (!PreferencesManager.getsInstance(context).getDeeplinkEventsData().isEmpty())) {
+                Event event
+                        = new Event();
+                event.setType(21);
+                event.setData(PreferencesManager.getsInstance(context).getDeeplinkEventsData());
+                PreferencesManager.getsInstance(context).setDeeplinkEventsData("");
+                List<Event> events = new ArrayList<>();
+                events.add(event);
+                messageResponse.setEvents(events);
+            }
             messageResponse.getData().getContent().getInput().setText(option.getTitle());
             messageResponse.send();
         });

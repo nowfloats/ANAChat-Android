@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.anachat.chatsdk.internal.model.Message;
 import com.anachat.chatsdk.internal.model.Option;
 import com.anachat.chatsdk.library.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +26,7 @@ import java.util.List;
 
 public class InputListOptionsAdapter extends RecyclerView.Adapter<InputListOptionsAdapter.MyViewHolder> {
 
-    private List<Option> optionList;
+    private List<Option> optionList = new ArrayList<Option>();
     private Boolean multipleSelection = false;
     private Context context;
 
@@ -40,8 +42,16 @@ public class InputListOptionsAdapter extends RecyclerView.Adapter<InputListOptio
     }
 
 
-    public InputListOptionsAdapter(Context context, Message message) {
-        this.optionList = message.getMessageInput().getInputTypeList().getValuesAsList();
+    public InputListOptionsAdapter(Context context, Message message, String searchText) {
+        if(TextUtils.isEmpty(searchText))
+            this.optionList = message.getMessageInput().getInputTypeList().getValuesAsList();
+        else {
+            for(Option option: message.getMessageInput().getInputTypeList().getValuesAsList())
+            {
+                if(option.getText().toUpperCase().contains(searchText.toUpperCase()))
+                    this.optionList.add(option);
+            }
+        }
         this.context = context;
         if (message.getMessageInput().getInputTypeList().getMultiple() != null)
             this.multipleSelection = message.getMessageInput().getInputTypeList().getMultiple();

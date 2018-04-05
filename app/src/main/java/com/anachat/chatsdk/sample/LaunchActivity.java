@@ -24,6 +24,8 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.HashMap;
+
 
 /**
  * Created by lookup on 12/10/17.

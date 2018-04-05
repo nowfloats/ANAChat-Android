@@ -139,10 +139,8 @@ public class ListenerManager {
     }
 
     public void callCustomMethod(Context context, String url) {
-        mHandler.post(() -> {
             for (CustomMethodListener methodListener : mCustomMethodListeners) {
                 methodListener.implementCustomMethod(context, url);
             }
-        });
     }
 }
