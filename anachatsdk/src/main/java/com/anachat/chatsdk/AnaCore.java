@@ -225,40 +225,28 @@ public final class AnaCore {
                 .build().send();
     }
 
-    public static void sendDeeplinkEventData(Context context, HashMap<String, String> eventsData, String title, String value, Boolean fromCarousel)
+    public static void sendDeeplinkEventData(Context context, HashMap<String, String> eventsData, String title, String value)
     {
         Message message
                 = getLastMessage(context);
-        if(fromCarousel) {
-            Input input = new Input();
-            input.setVal(value);
-            input.setText(title);
-            MessageResponse.MessageResponseBuilder responseBuilder
-                    = new MessageResponse.MessageResponseBuilder(context);
-            responseBuilder.
-                    inputCarousel(input, message)
-                    .build().send();
+        message.getMessageInput().setMandatory(Constants.FCMConstants.MANDATORY_TRUE);
+        MessageResponse.MessageResponseBuilder responseBuilder
+                = new MessageResponse.MessageResponseBuilder
+                (context.getApplicationContext().getApplicationContext());
+        MessageResponse messageResponse = responseBuilder.inputTextString(value,
+                message)
+                .build();
+        if (eventsData != null || !eventsData.isEmpty()) {
+            Event event
+                    = new Event();
+            event.setType(21);
+            event.setData(new JSONObject(eventsData).toString());
+            List<Event> events = new ArrayList<>();
+            events.add(event);
+            messageResponse.setEvents(events);
         }
-        else {
-            message.getMessageInput().setMandatory(Constants.FCMConstants.MANDATORY_TRUE);
-            MessageResponse.MessageResponseBuilder responseBuilder
-                    = new MessageResponse.MessageResponseBuilder
-                    (context.getApplicationContext().getApplicationContext());
-            MessageResponse messageResponse = responseBuilder.inputTextString(value,
-                    message)
-                    .build();
-            if (eventsData != null || !eventsData.isEmpty()) {
-                Event event
-                        = new Event();
-                event.setType(21);
-                event.setData(new JSONObject(eventsData).toString());
-                List<Event> events = new ArrayList<>();
-                events.add(event);
-                messageResponse.setEvents(events);
-            }
-            messageResponse.getData().getContent().getInput().setText(title);
-            messageResponse.send();
-        }
+        messageResponse.getData().getContent().getInput().setText(title);
+        messageResponse.send();
     }
 }
 

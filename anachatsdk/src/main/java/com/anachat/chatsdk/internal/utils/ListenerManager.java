@@ -138,10 +138,10 @@ public class ListenerManager {
         });
     }
 
-    public void callCustomMethod(Context context, String url, String title, String value, Boolean fromCarousel) {
+    public void callCustomMethod(Context context, String url, String title, String value) {
         mHandler.post(() -> {
             for (CustomMethodListener methodListener : mCustomMethodListeners) {
-                methodListener.implementCustomMethod(context, url, title, value, fromCarousel);
+                methodListener.implementCustomMethod(context, url, title, value);
             }
         });
     }

@@ -110,7 +110,7 @@ public class OptionsAdapterCarouselItem extends RecyclerView.Adapter<OptionsAdap
                         JSONObject jsonObject = new JSONObject(option.getValue());
                         if (jsonObject.has("url")) {
                             value = jsonObject.getString("value");
-                            ListenerManager.getInstance().callCustomMethod(imageLoader.getContext(), jsonObject.getString("url"), option.getTitle(), value, true);
+                            ListenerManager.getInstance().callCustomMethod(imageLoader.getContext(), jsonObject.getString("url"), option.getTitle(), value);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

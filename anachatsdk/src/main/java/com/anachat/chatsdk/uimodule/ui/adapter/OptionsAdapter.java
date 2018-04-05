@@ -117,7 +117,7 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyViewHo
                     JSONObject jsonObject = new JSONObject(option.getValue());
                     if (jsonObject.has("url")) {
                         value = jsonObject.getString("value");
-                        ListenerManager.getInstance().callCustomMethod(mContext, jsonObject.getString("url"), option.getTitle(), value, false);
+                        ListenerManager.getInstance().callCustomMethod(mContext, jsonObject.getString("url"), option.getTitle(), value);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -8,6 +8,6 @@ import android.content.Context;
 
 public interface CustomMethodListener {
 
-    void implementCustomMethod(Context context, String deeplinkUrl, String title, String value, Boolean fromCarousel);
+    void implementCustomMethod(Context context, String deeplinkUrl, String title, String value);
 
 }
