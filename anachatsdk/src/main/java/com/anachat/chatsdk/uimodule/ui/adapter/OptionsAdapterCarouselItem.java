@@ -117,14 +117,16 @@ public class OptionsAdapterCarouselItem extends RecyclerView.Adapter<OptionsAdap
                     }
                 }
                 imageLoader.disableOptions();
-                Input input = new Input();
-                input.setVal(value);
-                input.setText(option.getTitle());
-                MessageResponse.MessageResponseBuilder responseBuilder
-                        = new MessageResponse.MessageResponseBuilder(context);
-                responseBuilder.
-                        inputCarousel(input, message)
-                        .build().send();
+                if(option.getType() != 3) {
+                    Input input = new Input();
+                    input.setVal(value);
+                    input.setText(option.getTitle());
+                    MessageResponse.MessageResponseBuilder responseBuilder
+                            = new MessageResponse.MessageResponseBuilder(context);
+                    responseBuilder.
+                            inputCarousel(input, message)
+                            .build().send();
+                }
             }
         });
     }
