@@ -89,9 +89,9 @@ public class LaunchActivity extends AppCompatActivity implements LocationPickLis
     }
 
     @Override
-    public void implementCustomMethod(Context context, String deeplinkUrl, String title, String value) {
+    public void implementCustomMethod(Context context, String deeplinkUrl, String title, String value, Boolean fromCarousel) {
         HashMap<String, String> eventsData = new HashMap<>();
-        AnaCore.sendDeeplinkEventData(context, eventsData, title, value);
+        AnaCore.sendDeeplinkEventData(context, eventsData, title, value, fromCarousel);
         Toast.makeText(context, deeplinkUrl, Toast.LENGTH_LONG).show();
     }
 }
