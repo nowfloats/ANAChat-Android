@@ -53,6 +53,7 @@ public class ListenerManager {
     }
 
     public void addCustomMethodListener(CustomMethodListener customMethodListener) {
+        mCustomMethodListeners.clear();
         mCustomMethodListeners.add(customMethodListener);
     }
 
@@ -139,10 +140,8 @@ public class ListenerManager {
     }
 
     public void callCustomMethod(Context context, String url, String title, String value) {
-        mHandler.post(() -> {
             for (CustomMethodListener methodListener : mCustomMethodListeners) {
                 methodListener.implementCustomMethod(context, url, title, value);
             }
-        });
     }
 }

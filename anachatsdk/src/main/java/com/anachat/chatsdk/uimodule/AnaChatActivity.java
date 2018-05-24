@@ -1525,7 +1525,7 @@ public class AnaChatActivity extends AppCompatActivity
         }
         tvSend.setOnClickListener(view -> {
             if (inputListOptionsAdapter.getValues().isEmpty()) {
-                Toast.makeText(this, "Please make Select from List",
+                Toast.makeText(this, "Please select an item from the list",
                         Toast.LENGTH_SHORT).show();
                 return;
             }
