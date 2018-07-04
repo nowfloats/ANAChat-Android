@@ -29,7 +29,7 @@ dependencies {
     provided 'com.github.bumptech.glide:glide:4.1.1'
 }
 ext {
-    bintrayRepo = 'Android-Libs'
+    bintrayRepo = 'Android-Library'
     bintrayName = 'ana-android-sdk'
 
     publishedGroupId = 'com.kitsune'
@@ -41,11 +41,11 @@ ext {
     siteUrl = 'http://ana.chat/'
     gitUrl = 'https://github.com/Kitsune-tools/ANAChat-Android.git'
 
-    libraryVersion = '1.2.12'
+    libraryVersion = '1.2.14'
 
-    developerId = 'PraharshSri'
-    developerName = 'Praharsh'
-    developerEmail = 'praharsh.sri@gmail.com'
+    developerId = 'tanmay23235616'
+    developerName = 'Tanmay Majumdar'
+    developerEmail = 'tanmay.majumdar@nowfloats.com'
 
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
