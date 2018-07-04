@@ -1,7 +1,7 @@
 package com.anachat.chatsdk;
 
 /**
- * Created by lookup on 16/10/17.
+ * Created by nowfloats on 16/10/17.
  */
 
 import android.app.Activity;
