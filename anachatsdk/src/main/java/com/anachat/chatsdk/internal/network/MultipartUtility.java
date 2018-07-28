@@ -75,6 +75,7 @@ public class MultipartUtility {
                 fieldName + "\";filename=\"" +
                 fileName + "\"" + this.crlf);
         request.writeBytes(this.crlf);
+        checkForOutofMemoryException(uploadFile);
         byte[] bytes = fullyReadFileToBytes(uploadFile);
         request.write(bytes);
     }
