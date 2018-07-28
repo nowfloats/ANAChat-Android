@@ -1004,8 +1004,12 @@ public class AnaChatActivity extends AppCompatActivity
         if (resultCode == RESULT_OK) {
             Uri uri = data.getData();
             String filePath = PathUtil.getPath(this, uri);
+
             if (filePath == null)
                 return;
+            if (AppUtils.memoryOutofBounds(filePath , AnaChatActivity.this))
+                return;
+
             int type = 0;
             if (requestCode == InputIntents.REQUEST_TAKE_GALLERY_VIDEO) {
                 type = Constants.MediaType.VIDEO;
