@@ -5,6 +5,8 @@
     <string name="desc_toolbar">(Blume intelligence assistant)</string>
     <string name="chatsdk_key">155344AsGCm17GVss5937f54b</string>
 
+    <string name="file_big_exception">File size is too big. Please upload a file lower than 10 mb  file size.</string>
+    <string name="file_invalid">This is an invalid file. Kindly upload another file</string>
 
     <string name="action_delete">Delete</string>
     <string name="action_copy">Copy</string>

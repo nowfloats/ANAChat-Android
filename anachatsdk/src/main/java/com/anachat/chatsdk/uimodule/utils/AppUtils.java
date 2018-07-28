@@ -6,6 +6,10 @@ import android.content.res.Resources;
 import android.support.annotation.StringRes;
 import android.widget.Toast;
 
+import com.anachat.chatsdk.library.R;
+
+import java.io.File;
+
 public class AppUtils {
 
     public static void showToast(Context context, @StringRes int text, boolean isLong) {
@@ -51,5 +55,18 @@ public class AppUtils {
     public static int dpToPx(int dp) {
         float density = Resources.getSystem().getDisplayMetrics().density;
         return Math.round(dp * density);
+    }
+    public static boolean memoryOutofBounds (String fileName , Context context) {
+       return checkIfException(new File(fileName) , context);
+    }
+
+    private static boolean checkIfException (File f , Context context){
+        final long fileUploadLimitSize = 12000000; // 12 mb file size is max
+        return  f.length() > fileUploadLimitSize ? showToast(context,R.string.file_big_exception)  : false;
+    }
+
+    private static boolean showToast(Context context , int message ) {
+        showToast(context , message , true);
+        return true;
     }
 }
