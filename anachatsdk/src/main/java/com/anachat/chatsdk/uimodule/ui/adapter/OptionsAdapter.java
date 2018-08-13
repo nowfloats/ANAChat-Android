@@ -4,6 +4,7 @@ package com.anachat.chatsdk.uimodule.ui.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
@@ -80,13 +81,17 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyViewHo
         drawable.setColor(Color.parseColor(PreferencesManager.getsInstance(context).getThemeColor()));
         drawable.setStroke(3,
                 Color.parseColor(PreferencesManager.getsInstance(context).getThemeColor()));
-        holder.itemView.setBackground(drawable);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            holder.itemView.setBackground(drawable);
+        }else{
+            holder.itemView.setBackgroundDrawable(drawable);
+        }
         final Option option = optionList.get(position);
         if (option.getTitle() != null &&
                 !option.getTitle().trim().isEmpty()) {
             String text = option.getTitle().trim().
                     replaceAll("\\n?\n", "<br>");
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 holder.title.setText(Html.fromHtml(text.trim(),
                         Html.FROM_HTML_MODE_LEGACY));
             } else {

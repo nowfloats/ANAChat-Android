@@ -1,5 +1,6 @@
 package com.anachat.chatsdk.uimodule.utils;
 
+import android.annotation.TargetApi;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
@@ -85,6 +86,7 @@ public class PathUtil {
 //    public static boolean isMediaDocument(Uri uri) {
 //        return "com.android.providers.media.documents".equals(uri.getAuthority());
 //    }
+
 
     public static String getPath(final Context context, final Uri uri) {
 

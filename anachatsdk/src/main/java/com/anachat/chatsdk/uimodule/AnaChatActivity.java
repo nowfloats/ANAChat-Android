@@ -1,6 +1,7 @@
 package com.anachat.chatsdk.uimodule;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -206,6 +207,7 @@ public class AnaChatActivity extends AppCompatActivity
 //        public void onAccuracyChanged(Sensor sensor, int accuracy) {
 //        }
 //    };
+    @SuppressLint("NewApi")
     private void showNoInternet() {
         if (mBottomSheetDialog != null && mBottomSheetDialog.isShowing()) return;
         mBottomSheetDialog = new BottomSheetDialog(this);
@@ -949,7 +951,7 @@ public class AnaChatActivity extends AppCompatActivity
                 message.getMessageType() != Constants.MessageType.INPUT) {
             messagesAdapter.addLoadingIndicator();
             Handler handler = new Handler();
-            handler.postDelayed(() -> messagesAdapter.addToStart(message, true), 1000);
+            handler.postDelayed(() -> messagesAdapter.addToStart(message, true), 250);
         } else {
             messagesAdapter.addToStart(message, true);
         }
@@ -1154,13 +1156,21 @@ public class AnaChatActivity extends AppCompatActivity
         rangeTimePickerDialog.show();
     }
 
+
     @Override
     public void onTimeSet(TimePicker timePicker, int i, int i1) {
         Input input = new Input();
         Time time =
-                new Time(
-                        String.valueOf(timePicker.getHour()),
-                        String.valueOf(timePicker.getMinute()), "0");
+                null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            time = new Time(
+                    String.valueOf(timePicker.getHour()),
+                    String.valueOf(timePicker.getMinute()), "0");
+        }else{
+            time = new Time(
+                    String.valueOf(timePicker.getCurrentHour()),
+                    String.valueOf(timePicker.getCurrentMinute()), "0");
+        }
         input.setTime(time);
         MessageResponse.MessageResponseBuilder responseBuilder
                 = new MessageResponse.MessageResponseBuilder(AnaChatActivity.this);
@@ -1401,7 +1411,11 @@ public class AnaChatActivity extends AppCompatActivity
                 Color.parseColor(PreferencesManager.getsInstance(this).getThemeColor()));
         GradientDrawable drawable = (GradientDrawable) tvSend.getBackground();
         drawable.setColor(Color.parseColor(PreferencesManager.getsInstance(this).getThemeColor()));
-        tvSend.setBackground(drawable);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            tvSend.setBackground(drawable);
+        }else{
+            tvSend.setBackgroundDrawable(drawable);
+        }
         tvSend.setOnClickListener(view -> {
             Message message
                     = getLastMessage();
