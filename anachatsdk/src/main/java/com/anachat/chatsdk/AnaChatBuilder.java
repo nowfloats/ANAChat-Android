@@ -85,6 +85,13 @@ public class AnaChatBuilder {
         return this;
     }
 
+    public AnaChatBuilder setChatAnimationDelay(int delay) {
+        if(delay > 0 ){
+            PreferencesManager.getsInstance(activity).setAnimationBubbleDelay(delay);
+        }
+        return this;
+    }
+
     public AnaChatBuilder setEvents(HashMap<String, String> events) {
         PreferencesManager.getsInstance(activity).setEventsData(new JSONObject(events).toString());
         return this;

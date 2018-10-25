@@ -136,6 +136,7 @@ public class AnaChatActivity extends AppCompatActivity
     //    private Menu menu;
 //    private int selectionCount;
     private Button btnAction;
+    private int animationDelay;
     private RecyclerView rvOptions;
     private RelativeLayout input;
     private ImageView ivSend;
@@ -337,6 +338,7 @@ public class AnaChatActivity extends AppCompatActivity
         btnAction.setOnClickListener(this);
         rvOptions = findViewById(R.id.rv_options);
         rvOptions.setLayoutManager(new LinearLayoutManager(this));
+        animationDelay = PreferencesManager.getsInstance(this).getAnimationBubbleDelay();
         StateListDrawable drawable = (StateListDrawable) btnAction.getBackground();
         DrawableContainer.DrawableContainerState drawableContainerState =
                 (DrawableContainer.DrawableContainerState) drawable.getConstantState();
@@ -951,7 +953,7 @@ public class AnaChatActivity extends AppCompatActivity
                 message.getMessageType() != Constants.MessageType.INPUT) {
             messagesAdapter.addLoadingIndicator();
             Handler handler = new Handler();
-            handler.postDelayed(() -> messagesAdapter.addToStart(message, true), 250);
+            handler.postDelayed(() -> messagesAdapter.addToStart(message, true), animationDelay);
         } else {
             messagesAdapter.addToStart(message, true);
         }
@@ -1360,7 +1362,7 @@ public class AnaChatActivity extends AppCompatActivity
             rvOptions.setAdapter(optionsAdapter);
         }
         optionsAdapter.setData(message);
-        if (optionsAdapter.getItemCount() > 3) {
+        if (optionsAdapter.getItemCount() > 5) {
             updateOptionsViewHeight(0);
         } else {
             updateOptionsViewHeight(1);
@@ -1371,8 +1373,8 @@ public class AnaChatActivity extends AppCompatActivity
         ViewGroup.LayoutParams params = rvOptions.getLayoutParams();
         toolbar.setVisibility(VISIBLE);
         if (heightFix == 0) {
-            if (optionsAdapter != null && optionsAdapter.getItemCount() > 3) {
-                params.height = AppUtils.dpToPx(202);
+            if (optionsAdapter != null && optionsAdapter.getItemCount() > 5) {
+                params.height = AppUtils.dpToPx(402);
             }
         } else if (heightFix == 1) {
             params.height = ViewGroup.LayoutParams.WRAP_CONTENT;

@@ -23,6 +23,7 @@ public class PreferencesManager {
     private static final String IS_HISTORY_SYNCED = "com.ana.sdk.history_sync";
     private static final String URL_Status = "com.ana.sdk.url_browser";
     private static final String FLOW_ID = "com.ana.sdk.flow_id";
+    private static final String ANIMATION_DELAY = "com.ana.sdk.animation_delay";
 
     private static PreferencesManager sInstance;
     private final SharedPreferences mPref;
@@ -169,6 +170,15 @@ public class PreferencesManager {
                 .putBoolean(URL_Status, value)
                 .apply();
     }
+
+    public void setAnimationBubbleDelay(int value) {
+
+        mPref.edit()
+                .putInt(ANIMATION_DELAY , value)
+                .apply();
+    }
+
+    public int getAnimationBubbleDelay(){   return mPref.getInt(ANIMATION_DELAY , 1000) ;  }
 
     public boolean clear() {
         return mPref.edit()
