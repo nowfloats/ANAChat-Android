@@ -102,6 +102,9 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.MyViewHo
         }
 
 
+        holder.title.setTextColor(PreferencesManager.getsInstance(holder.title.getContext())
+        .getOptionsTextColor());
+
         holder.itemView.setOnClickListener(view -> {
             String value = option.getValue();
             if (option.getType() == 0) {
