@@ -2,6 +2,9 @@ package com.anachat.chatsdk.internal.database;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.ColorRes;
+
+import com.anachat.chatsdk.library.R;
 
 /**
  * Created by lookup on 12/10/17.
@@ -24,6 +27,7 @@ public class PreferencesManager {
     private static final String URL_Status = "com.ana.sdk.url_browser";
     private static final String FLOW_ID = "com.ana.sdk.flow_id";
     private static final String ANIMATION_DELAY = "com.ana.sdk.animation_delay";
+    private static final String OPTIONS_TEXT_COLOR = "com.ana.sdk.options.text.color";
 
     private static PreferencesManager sInstance;
     private final SharedPreferences mPref;
@@ -170,6 +174,14 @@ public class PreferencesManager {
                 .putBoolean(URL_Status, value)
                 .apply();
     }
+
+    public void setOptionsTextColor(@ColorRes int optionTextColor) {
+        mPref.edit()
+                .putInt(OPTIONS_TEXT_COLOR , optionTextColor)
+                .apply();
+    }
+
+    public int getOptionsTextColor(){ return mPref.getInt(OPTIONS_TEXT_COLOR , R.color.white);}
 
     public void setAnimationBubbleDelay(int value) {
 

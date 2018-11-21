@@ -1000,6 +1000,7 @@ public class AnaChatActivity extends AppCompatActivity
             updateBottomUIForInputType(lastMessage);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == Constants.InputType.LOCATION) {
             ListenerManager.getInstance().notifySendLocation(data);

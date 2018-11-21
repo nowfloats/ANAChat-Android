@@ -7,6 +7,7 @@ package com.anachat.chatsdk;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -75,6 +76,11 @@ public class AnaChatBuilder {
 
     public AnaChatBuilder setBaseUrl(String url) {
         this.baseUrl = url;
+        return this;
+    }
+
+    public AnaChatBuilder setOptionsTextColor(@ColorRes int optionsTextColor) {
+        PreferencesManager.getsInstance(activity).setOptionsTextColor(optionsTextColor);
         return this;
     }
 
